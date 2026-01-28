@@ -1,0 +1,226 @@
+{
+  "Bat": [
+    "Bat",
+    "Traffic Police Baton"
+  ],
+  "Bitcoin": [
+    "Bitcoin",
+    "Golden Bitcoin"
+  ],
+  "Block": [
+    "Aerated Concrete Block",
+    "Concrete Block"
+  ],
+  "Blue": [
+    "Lunar Blue",
+    "Mountain Blue",
+    "Sea Blue"
+  ],
+  "Bone": [
+    "Bone",
+    "Bones"
+  ],
+  "Brick": [
+    "New Brick Wall Chunk",
+    "Old Brick Wall Chunk"
+  ],
+  "Cardboard": [
+    "Cardboard",
+    "Torn Cardboard"
+  ],
+  "Cavern": [
+    "Cavern",
+    "Cavern Brown"
+  ],
+  "Chocolate": [
+    "Chocolate",
+    "Chocolate Shake"
+  ],
+  "Chunk": [
+    "New Brick Wall Chunk",
+    "Old Brick Wall Chunk"
+  ],
+  "Cocktail": [
+    "Cosmic Cocktail",
+    "Lunar Cocktail",
+    "Mechanic’s Cocktail",
+    "Swamp Cocktail",
+    "Tropical Cocktail"
+  ],
+  "Concrete": [
+    "Aerated Concrete Block",
+    "Concrete Block"
+  ],
+  "Cosmic": [
+    "Cosmic",
+    "Cosmic Black",
+    "Cosmic Cocktail",
+    "Spiked Cosmic"
+  ],
+  "Cyber": [
+    "Cyber",
+    "Cyber Tonic"
+  ],
+  "Demonic": [
+    "Demonic",
+    "Demonic Red",
+    "Demonic Wine",
+    "Spiked Demonic"
+  ],
+  "Desert": [
+    "Desert",
+    "Desert White"
+  ],
+  "Dragon": [
+    "Dragon",
+    "Dragon Teeth"
+  ],
+  "Fairytale": [
+    "Fairytale",
+    "Fairytale Beads",
+    "Fairytale Champagne"
+  ],
+  "Forest": [
+    "Forest",
+    "Forest Beer",
+    "Forest Green"
+  ],
+  "Gold": [
+    "Gold",
+    "Gold Braid",
+    "Gold Rope",
+    "Golden",
+    "Golden Bitcoin",
+    "Runed Gold",
+    "Spiked Gold"
+  ],
+  "Lunar": [
+    "Lunar",
+    "Lunar Blue",
+    "Lunar Cocktail",
+    "Spiked Lunar"
+  ],
+  "Magic": [
+    "Magic Mushrooms",
+    "Magical"
+  ],
+  "Martian": [
+    "Martian",
+    "Martian Cola"
+  ],
+  "Meadow": [
+    "Meadow",
+    "Meadow Yellow"
+  ],
+  "Mechanical": [
+    "Mechanical",
+    "Spiked Mechanical"
+  ],
+  "Mechanic’s": [
+    "Mechanic’s Cocktail",
+    "Mechanic’s Gear",
+    "Mechanic’s Nuts"
+  ],
+  "Mountain": [
+    "Mountain",
+    "Mountain Blue"
+  ],
+  "Mushroom": [
+    "Magic Mushrooms",
+    "Mushroom Juice"
+  ],
+  "Paper": [
+    "Burnt Paper",
+    "Grandma's Wallpaper",
+    "Paper",
+    "Vintage Wallpaper"
+  ],
+  "Phoenix": [
+    "Phoenix",
+    "Phoenix Feathers"
+  ],
+  "Red": [
+    "Demonic Red",
+    "Red"
+  ],
+  "Ripped-Off": [
+    "Ripped-Off Fence",
+    "Ripped-Off Plank"
+  ],
+  "Rope": [
+    "Gold Rope",
+    "Rope"
+  ],
+  "Runed": [
+    "Runed Gold",
+    "Runed Silver"
+  ],
+  "Sea": [
+    "Sea",
+    "Sea Blue"
+  ],
+  "Shake": [
+    "Chocolate Shake",
+    "Protein Shake"
+  ],
+  "Sign": [
+    "Stop Sign",
+    "WС Sign"
+  ],
+  "Silver": [
+    "Pure Silver",
+    "Runed Silver",
+    "Silver",
+    "Spiked Silver"
+  ],
+  "Spiked": [
+    "Spiked",
+    "Spiked Cosmic",
+    "Spiked Demonic",
+    "Spiked Gold",
+    "Spiked Lunar",
+    "Spiked Mechanical",
+    "Spiked Silver",
+    "Spiked Stone",
+    "Spiked Wooden"
+  ],
+  "Stone": [
+    "Spiked Stone",
+    "Stone",
+    "Stone Slab"
+  ],
+  "Swamp": [
+    "Swamp",
+    "Swamp Cocktail"
+  ],
+  "TON": [
+    "Professor TON",
+    "TON"
+  ],
+  "Taiga": [
+    "Taiga",
+    "Taiga Tincture"
+  ],
+  "Tropical": [
+    "Tropical",
+    "Tropical Cocktail"
+  ],
+  "Wall": [
+    "Grandma’s Wallpaper",
+    "New Brick Wall Chunk",
+    "Old Brick Wall Chunk",
+    "Vintage Wallpaper"
+  ],
+  "Wallpaper": [
+    "Grandma’s Wallpaper",
+    "Vintage Wallpaper"
+  ],
+  "Wooden": [
+    "Spiked Wooden",
+    "Wooden"
+  ],
+  "Zargates": [
+    "Zargates",
+    "Zargates Business"
+  ]
+}

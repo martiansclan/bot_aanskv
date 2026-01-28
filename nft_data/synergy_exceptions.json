@@ -1,0 +1,9 @@
+  {
+    "add": {
+      "Paper": ["Vintage Wallpaper", "Grandma's Wallpaper"]
+    },
+
+    "remove": {
+      "Gold": ["Fake Gold"]
+    }
+  }

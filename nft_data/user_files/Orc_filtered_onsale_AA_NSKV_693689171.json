@@ -1,0 +1,24 @@
+{
+  "nfts": [
+    {
+      "price_ton": "11.00",
+      "nft_address": "EQA_d0xloYhKVoGDnNXkmtGrQYf__IVRm7NOXcMCpzGvMHzs"
+    },
+    {
+      "price_ton": "9.00",
+      "nft_address": "EQDbn_i4nIuNta8CvLrnTgfcFCCnTagwVKaPiLnPszPWwl2h"
+    },
+    {
+      "price_ton": "7.77",
+      "nft_address": "EQBhQUw99sTLPGyNOt2lS4ZYRgoz06TEJiiM7mINcgSVLCow"
+    },
+    {
+      "price_ton": "9.00",
+      "nft_address": "EQDgqiijzOKXz8EbbjDsU3k8JFwM8W9M3zTDrh7v3yZdg_uz"
+    },
+    {
+      "price_ton": "10.00",
+      "nft_address": "EQBZQkDye8f3ErSzPdsIUJLR82BIczg4eeR1dC2GiYeWDwlG"
+    }
+  ]
+}

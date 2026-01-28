@@ -1,0 +1,4203 @@
+{
+  "metadata": {
+    "userId": 693689171,
+    "username": "AA_NSKV",
+    "fileName": "Orc_filtered_AA_NSKV_693689171.json",
+    "savedAt": "2026-01-28T16:31:50.349Z",
+    "searchParams": {
+      "synergyLevel": 2,
+      "selectedSkinTones": [
+        "Martian"
+      ],
+      "selectedRarities": [
+        "Mythical+",
+        "Mythical",
+        "Legendary"
+      ],
+      "searchDate": "2026-01-28T16:31:50.348Z",
+      "totalNfts": 28125,
+      "foundNfts": 64,
+      "synergyCount": 48
+    },
+    "filterOptions": {
+      "allNfts": false,
+      "onSaleOnly": true
+    },
+    "nftsCount": 64,
+    "originalResultsCount": 64
+  },
+  "nfts": [
+    {
+      "index": 4781,
+      "address": "0:6C3737C9C68C161CD031FDE4A829E1112F41BF104ECDD898E8F5812D4D1F7503",
+      "owner_address": "0:B92D3D535FE6D9D89587327BC259BE4C4FDAB84D5CEBC9A410976325FA79A513",
+      "user_friendly_address": "EQBsNzfJxowWHNAx_eSoKeERL0G_EE7N2Jjo9YEtTR91A68x",
+      "name": "Orc Shoked #675",
+      "image_url": "https://imgproxy.toncenter.com/3ym5GaV0E41rhZANkjYFyPJ5RvvkIL87HJRJoQdWd-Q/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDMyNS5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Gold Braid"
+        },
+        {
+          "trait_type": "Pendant Chain",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQBsNzfJxowWHNAx_eSoKeERL0G_EE7N2Jjo9YEtTR91A68x",
+      "owner_url": "https://getgems.io/user/UQC5LT1TX-bZ2JWHMnvCWb5MT9q4TVzryaQQl2Ml-nmlE30u",
+      "synergyInfo": {
+        "synergyScore": 3,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 3,
+            "attributes": [
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Gold Braid",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Pendant Chain"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 10371,
+      "address": "0:E25937FA2D6FAA8EB52F7B074AD6C4F48F36FCF50F0B22B6B1C164109850C88D",
+      "owner_address": "0:B62A1FDAEDC78874FB92DE6D927B934132D376509017D11C24FD70934172E83C",
+      "user_friendly_address": "EQDiWTf6LW-qjrUvewdK1sT0jzb89Q8LIraxwWQQmFDIjexR",
+      "name": "Orc Shoked #1450",
+      "image_url": "https://imgproxy.toncenter.com/hnVmoaliKnT1AsyLgfL1JZU3C2xpPxi5dt-6Jtom6J8/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDY4MC5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Gold Braid"
+        },
+        {
+          "trait_type": "Pendant Chain",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQDiWTf6LW-qjrUvewdK1sT0jzb89Q8LIraxwWQQmFDIjexR",
+      "owner_url": "https://getgems.io/user/UQC2Kh_a7ceIdPuS3m2Se5NBMtN2UJAX0Rwk_XCTQXLoPLux",
+      "synergyInfo": {
+        "synergyScore": 3,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 3,
+            "attributes": [
+              {
+                "attribute": "Gold",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Gold Braid",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Pendant Chain"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 13171,
+      "address": "0:1473DCE9A70296076E8A5384CF4BE20F967EAC572BF831E52080BF67DDA17CDD",
+      "owner_address": "0:99278CFC095A56437C0CD8C0CBA52766D526E03001C90BBBDED8146B8391E1C2",
+      "user_friendly_address": "EQAUc9zppwKWB26KU4TPS-IPln6sVyv4MeUggL9n3aF83SUV",
+      "name": "Orc To The Moon #1892",
+      "image_url": "https://imgproxy.toncenter.com/7rMbh0gNqiiQpPe9WPUVJBHXRX6Jjrjb65MG8HO1_nk/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDg5MC5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Hamster",
+          "value": "Gold"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQAUc9zppwKWB26KU4TPS-IPln6sVyv4MeUggL9n3aF83SUV",
+      "owner_url": "https://getgems.io/user/UQCZJ4z8CVpWQ3wM2MDLpSdm1SbgMAHJC7ve2BRrg5HhwvJY",
+      "synergyInfo": {
+        "synergyScore": 3,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 3,
+            "attributes": [
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Hamster"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 243,
+      "address": "0:205C7AEDE2A39A8508A27F8EC5A81B848087FF5C18843DC78D25B58771C33753",
+      "owner_address": "0:49A046A47D7196C220E8CF6AA5C0B3452D300D945327D29ABB959E2668EC03FA",
+      "user_friendly_address": "EQAgXHrt4qOahQiif47FqBuEgIf_XBiEPceNJbWHccM3U4C4",
+      "name": "Orc To The Moon #26",
+      "image_url": "https://imgproxy.toncenter.com/4g6zNm4rjBMdcoVWgoq7klSkGPix4m8fL6qqDzn2LRE/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDAxOC5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Runed Gold"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Hamster",
+          "value": "Mountain Blue"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQAgXHrt4qOahQiif47FqBuEgIf_XBiEPceNJbWHccM3U4C4",
+      "owner_url": "https://getgems.io/user/UQBJoEakfXGWwiDoz2qlwLNFLTANlFMn0pq7lZ4maOwD-hf8",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Runed Gold",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Earrings"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 252,
+      "address": "0:CBA52B8F2224FFAE77D79D24328B3490D0B674F12D30A99F0824B35886FB02AA",
+      "owner_address": "0:56944A743A1FEE36AEF123DFB9ED7E8B8B0FE684707E353181A034FF68076022",
+      "user_friendly_address": "EQDLpSuPIiT_rnfXnSQyizSQ0LZ08S0wqZ8IJLNYhvsCqs3F",
+      "name": "Orc Shoked #28",
+      "image_url": "https://imgproxy.toncenter.com/IrK_lILdBh81VKB9M8Ph-qHdQ56ZBXP2EkjrelWZJ14/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDAxOS5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Dragon Teeth"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Gold Braid"
+        },
+        {
+          "trait_type": "Pendant Chain",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQDLpSuPIiT_rnfXnSQyizSQ0LZ08S0wqZ8IJLNYhvsCqs3F",
+      "owner_url": "https://getgems.io/user/UQBWlEp0Oh_uNq7xI9-57X6Liw_mhHB-NTGBoDT_aAdgIkPh",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Gold Braid",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Pendant Chain"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 397,
+      "address": "0:9EA91C712E700575E87CCD0E54C15943C6D29D4F20BC256C4BD0DAE9964AF0BC",
+      "owner_address": "0:EE91E3C28BB70A6CAA15CD7290AC4A2B7B885D45C61A39D797225551A82DCEC5",
+      "user_friendly_address": "EQCeqRxxLnAFdeh8zQ5UwVlDxtKdTyC8JWxL0NrplkrwvIsS",
+      "name": "Orc Shoked #57",
+      "image_url": "https://imgproxy.toncenter.com/k1eONXdWMw6aWCL5RYi5bdxZyPfbdk5nJ2NdbycL_iY/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDAzMi5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Silver"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Runed Gold"
+        },
+        {
+          "trait_type": "Pendant Chain",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQCeqRxxLnAFdeh8zQ5UwVlDxtKdTyC8JWxL0NrplkrwvIsS",
+      "owner_url": "https://getgems.io/user/UQDukePCi7cKbKoVzXKQrEore4hdRcYaOdeXIlVRqC3OxfYJ",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Runed Gold",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Pendant Chain"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 412,
+      "address": "0:5BC4F2543E274C2D19DB42C69F1A04C4C8A79689DD70B16910EDC4910BFDE6AC",
+      "owner_address": "0:A1A1BF726AB711C0EFCC0C7B679EA89C3B31B92A06C47FE69028036FF25AA36D",
+      "user_friendly_address": "EQBbxPJUPidMLRnbQsafGgTEyKeWid1wsWkQ7cSRC_3mrHbp",
+      "name": "Orc Shoked #62",
+      "image_url": "https://imgproxy.toncenter.com/SziFywPezAUMxQq7Rr5aCWZrWDbO-axBYBPBvDn1RUs/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDAzNC5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Dragon Teeth"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Pendant Chain",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQBbxPJUPidMLRnbQsafGgTEyKeWid1wsWkQ7cSRC_3mrHbp",
+      "owner_url": "https://getgems.io/user/UQChob9yarcRwO_MDHtnnqicOzG5KgbEf-aQKANv8lqjbbiz",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Pendant Chain"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 658,
+      "address": "0:E2991FE20666B8D51FE47B2C3618D60939D953DF39D4C2D4DE015F1847C95DE6",
+      "owner_address": "0:DDA501537CD342E396C13C0294A3F125CC29AC5DB2050B09E4D8D3D38A1A1112",
+      "user_friendly_address": "EQDimR_iBma41R_keyw2GNYJOdlT3znUwtTeAV8YR8ld5s2W",
+      "name": "Orc Shoked #95",
+      "image_url": "https://imgproxy.toncenter.com/g0FGbYT5UR4KLy5BmhDQuhHoNw9b82HIWJba_Gm5vDU/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDA1NS5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Demonic"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Runed Silver"
+        },
+        {
+          "trait_type": "Pendant Chain",
+          "value": "Demonic"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQDimR_iBma41R_keyw2GNYJOdlT3znUwtTeAV8YR8ld5s2W",
+      "owner_url": "https://getgems.io/user/UQDdpQFTfNNC45bBPAKUo_ElzCmsXbIFCwnk2NPTihoREuQ9",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Demonic",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Demonic",
+                "trait_type": "Pendant Chain"
+              }
+            ],
+            "synergyName": "Demonic"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 919,
+      "address": "0:E979C8370FCF03B7CC3FBF889F5A9FACE7D886731CB9BB4183B83C2265E3AD19",
+      "owner_address": "0:F4FFE7823E85C9E6D5D92D476C10C799907C6D4EB4D8A0BF16C5D16B47BEBF2D",
+      "user_friendly_address": "EQDpecg3D88Dt8w_v4ifWp-s59iGcxy5u0GDuDwiZeOtGX7m",
+      "name": "Orc Shoked #138",
+      "image_url": "https://imgproxy.toncenter.com/XH4He2nd40YYfyULKjBh9eZURsGmNMp4rkisNCuTpWU/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDA3NC5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Ruby"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Gold Braid"
+        },
+        {
+          "trait_type": "Pendant Chain",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQDpecg3D88Dt8w_v4ifWp-s59iGcxy5u0GDuDwiZeOtGX7m",
+      "owner_url": "https://getgems.io/user/UQD0_-eCPoXJ5tXZLUdsEMeZkHxtTrTYoL8WxdFrR76_LUZp",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Gold Braid",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Pendant Chain"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 1587,
+      "address": "0:B7D7D379E6203FB81DB7FA1A9F009C8A02C5E8E4718030C17EF8E11905A37979",
+      "owner_address": "0:D8167622B4D44AE502F387090593F338510655DBD91FF35834E2AC644618B4E8",
+      "user_friendly_address": "EQC319N55iA_uB23-hqfAJyKAsXo5HGAMMF--OEZBaN5eWK-",
+      "name": "Orc Do Something #217",
+      "image_url": "https://imgproxy.toncenter.com/UuGdTey2pET1JvnvOpYs8eRo7t9JqDcwivbxit3QRQw/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDExNS5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Bracelet",
+          "value": "Runed Gold"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Stick",
+          "value": "Bat"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQC319N55iA_uB23-hqfAJyKAsXo5HGAMMF--OEZBaN5eWK-",
+      "owner_url": "https://getgems.io/user/UQDYFnYitNRK5QLzhwkFk_M4UQZV29kf81g04qxkRhi06D68",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Runed Gold",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Earrings"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 1973,
+      "address": "0:D027A9980D9BFF521C247A6BC714F17E1671230ED79DEC5C07B664A97256C173",
+      "owner_address": "0:2DB560121549BC10C145BC00A7F2B8AF807801937FE2AF6244C0A505FEEDAD9E",
+      "user_friendly_address": "EQDQJ6mYDZv_UhwkemvHFPF-FnEjDted7FwHtmSpclbBc0VU",
+      "name": "Orc Capped #268",
+      "image_url": "https://imgproxy.toncenter.com/24JSagk6xPTwpP67gC_REqN-_rEAPNew5mloeRlbpW8/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDE0NC5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Ring",
+          "value": "Silver"
+        },
+        {
+          "trait_type": "Cap",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Earring",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQDQJ6mYDZv_UhwkemvHFPF-FnEjDted7FwHtmSpclbBc0VU",
+      "owner_url": "https://getgems.io/user/UQAttWASFUm8EMFFvACn8rivgHgBk3_ir2JEwKUF_u2tngQm",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Gold",
+                "trait_type": "Cap"
+              },
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earring"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 2283,
+      "address": "0:3F774C65A1884A5681839CD5E49AD1AB4187FFFC85519BB34E5DC302A731AF30",
+      "owner_address": "0:647835A3C5F454190AD1E2191EE7ED319F1E2A393577A16275011DB8706C2F8E",
+      "user_friendly_address": "EQA_d0xloYhKVoGDnNXkmtGrQYf__IVRm7NOXcMCpzGvMHzs",
+      "name": "Orc Wen TGE #322",
+      "image_url": "https://imgproxy.toncenter.com/wZF4V9PX0riZ0INWFJ2ODpndGA-FstsuQWKHbDo2eVI/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDE2Ni5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        },
+        {
+          "trait_type": "Sign",
+          "value": "Vintage Wallpaper"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Toadstools"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Paper"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQA_d0xloYhKVoGDnNXkmtGrQYf__IVRm7NOXcMCpzGvMHzs",
+      "owner_url": "https://getgems.io/user/EQBkeDWjxfRUGQrR4hke5-0xnx4qOTV3oWJ1AR24cGwvjlDj",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Vintage Wallpaper",
+                "trait_type": "Sign"
+              },
+              {
+                "attribute": "Paper",
+                "trait_type": "Bracelet"
+              }
+            ],
+            "synergyName": "Paper"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 2957,
+      "address": "0:189BCBBC94C74D3D339F23B3EB09B1D26BB741BE8A23FB560C054692841AB15E",
+      "owner_address": "0:73563CFBF6292453FCBB73164F7BD1F030CABDEE0EC3E62171376F8C985F82D8",
+      "user_friendly_address": "EQAYm8u8lMdNPTOfI7PrCbHSa7dBvooj-1YMBUaShBqxXuUp",
+      "name": "Orc Capped #412",
+      "image_url": "https://imgproxy.toncenter.com/cYcQfuFimFYb_BnrdutgIIrRmvaxmpqDBazhHC-DUew/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDIwOS5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Ring",
+          "value": "Golden Bitcoin"
+        },
+        {
+          "trait_type": "Cap",
+          "value": "RUB"
+        },
+        {
+          "trait_type": "Earring",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQAYm8u8lMdNPTOfI7PrCbHSa7dBvooj-1YMBUaShBqxXuUp",
+      "owner_url": "https://getgems.io/user/UQBzVjz79ikkU_y7cxZPe9HwMMq97g7D5iFxN2-MmF-C2ERf",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Golden Bitcoin",
+                "trait_type": "Ring"
+              },
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earring"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 2991,
+      "address": "0:8D32B61D424604705E65EE50490FF50526FF64C723794006FD3E43642813F3E6",
+      "owner_address": "0:B642F5EA7D960AD6414EB6E7F7D1846AAEA1D0E3FEB728CA5F7AAB073127E124",
+      "user_friendly_address": "EQCNMrYdQkYEcF5l7lBJD_UFJv9kxyN5QAb9PkNkKBPz5i-9",
+      "name": "Orc To The Moon #422",
+      "image_url": "https://imgproxy.toncenter.com/Zi1q9B14ijM_nWGrcio5gIEztVDllgoW5raUwhIQrHg/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDIxMy5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Runed Gold"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Hamster",
+          "value": "Cavern Brown"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQCNMrYdQkYEcF5l7lBJD_UFJv9kxyN5QAb9PkNkKBPz5i-9",
+      "owner_url": "https://getgems.io/user/UQC2QvXqfZYK1kFOtuf30YRqrqHQ4_63KMpfeqsHMSfhJOU_",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Runed Gold",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earrings"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 3044,
+      "address": "0:27DC7598EEDC59AB1FA08D0839F3DE48F338274B6291966869AC8C471C847DDC",
+      "owner_address": "0:6F665D2D62F341C95013C222A1F0FB8F3A319C81ACD3660CE79CD264C9465FA7",
+      "user_friendly_address": "EQAn3HWY7txZqx-gjQg5895I8zgnS2KRlmhprIxHHIR93Erc",
+      "name": "Orc Do Something #438",
+      "image_url": "https://imgproxy.toncenter.com/CVF34IXR6ms4UPj3dDwdyPYFaJtf6Aq4VSFeZi_KOnQ/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDIxOC5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Bracelet",
+          "value": "Spiked Lunar"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Stick",
+          "value": "Guitar"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQAn3HWY7txZqx-gjQg5895I8zgnS2KRlmhprIxHHIR93Erc",
+      "owner_url": "https://getgems.io/user/UQBvZl0tYvNByVATwiKh8PuPOjGcgazTZgznnNJkyUZfp1pP",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Lunar",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earrings"
+              }
+            ],
+            "synergyName": "Spiked"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 3253,
+      "address": "0:FF410495015BE8C93FDAED65DFBD3F56D97478CBF7ED95E0EE69C80AEC370A77",
+      "owner_address": "0:14BF7CEAF727E3776AC7168214929118B15DAD85CE92E56E5BC21CAD74547830",
+      "user_friendly_address": "EQD_QQSVAVvoyT_a7WXfvT9W2XR4y_ftleDuacgK7DcKdyYv",
+      "name": "Orc To The Moon #475",
+      "image_url": "https://imgproxy.toncenter.com/eRnoQK2GwPKna4ZQxdnlzqmXNqqoJEJxc5InCqu-n_w/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDIzMi5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Spiked Cosmic"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Dragon Teeth"
+        },
+        {
+          "trait_type": "Hamster",
+          "value": "Cosmic Black"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQD_QQSVAVvoyT_a7WXfvT9W2XR4y_ftleDuacgK7DcKdyYv",
+      "owner_url": "https://getgems.io/user/UQAUv3zq9yfjd2rHFoIUkpEYsV2thc6S5W5bwhytdFR4MFcy",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Cosmic",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Cosmic Black",
+                "trait_type": "Hamster"
+              }
+            ],
+            "synergyName": "Cosmic"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 3679,
+      "address": "0:BE1F38439E6510DC786F0C64B7B0E46F82D01A8F60F6359DA818F42B56BC850A",
+      "owner_address": "0:39E1BB7D832739DA01E1390AC6B430D263F5BDFF6E859F2CCAA05D07B6D012B4",
+      "user_friendly_address": "EQC-HzhDnmUQ3HhvDGS3sORvgtAaj2D2NZ2oGPQrVryFChZk",
+      "name": "Orc To The Moon #549",
+      "image_url": "https://imgproxy.toncenter.com/ltRdxD9BnEoPIh-DtQOd4PWjH8wl7i6NY8TxwpYDXcQ/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDI2MC5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Runed Gold"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Hamster",
+          "value": "Lunar Blue"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQC-HzhDnmUQ3HhvDGS3sORvgtAaj2D2NZ2oGPQrVryFChZk",
+      "owner_url": "https://getgems.io/user/UQA54bt9gyc52gHhOQrGtDDSY_W9_26FnyzKoF0HttAStLSD",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Runed Gold",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Earrings"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 4381,
+      "address": "0:116FD328FC25B6BDDEDAB73C08C1AA090B9D25BA105019A21D273A2F6DC9A94D",
+      "owner_address": "0:73D4FCEC1E4DC45195149F5E27E367A084DCB10E38419F6EB752E734FB45A409",
+      "user_friendly_address": "EQARb9Mo_CW2vd7atzwIwaoJC50luhBQGaIdJzovbcmpTemq",
+      "name": "Orc To The Moon #614",
+      "image_url": "https://imgproxy.toncenter.com/FWsMggvqv60tyCgaNsKoHg1e8BMta--pV3uCBAPVaCE/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDI5NS5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Spiked Demonic"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Demonic"
+        },
+        {
+          "trait_type": "Hamster",
+          "value": "Forest Green"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQARb9Mo_CW2vd7atzwIwaoJC50luhBQGaIdJzovbcmpTemq",
+      "owner_url": "https://getgems.io/user/UQBz1PzsHk3EUZUUn14n42eghNyxDjhBn263Uuc0-0WkCR8o",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Demonic",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Demonic",
+                "trait_type": "Earrings"
+              }
+            ],
+            "synergyName": "Demonic"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 5027,
+      "address": "0:8D0CFFEC27A34B1F821C265C5754E3B75E30D20F5FAD67E84FA67024E6A305CB",
+      "owner_address": "0:061D869B1CA7CB1EBFE604567DBC66FDBF82734E29EC11565ECDB31C66C9D9C7",
+      "user_friendly_address": "EQCNDP_sJ6NLH4IcJlxXVOO3XjDSD1-tZ-hPpnAk5qMFy2jl",
+      "name": "Orc Greeting #708",
+      "image_url": "https://imgproxy.toncenter.com/KEKyCkf2u91HqnewTYokI0U7qjUFOZfjNGoovZAFam4/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDM0MC5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Dragon Teeth"
+        },
+        {
+          "trait_type": "Cup",
+          "value": "Zargates"
+        },
+        {
+          "trait_type": "Glasses",
+          "value": "Zargates Business"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQCNDP_sJ6NLH4IcJlxXVOO3XjDSD1-tZ-hPpnAk5qMFy2jl",
+      "owner_url": "https://getgems.io/user/UQAGHYabHKfLHr_mBFZ9vGb9v4JzTinsEVZezbMcZsnZx6YL",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Zargates",
+                "trait_type": "Cup"
+              },
+              {
+                "attribute": "Zargates Business",
+                "trait_type": "Glasses"
+              }
+            ],
+            "synergyName": "Zargates"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Mythical",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 5831,
+      "address": "0:B929A3C7F17B6A822F6FD98C8D876BF942A0FF6ADBC3C070E3A519CD732BA8A8",
+      "owner_address": "0:46DC4A2B674E2418CF28C2915F89B148CBDE63A6DCAFBA0BA91D6C7E0A1893F1",
+      "user_friendly_address": "EQC5KaPH8Xtqgi9v2YyNh2v5QqD_atvDwHDjpRnNcyuoqO1d",
+      "name": "Orc Shoked #780",
+      "image_url": "https://imgproxy.toncenter.com/4uHLK2sgdendklMgnVPBHLWH1YdAe8UxTZqC8pQTrNU/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDM4Mi5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Pendant Chain",
+          "value": "Tribo Games"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQC5KaPH8Xtqgi9v2YyNh2v5QqD_atvDwHDjpRnNcyuoqO1d",
+      "owner_url": "https://getgems.io/user/UQBG3EorZ04kGM8owpFfibFIy95jptyvugupHWx-ChiT8cvi",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Bracelet"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 5908,
+      "address": "0:E82D87FE443A60EBEE3FE4E0B03FA0B6CF01F1F9936573D744BFD9E519D306FE",
+      "owner_address": "0:061D869B1CA7CB1EBFE604567DBC66FDBF82734E29EC11565ECDB31C66C9D9C7",
+      "user_friendly_address": "EQDoLYf-RDpg6-4_5OCwP6C2zwHx-ZNlc9dEv9nlGdMG_kFn",
+      "name": "Orc Shoked #800",
+      "image_url": "https://imgproxy.toncenter.com/NUTfJq0lJY0-AgoLmmMBVLUmY9_3cHnVewRQ3uBlads/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDM4OC5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Spiked Cosmic"
+        },
+        {
+          "trait_type": "Pendant Chain",
+          "value": "Zargates"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQDoLYf-RDpg6-4_5OCwP6C2zwHx-ZNlc9dEv9nlGdMG_kFn",
+      "owner_url": "https://getgems.io/user/UQAGHYabHKfLHr_mBFZ9vGb9v4JzTinsEVZezbMcZsnZx6YL",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Spiked Cosmic",
+                "trait_type": "Bracelet"
+              }
+            ],
+            "synergyName": "Spiked"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 6116,
+      "address": "0:400F5F9A23B3E076D7E7A4730B80985452A819BE7D956E750D0130B809DCF6E2",
+      "owner_address": "0:09528609EBFEABA8D52C83A85D862AB755ECF7C5164B45D96994420969C671E4",
+      "user_friendly_address": "EQBAD1-aI7PgdtfnpHMLgJhUUqgZvn2VbnUNATC4Cdz24u90",
+      "name": "Orc Shoked #825",
+      "image_url": "https://imgproxy.toncenter.com/LFuN0DFQnUwyntzgpH22u5q8kOTZv3Ulf8G6Z0C2nRQ/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDQwMC5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Pendant Chain",
+          "value": "Silver"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQBAD1-aI7PgdtfnpHMLgJhUUqgZvn2VbnUNATC4Cdz24u90",
+      "owner_url": "https://getgems.io/user/UQAJUoYJ6_6rqNUsg6hdhiq3Vez3xRZLRdlplEIJacZx5JZb",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Bracelet"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 7011,
+      "address": "0:F6E0AC8BD2925FC408672C1A93BF971072E4B27D33147D4F3FB0D8DF42F7AE6D",
+      "owner_address": "0:2B1295D97ADD27F77CC9021D1C0FB1E3CB293295D75DA7FD39444186182FCC08",
+      "user_friendly_address": "EQD24KyL0pJfxAhnLBqTv5cQcuSyfTMUfU8_sNjfQveubZg3",
+      "name": "Orc Greeting #947",
+      "image_url": "https://imgproxy.toncenter.com/-nU0sEaC-DqL5aP6nOftNJhqid0g-YepqAZlLn0f4II/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDQ2NS5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Cup",
+          "value": "Lunar Cocktail"
+        },
+        {
+          "trait_type": "Glasses",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQD24KyL0pJfxAhnLBqTv5cQcuSyfTMUfU8_sNjfQveubZg3",
+      "owner_url": "https://getgems.io/user/UQArEpXZet0n93zJAh0cD7Hjyykyldddp_05REGGGC_MCOBT",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Glasses"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 7198,
+      "address": "0:2895F16E80934690292AA3A004418134BF9B57769EBC89DED4B4B5F2F79D3304",
+      "owner_address": "0:7B1C38B8FC1989F4E23008CCBC6D92AD1526DAE6155AE1B81B1A2BDFBEF7EBD9",
+      "user_friendly_address": "EQAolfFugJNGkCkqo6AEQYE0v5tXdp68id7UtLXy950zBOJN",
+      "name": "Orc To The Moon #964",
+      "image_url": "https://imgproxy.toncenter.com/Z1awnQIuhTiK2GOEzr1qFJnnLlXfojS-EntHE6NIjnc/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDQ3Mi5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Runed Gold"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Hamster",
+          "value": "Demonic Red"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQAolfFugJNGkCkqo6AEQYE0v5tXdp68id7UtLXy950zBOJN",
+      "owner_url": "https://getgems.io/user/UQB7HDi4_BmJ9OIwCMy8bZKtFSba5hVa4bgbGivfvvfr2bta",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Runed Gold",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Earrings"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 7326,
+      "address": "0:A62CC5B2AC8DF721F7D7155EDB64511C19B92F950B108CA4189BBA1B1FB61C82",
+      "owner_address": "0:99278CFC095A56437C0CD8C0CBA52766D526E03001C90BBBDED8146B8391E1C2",
+      "user_friendly_address": "EQCmLMWyrI33IffXFV7bZFEcGbkvlQsQjKQYm7obH7Ycgv5i",
+      "name": "Orc Greeting #989",
+      "image_url": "https://imgproxy.toncenter.com/9vGdCg2hufhrZHFeQTJX_Durgt1O1yzOtoIcFIShOck/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDQ4MC5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Demonic"
+        },
+        {
+          "trait_type": "Cup",
+          "value": "Demonic Wine"
+        },
+        {
+          "trait_type": "Glasses",
+          "value": "Mountain"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQCmLMWyrI33IffXFV7bZFEcGbkvlQsQjKQYm7obH7Ycgv5i",
+      "owner_url": "https://getgems.io/user/UQCZJ4z8CVpWQ3wM2MDLpSdm1SbgMAHJC7ve2BRrg5HhwvJY",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Demonic",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Demonic Wine",
+                "trait_type": "Cup"
+              }
+            ],
+            "synergyName": "Demonic"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 8144,
+      "address": "0:36B6110E57DF91E2BEE8F8EFB8490C646BDD3054A2FE0D55AB051BC3E468327F",
+      "owner_address": "0:54CAEE2C9F2A0EED4D60462EE46DADA9F920C523C94281E9BFA07752AC542487",
+      "user_friendly_address": "EQA2thEOV9-R4r7o-O-4SQxka90wVKL-DVWrBRvD5Ggyfwnn",
+      "name": "Orc Shoked #1096",
+      "image_url": "https://imgproxy.toncenter.com/Dg3fh69QZKOoml4T8npYQBw9T0jErQJbue9HPD5uHqg/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDUyOC5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Silver"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Gold Braid"
+        },
+        {
+          "trait_type": "Pendant Chain",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQA2thEOV9-R4r7o-O-4SQxka90wVKL-DVWrBRvD5Ggyfwnn",
+      "owner_url": "https://getgems.io/user/UQBUyu4snyoO7U1gRi7kba2p-SDFI8lCgem_oHdSrFQkh9dH",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Gold Braid",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Pendant Chain"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 8397,
+      "address": "0:1D0D7E3E73E946CB9E0C13B7079962B5F468842AE6521A19DF206DEFDD7D68DE",
+      "owner_address": "0:8A79B16E67D80E9827A2E39601E6588E7C921DFC11B3E9F93A22D778750B6848",
+      "user_friendly_address": "EQAdDX4-c-lGy54ME7cHmWK19GiEKuZSGhnfIG3v3X1o3rnz",
+      "name": "Orc To The Moon #1123",
+      "image_url": "https://imgproxy.toncenter.com/u43ZSvtdOdlLDEX1vIhdjRK4te-JV7yCDCxXo8rKCjU/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDU0My5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Spiked Demonic"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Hamster",
+          "value": "Telegram"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQAdDX4-c-lGy54ME7cHmWK19GiEKuZSGhnfIG3v3X1o3rnz",
+      "owner_url": "https://getgems.io/user/UQCKebFuZ9gOmCei45YB5liOfJId_BGz6fk6Itd4dQtoSMfF",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Demonic",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earrings"
+              }
+            ],
+            "synergyName": "Spiked"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 8599,
+      "address": "0:DD419B63DD4499779081D226183FF5F3DF5D777F21DC74B951F85CE2EBA190A7",
+      "owner_address": "0:CB23AA391194D2A201837A2F49EC1A9E0B707C5149E93DB4F94FB9272C5D1B93",
+      "user_friendly_address": "EQDdQZtj3USZd5CB0iYYP_Xz3113fyHcdLlR-Fzi66GQp3te",
+      "name": "Orc Shoked #1165",
+      "image_url": "https://imgproxy.toncenter.com/Hf26xvAukoWXTgRfMzXih0ikvF9Po4uD7aAXzpp0JPA/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDU1OS5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Spiked Demonic"
+        },
+        {
+          "trait_type": "Pendant Chain",
+          "value": "Rope"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQDdQZtj3USZd5CB0iYYP_Xz3113fyHcdLlR-Fzi66GQp3te",
+      "owner_url": "https://getgems.io/user/UQDLI6o5EZTSogGDei9J7BqeC3B8UUnpPbT5T7knLF0bkzff",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Spiked Demonic",
+                "trait_type": "Bracelet"
+              }
+            ],
+            "synergyName": "Spiked"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 8603,
+      "address": "0:B657CA6260C95B9B86D9C3DAF98C7B3888A5F59A64DD8F1D13559A85211B0034",
+      "owner_address": "0:C741C26AD325481E16C5CE17D21F66C71C2BB7799EEF7017CA4D55CDD182F388",
+      "user_friendly_address": "EQC2V8piYMlbm4bZw9r5jHs4iKX1mmTdjx0TVZqFIRsANFBP",
+      "name": "Orc To The Moon #1170",
+      "image_url": "https://imgproxy.toncenter.com/8traBpJXvF2T3mdNxA_Jd2zwAQz5NOsvpshuowlreJk/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDU2MS5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Runed Gold"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Hamster",
+          "value": "TON"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQC2V8piYMlbm4bZw9r5jHs4iKX1mmTdjx0TVZqFIRsANFBP",
+      "owner_url": "https://getgems.io/user/UQDHQcJq0yVIHhbFzhfSH2bHHCu3eZ7vcBfKTVXN0YLziEJ_",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Runed Gold",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earrings"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 8850,
+      "address": "0:16875E6C08A88587962EF629A82D3C4E37F435F75E483DF5F11F06F897FA0CE8",
+      "owner_address": "0:D6AF7C73AD29AEE97C8772B1379FD1C241AF84F2A368D0915E194046982F66DD",
+      "user_friendly_address": "EQAWh15sCKiFh5Yu9imoLTxON_Q1915IPfXxHwb4l_oM6BGs",
+      "name": "Orc To The Moon #1202",
+      "image_url": "https://imgproxy.toncenter.com/egfNyZIWpmH-k99D_LEdrusaruvQz1aa4NhBb8LKR-o/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDU3OC5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Runed Gold"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Hamster",
+          "value": "Cosmic Black"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQAWh15sCKiFh5Yu9imoLTxON_Q1915IPfXxHwb4l_oM6BGs",
+      "owner_url": "https://getgems.io/user/UQDWr3xzrSmu6XyHcrE3n9HCQa-E8qNo0JFeGUBGmC9m3XWQ",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Runed Gold",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earrings"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 10954,
+      "address": "0:26CA9719D79FC479FB739D57F8B15D9EA5664D5ADBB602702D97B452BA6B09B4",
+      "owner_address": "0:99278CFC095A56437C0CD8C0CBA52766D526E03001C90BBBDED8146B8391E1C2",
+      "user_friendly_address": "EQAmypcZ15_EeftznVf4sV2epWZNWtu2AnAtl7RSumsJtNXF",
+      "name": "Orc To The Moon #1562",
+      "image_url": "https://imgproxy.toncenter.com/qDu2xAYuna2husM0KMrrirDXvTJ97EK1oMCGn09ujeo/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDcyNi5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Wooden"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Hamster",
+          "value": "Gold"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQAmypcZ15_EeftznVf4sV2epWZNWtu2AnAtl7RSumsJtNXF",
+      "owner_url": "https://getgems.io/user/UQCZJ4z8CVpWQ3wM2MDLpSdm1SbgMAHJC7ve2BRrg5HhwvJY",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Gold",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Hamster"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 10975,
+      "address": "0:CACE7B474BDE4645464449EB551BF29E8786B4C2CCA91AF35E112E6DA2731E71",
+      "owner_address": "0:7316EFA5FF89AF544460F7EE83575E5A752E1D0879D5C84C7DDFAFB072DD12DF",
+      "user_friendly_address": "EQDKzntHS95GRUZESetVG_Keh4a0wsypGvNeES5tonMecb2V",
+      "name": "Orc To The Moon #1574",
+      "image_url": "https://imgproxy.toncenter.com/vsYdxwb7-hkgUU5tDvSeMBcQrilom-VnCRVNsDe5NI8/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDcyOS5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Runed Gold"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Hamster",
+          "value": "Bitcoin"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQDKzntHS95GRUZESetVG_Keh4a0wsypGvNeES5tonMecb2V",
+      "owner_url": "https://getgems.io/user/UQBzFu-l_4mvVERg9-6DV15adS4dCHnVyEx936-wct0S32tx",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Runed Gold",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Earrings"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 11236,
+      "address": "0:026A31C17E9ED1C17B9F658D96CC332DA3A7AE5457EB6D5C64BF242E201BEA6C",
+      "owner_address": "0:BA24C561E8FBFC39360F27BC2C6997145C45F81E9A8E6E448FCBCE7C66E947D6",
+      "user_friendly_address": "EQACajHBfp7RwXufZY2WzDMto6euVFfrbVxkvyQuIBvqbAcB",
+      "name": "Orc Shoked #1602",
+      "image_url": "https://imgproxy.toncenter.com/dJx1ClWZ5ZXTg0TTNL9xBEEZxiIY8nnV5MM8oCdHq_o/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDc0NC5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Pendant Chain",
+          "value": "Tribo Games"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQACajHBfp7RwXufZY2WzDMto6euVFfrbVxkvyQuIBvqbAcB",
+      "owner_url": "https://getgems.io/user/UQC6JMVh6Pv8OTYPJ7wsaZcUXEX4HpqObkSPy858ZulH1kqG",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Gold",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Bracelet"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 12000,
+      "address": "0:A1053DF9DC2805E7BCA0A9A22E100B5DC34AE4B176BA01FC5CD13193D0B2967C",
+      "owner_address": "0:AE67E91A1E466124ABFE9DF6DA37B75C418CDCFADA067EE2A8DCE2F3AD1E6705",
+      "user_friendly_address": "EQChBT353CgF57ygqaIuEAtdw0rksXa6Afxc0TGT0LKWfMNz",
+      "name": "Orc Shoked #1711",
+      "image_url": "https://imgproxy.toncenter.com/r8oHeNC6cmtA2ESbxPMZtKHbiXlqnsXwmkCCiwj-570/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDgwMS5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Spiked Lunar"
+        },
+        {
+          "trait_type": "Pendant Chain",
+          "value": "Silver"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQChBT353CgF57ygqaIuEAtdw0rksXa6Afxc0TGT0LKWfMNz",
+      "owner_url": "https://getgems.io/user/UQCuZ-kaHkZhJKv-nfbaN7dcQYzc-toGfuKo3OLzrR5nBRca",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Spiked Lunar",
+                "trait_type": "Bracelet"
+              }
+            ],
+            "synergyName": "Spiked"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 12688,
+      "address": "0:70D746A5B3FC9976F50C04925172785E2573264593BFB1CFEDD049B8106FC2A9",
+      "owner_address": "0:97E74BBD4C2AE3F3401856555692F0488FBAAD91222227CCD8CEAB9C960563B1",
+      "user_friendly_address": "EQBw10als_yZdvUMBJJRcnheJXMmRZO_sc_t0Em4EG_CqVTU",
+      "name": "Orc Shoked #1833",
+      "image_url": "https://imgproxy.toncenter.com/YuCmqwgOyKa1CHtV1mPkcMmB-Y8NUqgZTphOYr8-CBw/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDg1NC5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Gold Braid"
+        },
+        {
+          "trait_type": "Pendant Chain",
+          "value": "Silver"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQBw10als_yZdvUMBJJRcnheJXMmRZO_sc_t0Em4EG_CqVTU",
+      "owner_url": "https://getgems.io/user/UQCX50u9TCrj80AYVlVWkvBIj7qtkSIiJ8zYzquclgVjsZgK",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Gold Braid",
+                "trait_type": "Bracelet"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 12992,
+      "address": "0:F9368704C4BD879EE1D28F938637BB11031ED936264C922EEFC360E59A3DFA2F",
+      "owner_address": "0:AEC0872A6A2D0D3AE2E80BAC21AB5017FB7FBD03C40DC78B9B12F3F142571C45",
+      "user_friendly_address": "EQD5NocExL2HnuHSj5OGN7sRAx7ZNiZMki7vw2Dlmj36LyxY",
+      "name": "Orc Capped #1865",
+      "image_url": "https://imgproxy.toncenter.com/Ha2CzM0UW_Z34ZEI4fwNea_ge5HlsJQz23KracCZvUk/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDg3Ny5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Ring",
+          "value": "Fake Gold"
+        },
+        {
+          "trait_type": "Cap",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Earring",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQD5NocExL2HnuHSj5OGN7sRAx7ZNiZMki7vw2Dlmj36LyxY",
+      "owner_url": "https://getgems.io/user/UQCuwIcqai0NOuLoC6whq1AX-3-9A8QNx4ubEvPxQlccRfSM",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Gold",
+                "trait_type": "Cap"
+              },
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earring"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 13986,
+      "address": "0:DB9FF8B89C8B8DB5AF02BCBAE74E07DC1420A74DA83054A68F88B9CFB333D6C2",
+      "owner_address": "0:4BAF3F22EF6DF919B36705FC6C483E8F82ABFDC3221ECA040359B6F6A9586BC7",
+      "user_friendly_address": "EQDbn_i4nIuNta8CvLrnTgfcFCCnTagwVKaPiLnPszPWwl2h",
+      "name": "Orc Wen TGE #1995",
+      "image_url": "https://imgproxy.toncenter.com/ZD-t6fYTOvVeDbAkCLAxppZTayHjfkZsdzKS6t2sPOY/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDkzNS5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        },
+        {
+          "trait_type": "Sign",
+          "value": "Granite"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Runed Gold"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQDbn_i4nIuNta8CvLrnTgfcFCCnTagwVKaPiLnPszPWwl2h",
+      "owner_url": "https://getgems.io/user/EQBLrz8i7235GbNnBfxsSD6Pgqv9wyIeygQDWbb2qVhrx6Is",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Runed Gold",
+                "trait_type": "Bracelet"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 14010,
+      "address": "0:F9973F0F3E54FC5D1A2CFEC14D7814B1F457F609D02D12D7DD7E65A7EA7AF423",
+      "owner_address": "0:7B509B9FC6ECA9BC6376511248EA8A5E366DD6D395D0B08F16A9125E94BBAA99",
+      "user_friendly_address": "EQD5lz8PPlT8XRos_sFNeBSx9Ff2CdAtEtfdfmWn6nr0I6q9",
+      "name": "Orc To The Moon #1996",
+      "image_url": "https://imgproxy.toncenter.com/iA4DnXmbeZ59BoYsZ65Mcl48VkRdS2YLGUHfGh9fSWk/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMDkzNi5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Spiked Lunar"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Ruby"
+        },
+        {
+          "trait_type": "Hamster",
+          "value": "Lunar Blue"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQD5lz8PPlT8XRos_sFNeBSx9Ff2CdAtEtfdfmWn6nr0I6q9",
+      "owner_url": "https://getgems.io/user/UQB7UJufxuypvGN2URJI6opeNm3W05XQsI8WqRJelLuqmeKc",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Lunar",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Lunar Blue",
+                "trait_type": "Hamster"
+              }
+            ],
+            "synergyName": "Lunar"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 15746,
+      "address": "0:101E93A1FD86448C6FEEC163B8130B1C60A450292345FDEE611BE06A3EB13CA9",
+      "owner_address": "0:A1A1BF726AB711C0EFCC0C7B679EA89C3B31B92A06C47FE69028036FF25AA36D",
+      "user_friendly_address": "EQAQHpOh_YZEjG_uwWO4EwscYKRQKSNF_e5hG-BqPrE8qR2o",
+      "name": "Orc Shoked #2243",
+      "image_url": "https://imgproxy.toncenter.com/s93fwiYnqJ-kJYu_p70Np8sBOtj3l7vykxbKq_XG31c/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTA0MS5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Rope"
+        },
+        {
+          "trait_type": "Pendant Chain",
+          "value": "Gold Rope"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQAQHpOh_YZEjG_uwWO4EwscYKRQKSNF_e5hG-BqPrE8qR2o",
+      "owner_url": "https://getgems.io/user/UQChob9yarcRwO_MDHtnnqicOzG5KgbEf-aQKANv8lqjbbiz",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Gold Rope",
+                "trait_type": "Pendant Chain"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 15970,
+      "address": "0:D43998E9AA800A5C9380D4D274FF28CBCC40060D411A421F5E233D1CDDF3615A",
+      "owner_address": "0:7316EFA5FF89AF544460F7EE83575E5A752E1D0879D5C84C7DDFAFB072DD12DF",
+      "user_friendly_address": "EQDUOZjpqoAKXJOA1NJ0_yjLzEAGDUEaQh9eIz0c3fNhWokm",
+      "name": "Orc Do Something #2266",
+      "image_url": "https://imgproxy.toncenter.com/WVIUt0Y6LAian5luhpBVLHbd0OPwuY3-KwRnNxjTyrI/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTA1Ny5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Bracelet",
+          "value": "Spiked Lunar"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Stick",
+          "value": "Spear"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQDUOZjpqoAKXJOA1NJ0_yjLzEAGDUEaQh9eIz0c3fNhWokm",
+      "owner_url": "https://getgems.io/user/UQBzFu-l_4mvVERg9-6DV15adS4dCHnVyEx936-wct0S32tx",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Lunar",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earrings"
+              }
+            ],
+            "synergyName": "Spiked"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 16379,
+      "address": "0:C8476856CB18E62D119A81C7D946459940CC50E8417759699354D62848019EE0",
+      "owner_address": "0:B454F43C86A4F488BD7D3CBDFF8C3078CA61B6D15D41ADD66C520333CBDD60C7",
+      "user_friendly_address": "EQDIR2hWyxjmLRGagcfZRkWZQMxQ6EF3WWmTVNYoSAGe4Fk2",
+      "name": "Orc Capped #2351",
+      "image_url": "https://imgproxy.toncenter.com/I8QIftR7povfvi4OaKo2atI-6YF1iLqdiAZPAeV7f5o/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTA5Mi5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Ring",
+          "value": "Golden Bitcoin"
+        },
+        {
+          "trait_type": "Cap",
+          "value": "Bitcoin"
+        },
+        {
+          "trait_type": "Earring",
+          "value": "Diamond"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQDIR2hWyxjmLRGagcfZRkWZQMxQ6EF3WWmTVNYoSAGe4Fk2",
+      "owner_url": "https://getgems.io/user/UQC0VPQ8hqT0iL19PL3_jDB4ymG20V1BrdZsUgMzy91gx33B",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Golden Bitcoin",
+                "trait_type": "Ring"
+              },
+              {
+                "attribute": "Bitcoin",
+                "trait_type": "Cap"
+              }
+            ],
+            "synergyName": "Bitcoin"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 16725,
+      "address": "0:10067CB85F8D7883AB15BBD0EC00C8E38B8A8C8A063F4081DDFCE79EED9C96BD",
+      "owner_address": "0:751D6FBAE7BF06D22EF6A450368FAEA2E59E4FBD6692089672194AF0D6F58E9E",
+      "user_friendly_address": "EQAQBny4X414g6sVu9DsAMjji4qMigY_QIHd_Oee7ZyWvbP7",
+      "name": "Orc Wen TGE #2413",
+      "image_url": "https://imgproxy.toncenter.com/92RiY_IrFrPO8Gzcqm-kSviNSiSlRChU8dpldkuNgc0/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTExNi5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        },
+        {
+          "trait_type": "Sign",
+          "value": "Cardboard"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Gold Braid"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQAQBny4X414g6sVu9DsAMjji4qMigY_QIHd_Oee7ZyWvbP7",
+      "owner_url": "https://getgems.io/user/UQB1HW-6578G0i72pFA2j66i5Z5PvWaSCJZyGUrw1vWOnt55",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Gold Braid",
+                "trait_type": "Bracelet"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 17000,
+      "address": "0:E02431F6EE8B8A84E1FB27DC92E9FCFD5A1941570D6E6D024458B39D8B135BDF",
+      "owner_address": "0:751D6FBAE7BF06D22EF6A450368FAEA2E59E4FBD6692089672194AF0D6F58E9E",
+      "user_friendly_address": "EQDgJDH27ouKhOH7J9yS6fz9WhlBVw1ubQJEWLOdixNb3zqH",
+      "name": "Orc To The Moon #2455",
+      "image_url": "https://imgproxy.toncenter.com/DceSl4yQ4ZS1D5eUwy3rkaxtDiaj_kiyxy-_glDMCyk/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTEzOC5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Runed Gold"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Hamster",
+          "value": "Zargates"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQDgJDH27ouKhOH7J9yS6fz9WhlBVw1ubQJEWLOdixNb3zqH",
+      "owner_url": "https://getgems.io/user/UQB1HW-6578G0i72pFA2j66i5Z5PvWaSCJZyGUrw1vWOnt55",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Runed Gold",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earrings"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 17374,
+      "address": "0:60B09CB957F85F54BE4050BE3F772F937DA07F4048B8CBDA279D06F371C6390D",
+      "owner_address": "0:2D3ACDFD5B674D0B533BAB3B10A28E7E4DDC895E65EEC5D6DF62DE40D6C40FB2",
+      "user_friendly_address": "EQBgsJy5V_hfVL5AUL4_dy-TfaB_QEi4y9onnQbzccY5Df5O",
+      "name": "Orc Shoked #2505",
+      "image_url": "https://imgproxy.toncenter.com/b7dCn7rBtCyHW-q_dMCvY8fIyPr4zYuZZF84TVInqyY/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTE2Mi5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Demonic"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Paper"
+        },
+        {
+          "trait_type": "Pendant Chain",
+          "value": "Demonic"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQBgsJy5V_hfVL5AUL4_dy-TfaB_QEi4y9onnQbzccY5Df5O",
+      "owner_url": "https://getgems.io/user/UQAtOs39W2dNC1M7qzsQoo5-TdyJXmXuxdbfYt5A1sQPspQE",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Demonic",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Demonic",
+                "trait_type": "Pendant Chain"
+              }
+            ],
+            "synergyName": "Demonic"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 17687,
+      "address": "0:88FFA4EE0F196CBE5EB3A7B49E809F357DB889A0EDD604AFAEBE5DA56412A883",
+      "owner_address": "0:73C6B11F1D216937819186CFA2E02AABB20D8222D4903137EF8B66B319BAA5BD",
+      "user_friendly_address": "EQCI_6TuDxlsvl6zp7SegJ81fbiJoO3WBK-uvl2lZBKogz_x",
+      "name": "Orc Wen TGE #2551",
+      "image_url": "https://imgproxy.toncenter.com/rF2pP_DMNYpIrZwziQzyMHwO3BhSx1Rpq1qppORZJDo/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTE4Ni5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        },
+        {
+          "trait_type": "Sign",
+          "value": "Vintage Wallpaper"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Silver"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Paper"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQCI_6TuDxlsvl6zp7SegJ81fbiJoO3WBK-uvl2lZBKogz_x",
+      "owner_url": "https://getgems.io/user/UQBzxrEfHSFpN4GRhs-i4Cqrsg2CItSQMTfvi2azGbqlvdAz",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Vintage Wallpaper",
+                "trait_type": "Sign"
+              },
+              {
+                "attribute": "Paper",
+                "trait_type": "Bracelet"
+              }
+            ],
+            "synergyName": "Paper"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 18725,
+      "address": "0:2BA7AEBC95DEE8821D1E80B93443C45020819FB8DE2A37929833E47A345D5DE4",
+      "owner_address": "0:D6AF7C73AD29AEE97C8772B1379FD1C241AF84F2A368D0915E194046982F66DD",
+      "user_friendly_address": "EQArp668ld7ogh0egLk0Q8RQIIGfuN4qN5KYM-R6NF1d5PkW",
+      "name": "Orc Shoked #2666",
+      "image_url": "https://imgproxy.toncenter.com/AXQ9_Q4NDwheGj3Ou3LGSuUC5TfKeQsH5GTbWlfBXPI/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTI0Mi5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Pendant Chain",
+          "value": "Telegram"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQArp668ld7ogh0egLk0Q8RQIIGfuN4qN5KYM-R6NF1d5PkW",
+      "owner_url": "https://getgems.io/user/UQDWr3xzrSmu6XyHcrE3n9HCQa-E8qNo0JFeGUBGmC9m3XWQ",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Gold",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Bracelet"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 19304,
+      "address": "0:021D4D9A95E53C0159546DE97498AC003C81F333C7833D5F47C222821F1750EA",
+      "owner_address": "0:751D6FBAE7BF06D22EF6A450368FAEA2E59E4FBD6692089672194AF0D6F58E9E",
+      "user_friendly_address": "EQACHU2aleU8AVlUbel0mKwAPIHzM8eDPV9HwiKCHxdQ6mY7",
+      "name": "Orc Shoked #2753",
+      "image_url": "https://imgproxy.toncenter.com/1fONlIKbWdnfSUSguxioZNHwWllLTe_t-pCnWQ7MwG0/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTI4MC5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Spiked Demonic"
+        },
+        {
+          "trait_type": "Pendant Chain",
+          "value": "Phoenix"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQACHU2aleU8AVlUbel0mKwAPIHzM8eDPV9HwiKCHxdQ6mY7",
+      "owner_url": "https://getgems.io/user/UQB1HW-6578G0i72pFA2j66i5Z5PvWaSCJZyGUrw1vWOnt55",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Spiked Demonic",
+                "trait_type": "Bracelet"
+              }
+            ],
+            "synergyName": "Spiked"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 19568,
+      "address": "0:12953A70EF98DBA0A9DB503A7F3CB95F89D38C44CC5CF9C5863AEB57081E7DEB",
+      "owner_address": "0:29530906C9FBF9B60D9AAB9DBDFCA424F0FB3EBC788C60F0CE67489B45D34F88",
+      "user_friendly_address": "EQASlTpw75jboKnbUDp_PLlfidOMRMxc-cWGOutXCB59635h",
+      "name": "Orc Greeting #2780",
+      "image_url": "https://imgproxy.toncenter.com/jrZIDeH5c9eR83HfEFHasxz32k0kMH9BWil3Y4ppqrg/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTI5Ni5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Phoenix Feathers"
+        },
+        {
+          "trait_type": "Cup",
+          "value": "Zargates"
+        },
+        {
+          "trait_type": "Glasses",
+          "value": "Zargates Business"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQASlTpw75jboKnbUDp_PLlfidOMRMxc-cWGOutXCB59635h",
+      "owner_url": "https://getgems.io/user/EQApUwkGyfv5tg2aq529_KQk8Ps-vHiMYPDOZ0ibRdNPiPbg",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Zargates",
+                "trait_type": "Cup"
+              },
+              {
+                "attribute": "Zargates Business",
+                "trait_type": "Glasses"
+              }
+            ],
+            "synergyName": "Zargates"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Mythical",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 19695,
+      "address": "0:F35FB5E53FFB880A6836FA933D55C66B48CB9A2FCF7E23AFEC8872DE3D27C79E",
+      "owner_address": "0:7BB343302C1C7E247E8D747B60789C83FFFBEC1BBB3010877F0F1EA6534958FF",
+      "user_friendly_address": "EQDzX7XlP_uICmg2-pM9VcZrSMuaL89-I6_siHLePSfHnt-a",
+      "name": "Orc Shoked #2802",
+      "image_url": "https://imgproxy.toncenter.com/VJmRFTL7UNr4XqsAxxJPn1vuZaXD-DRF6fF0mKFOB64/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTMwNS5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Bone"
+        },
+        {
+          "trait_type": "Pendant Chain",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQDzX7XlP_uICmg2-pM9VcZrSMuaL89-I6_siHLePSfHnt-a",
+      "owner_url": "https://getgems.io/user/UQB7s0MwLBx-JH6NdHtgeJyD__vsG7swEId_Dx6mU0lY_wyL",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Gold",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Pendant Chain"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 20920,
+      "address": "0:262A734BEB61E88C3CF131C2036D01EF13673905A331E03DC8FB34226FABAB5C",
+      "owner_address": "0:7BB343302C1C7E247E8D747B60789C83FFFBEC1BBB3010877F0F1EA6534958FF",
+      "user_friendly_address": "EQAmKnNL62HojDzxMcIDbQHvE2c5BaMx4D3I-zQib6urXKBP",
+      "name": "Orc Capped #2960",
+      "image_url": "https://imgproxy.toncenter.com/mP97AOrW3l4RY2ThG2DYGiQygbUv-zPYX7LFKeccf7k/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTM3Ni5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Ring",
+          "value": "TON"
+        },
+        {
+          "trait_type": "Cap",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Earring",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQAmKnNL62HojDzxMcIDbQHvE2c5BaMx4D3I-zQib6urXKBP",
+      "owner_url": "https://getgems.io/user/UQB7s0MwLBx-JH6NdHtgeJyD__vsG7swEId_Dx6mU0lY_wyL",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Gold",
+                "trait_type": "Cap"
+              },
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earring"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 21059,
+      "address": "0:380A28E5F105F5CDB0803ADA114151E7E05660A4B18A6C4BBE5DB43413B35458",
+      "owner_address": "0:7B509B9FC6ECA9BC6376511248EA8A5E366DD6D395D0B08F16A9125E94BBAA99",
+      "user_friendly_address": "EQA4Cijl8QX1zbCAOtoRQVHn4FZgpLGKbEu-XbQ0E7NUWFGI",
+      "name": "Orc Wen TGE #2969",
+      "image_url": "https://imgproxy.toncenter.com/dDjC1v7r7QS3GNTuXljb4uo1nt2aHO5RbVDaeYu3fn8/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTM4MS5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        },
+        {
+          "trait_type": "Sign",
+          "value": "Glass"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Gold Braid"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQA4Cijl8QX1zbCAOtoRQVHn4FZgpLGKbEu-XbQ0E7NUWFGI",
+      "owner_url": "https://getgems.io/user/UQB7UJufxuypvGN2URJI6opeNm3W05XQsI8WqRJelLuqmeKc",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Gold Braid",
+                "trait_type": "Bracelet"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 21277,
+      "address": "0:61414C3DF6C4CB3C6C8D3ADDA54B8658460A33D3A4C426288CEE620D7204952C",
+      "owner_address": "0:4F5313C0C14C78D6239B7D8A9DF286ED915DAB5B58E64A7E635E637BC9F2A400",
+      "user_friendly_address": "EQBhQUw99sTLPGyNOt2lS4ZYRgoz06TEJiiM7mINcgSVLCow",
+      "name": "Orc Capped #2997",
+      "image_url": "https://imgproxy.toncenter.com/l-Zj9JIWSy4aSSgscZ1kS9VU5DeHW31btZS-3RVAfDI/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTM5Mi5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Ring",
+          "value": "Golden Bitcoin"
+        },
+        {
+          "trait_type": "Cap",
+          "value": "Cavern Brown"
+        },
+        {
+          "trait_type": "Earring",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQBhQUw99sTLPGyNOt2lS4ZYRgoz06TEJiiM7mINcgSVLCow",
+      "owner_url": "https://getgems.io/user/UQBPUxPAwUx41iObfYqd8obtkV2rW1jmSn5jXmN7yfKkAFrA",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Golden Bitcoin",
+                "trait_type": "Ring"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Earring"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 21299,
+      "address": "0:D3306B5B7144AE56D6650E0CBF849D20ECE49687C33D1223357A89A42D1FC364",
+      "owner_address": "0:7A757C900924EC0C3F1751B45C8763D831A902644BEA7318B328C9D6589767CD",
+      "user_friendly_address": "EQDTMGtbcUSuVtZlDgy_hJ0g7OSWh8M9EiM1eomkLR_DZEq-",
+      "name": "Orc Shoked #3004",
+      "image_url": "https://imgproxy.toncenter.com/gLjZAjDCmJJR2fqNx4oo1XV3uCfPor-NQFD7HY3GCe8/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTM5NC5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Spiked Mechanical"
+        },
+        {
+          "trait_type": "Pendant Chain",
+          "value": "Gold Rope"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQDTMGtbcUSuVtZlDgy_hJ0g7OSWh8M9EiM1eomkLR_DZEq-",
+      "owner_url": "https://getgems.io/user/UQB6dXyQCSTsDD8XUbRch2PYMakCZEvqcxizKMnWWJdnzW4r",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Gold Rope",
+                "trait_type": "Pendant Chain"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 21924,
+      "address": "0:C8A35955A8B5A7D9D07DAD33D38A8825F5A3D738F53E990402E5485D553BF931",
+      "owner_address": "0:EC78ED7E1EE7F801BB26C063EA225FEA4E35CC13B73CAF6ACC4256CE6FD07FC7",
+      "user_friendly_address": "EQDIo1lVqLWn2dB9rTPTiogl9aPXOPU-mQQC5UhdVTv5Mexh",
+      "name": "Orc Capped #3069",
+      "image_url": "https://imgproxy.toncenter.com/vr0eev70y6LwzIWTKi0JeJfQxXJurCLOoWSJXBBHEyM/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTQzMC5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Ring",
+          "value": "Golden Bitcoin"
+        },
+        {
+          "trait_type": "Cap",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Earring",
+          "value": "Magic Mushrooms"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQDIo1lVqLWn2dB9rTPTiogl9aPXOPU-mQQC5UhdVTv5Mexh",
+      "owner_url": "https://getgems.io/user/UQDseO1-Huf4AbsmwGPqIl_qTjXME7c8r2rMQlbOb9B_x7sY",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Golden Bitcoin",
+                "trait_type": "Ring"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Cap"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 22044,
+      "address": "0:B28F2BBDE5723805569D336695E9DB2478B928A30904E46BE4054DF51E2962E6",
+      "owner_address": "0:D6AF7C73AD29AEE97C8772B1379FD1C241AF84F2A368D0915E194046982F66DD",
+      "user_friendly_address": "EQCyjyu95XI4BVadM2aV6dskeLkoowkE5GvkBU31Hili5pPx",
+      "name": "Orc Shoked #3089",
+      "image_url": "https://imgproxy.toncenter.com/ztXHTFFEVOtb_C279Ff-_Z1Tm4REKMwRgJHsTF6f3YE/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTQzOS5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Diamond"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Gold Braid"
+        },
+        {
+          "trait_type": "Pendant Chain",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQCyjyu95XI4BVadM2aV6dskeLkoowkE5GvkBU31Hili5pPx",
+      "owner_url": "https://getgems.io/user/UQDWr3xzrSmu6XyHcrE3n9HCQa-E8qNo0JFeGUBGmC9m3XWQ",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Gold Braid",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Pendant Chain"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 22153,
+      "address": "0:A5E4CBAB68521AE42E7E1660CB6244A7E9113BAE90F1E38D51DB3275A2647623",
+      "owner_address": "0:003C4F6FE78379FABC932807384FB177D9F06E90C6BCA9D1E80D06CDA94BB84D",
+      "user_friendly_address": "EQCl5MuraFIa5C5-FmDLYkSn6RE7rpDx441R2zJ1omR2I0rM",
+      "name": "Orc Greeting #3120",
+      "image_url": "https://imgproxy.toncenter.com/FlJP3HYnHUxG2JecFNd2eQZ5d-TspuuugliQYzycaLs/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTQ0OS5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Demonic"
+        },
+        {
+          "trait_type": "Cup",
+          "value": "Demonic Wine"
+        },
+        {
+          "trait_type": "Glasses",
+          "value": "Zargates Business"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQCl5MuraFIa5C5-FmDLYkSn6RE7rpDx441R2zJ1omR2I0rM",
+      "owner_url": "https://getgems.io/user/UQAAPE9v54N5-ryTKAc4T7F32fBukMa8qdHoDQbNqUu4TU1b",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Demonic",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Demonic Wine",
+                "trait_type": "Cup"
+              }
+            ],
+            "synergyName": "Demonic"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 23483,
+      "address": "0:3472CD10B504DBE42659EEFC695C18AB6CA61AA583A6E0AB1BCAC0DD95D2963E",
+      "owner_address": "0:EC78ED7E1EE7F801BB26C063EA225FEA4E35CC13B73CAF6ACC4256CE6FD07FC7",
+      "user_friendly_address": "EQA0cs0QtQTb5CZZ7vxpXBirbKYapYOm4KsbysDdldKWPgMu",
+      "name": "Orc Shoked #3338",
+      "image_url": "https://imgproxy.toncenter.com/XR721iawvPyX95gg3NaGu070r1UWooqWnYfVmw0wlWA/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTUyNy5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Ruby"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Pendant Chain",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQA0cs0QtQTb5CZZ7vxpXBirbKYapYOm4KsbysDdldKWPgMu",
+      "owner_url": "https://getgems.io/user/UQDseO1-Huf4AbsmwGPqIl_qTjXME7c8r2rMQlbOb9B_x7sY",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Pendant Chain"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 23618,
+      "address": "0:E0AA28A3CCE297CFC11B6E30EC53793C245C0CF16F4CDF34C3AE1EEFDF265D83",
+      "owner_address": "0:4F5313C0C14C78D6239B7D8A9DF286ED915DAB5B58E64A7E635E637BC9F2A400",
+      "user_friendly_address": "EQDgqiijzOKXz8EbbjDsU3k8JFwM8W9M3zTDrh7v3yZdg_uz",
+      "name": "Orc To The Moon #3354",
+      "image_url": "https://imgproxy.toncenter.com/e8AzdYnvpFoM4dKMZS98IbrL-PzTzSCHMIrYF27E2m0/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTUzNS5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Spiked Demonic"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Demonic"
+        },
+        {
+          "trait_type": "Hamster",
+          "value": "Desert White"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQDgqiijzOKXz8EbbjDsU3k8JFwM8W9M3zTDrh7v3yZdg_uz",
+      "owner_url": "https://getgems.io/user/0:4F5313C0C14C78D6239B7D8A9DF286ED915DAB5B58E64A7E635E637BC9F2A400",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Demonic",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Demonic",
+                "trait_type": "Earrings"
+              }
+            ],
+            "synergyName": "Demonic"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 24132,
+      "address": "0:EDAB3BC32B58B5570A850DE824A44327E6A2E255413AD2526A0409C7DD94F780",
+      "owner_address": "0:515B05EF8810734592600C89D4DE3E14C0A2E70130CED32BF806F312587D2964",
+      "user_friendly_address": "EQDtqzvDK1i1VwqFDegkpEMn5qLiVUE60lJqBAnH3ZT3gNX1",
+      "name": "Orc To The Moon #3465",
+      "image_url": "https://imgproxy.toncenter.com/Id2eq-UNX_dLFOeP63H9qBDkOnDJ7PvVqPZ4iQ0OiaU/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTU2OC5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Runed Gold"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Wooden"
+        },
+        {
+          "trait_type": "Hamster",
+          "value": "Gold"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQDtqzvDK1i1VwqFDegkpEMn5qLiVUE60lJqBAnH3ZT3gNX1",
+      "owner_url": "https://getgems.io/user/0:515B05EF8810734592600C89D4DE3E14C0A2E70130CED32BF806F312587D2964",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Runed Gold",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Hamster"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 24254,
+      "address": "0:594240F27BC7F712B4B33DDB085092D1F3604873383879E475742D868987960F",
+      "owner_address": "0:12CF505DA2CA4A7A40BF8D5D5E761B6753BC2A4A49342E657F856E7CFC767E9F",
+      "user_friendly_address": "EQBZQkDye8f3ErSzPdsIUJLR82BIczg4eeR1dC2GiYeWDwlG",
+      "name": "Orc Capped #3490",
+      "image_url": "https://imgproxy.toncenter.com/O0qr1uYrdZQGhyr6l2RbPZtKmyr9ripC6Qdycm8Q548/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTU3Ny5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Ring",
+          "value": "TON"
+        },
+        {
+          "trait_type": "Cap",
+          "value": "TON"
+        },
+        {
+          "trait_type": "Earring",
+          "value": "Wooden"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQBZQkDye8f3ErSzPdsIUJLR82BIczg4eeR1dC2GiYeWDwlG",
+      "owner_url": "https://getgems.io/user/0:12CF505DA2CA4A7A40BF8D5D5E761B6753BC2A4A49342E657F856E7CFC767E9F",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "TON",
+                "trait_type": "Ring"
+              },
+              {
+                "attribute": "TON",
+                "trait_type": "Cap"
+              }
+            ],
+            "synergyName": "TON"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 25508,
+      "address": "0:6FB4DCBE1E5D9C37AAC42C55482FB822827437F3F5F35416A3D72B80E33E9FC2",
+      "owner_address": "0:EE91E3C28BB70A6CAA15CD7290AC4A2B7B885D45C61A39D797225551A82DCEC5",
+      "user_friendly_address": "EQBvtNy-Hl2cN6rELFVIL7gignQ38_XzVBaj1yuA4z6fwqQX",
+      "name": "Orc To The Moon #3655",
+      "image_url": "https://imgproxy.toncenter.com/tQSIGe07VhAH6BfiHK5ApIB5Csl_2ECsIW0KST9BBV4/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTY2OC5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        },
+        {
+          "trait_type": "Bracelet",
+          "value": "Bone"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Spiked Gold"
+        },
+        {
+          "trait_type": "Hamster",
+          "value": "Gold"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQBvtNy-Hl2cN6rELFVIL7gignQ38_XzVBaj1yuA4z6fwqQX",
+      "owner_url": "https://getgems.io/user/0:EE91E3C28BB70A6CAA15CD7290AC4A2B7B885D45C61A39D797225551A82DCEC5",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Gold",
+                "trait_type": "Earrings"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Hamster"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 2,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 26071,
+      "address": "0:BE58EC3926C6F9497AFE928AB6B48FD99DED5F56FA70526C9ECD7DC69DE826DA",
+      "owner_address": "0:0589D51398D5CD721496241C5695CA71A7C4760E8E85968D5B66FCDE18BA7D46",
+      "user_friendly_address": "EQC-WOw5Jsb5SXr-koq2tI_Zne1fVvpwUmyezX3Gnegm2ljJ",
+      "name": "Orc Do Something #3745",
+      "image_url": "https://imgproxy.toncenter.com/Z91XG5bgkSbA36nLeqYz63xFO_XJn9aK0LqmYFJSO94/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTcxNS5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Bracelet",
+          "value": "Spiked Demonic"
+        },
+        {
+          "trait_type": "Earrings",
+          "value": "Demonic"
+        },
+        {
+          "trait_type": "Stick",
+          "value": "Golf Club"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQC-WOw5Jsb5SXr-koq2tI_Zne1fVvpwUmyezX3Gnegm2ljJ",
+      "owner_url": "https://getgems.io/user/0:0589D51398D5CD721496241C5695CA71A7C4760E8E85968D5B66FCDE18BA7D46",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Spiked Demonic",
+                "trait_type": "Bracelet"
+              },
+              {
+                "attribute": "Demonic",
+                "trait_type": "Earrings"
+              }
+            ],
+            "synergyName": "Demonic"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 26737,
+      "address": "0:55F3216A3787165786731C4847B15E33974472F8642010D7D2AB07EB1E3FB43A",
+      "owner_address": "0:FA99B7DB1C50C18602664A5B73C1F8204034A3DC96F45C9EDF51DE5D69422C0D",
+      "user_friendly_address": "EQBV8yFqN4cWV4ZzHEhHsV4zl0Ry-GQgENfSqwfrHj-0OlvT",
+      "name": "Orc Capped #3854",
+      "image_url": "https://imgproxy.toncenter.com/Q8dKSWyfmy7ASwZT5zusxx2tG270NH90R2PxY861Wy4/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTc1Ny5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Ring",
+          "value": "Golden Bitcoin"
+        },
+        {
+          "trait_type": "Cap",
+          "value": "Gold"
+        },
+        {
+          "trait_type": "Earring",
+          "value": "Demonic"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQBV8yFqN4cWV4ZzHEhHsV4zl0Ry-GQgENfSqwfrHj-0OlvT",
+      "owner_url": "https://getgems.io/user/0:FA99B7DB1C50C18602664A5B73C1F8204034A3DC96F45C9EDF51DE5D69422C0D",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Golden Bitcoin",
+                "trait_type": "Ring"
+              },
+              {
+                "attribute": "Gold",
+                "trait_type": "Cap"
+              }
+            ],
+            "synergyName": "Gold"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Legendary",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    },
+    {
+      "index": 27528,
+      "address": "0:08C2DB512ADE82948DC22E6C5190D9FB3BCC34C60AF1479A5B85831884146B84",
+      "owner_address": "0:494D54E8CB8B6E99872E64BC4D3999BD6E61241FCA714CDFA1EBA3142C139ED0",
+      "user_friendly_address": "EQAIwttRKt6ClI3CLmxRkNn7O8w0xgrxR5pbhYMYhBRrhHXm",
+      "name": "Orc Greeting #3915",
+      "image_url": "https://imgproxy.toncenter.com/gUTf5HDiFFi6Fco43Mv7miguaNF_BIVpERZAN4I1FXQ/pr:medium/aHR0cHM6Ly9tZXRhZGF0YS56YXJnYXRlcy5jb20vc3RpY2tlcnMvMDcwMTc5OC5wbmc",
+      "attributes": [
+        {
+          "trait_type": "Earrings",
+          "value": "Diamond"
+        },
+        {
+          "trait_type": "Cup",
+          "value": "Zargates"
+        },
+        {
+          "trait_type": "Glasses",
+          "value": "Zargates Business"
+        },
+        {
+          "trait_type": "Skin Tone",
+          "value": "Martian"
+        }
+      ],
+      "getgems_url": "https://getgems.io/collection/EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR/EQAIwttRKt6ClI3CLmxRkNn7O8w0xgrxR5pbhYMYhBRrhHXm",
+      "owner_url": "https://getgems.io/user/0:494D54E8CB8B6E99872E64BC4D3999BD6E61241FCA714CDFA1EBA3142C139ED0",
+      "synergyInfo": {
+        "synergyScore": 2,
+        "skinTone": "Martian",
+        "matchingSynergies": [
+          {
+            "count": 2,
+            "attributes": [
+              {
+                "attribute": "Zargates",
+                "trait_type": "Cup"
+              },
+              {
+                "attribute": "Zargates Business",
+                "trait_type": "Glasses"
+              }
+            ],
+            "synergyName": "Zargates"
+          }
+        ],
+        "filteredAttributesCount": 3,
+        "rarity": "Mythical",
+        "searchParams": {
+          "synergyLevel": 2,
+          "selectedSkinTones": [
+            "Martian"
+          ],
+          "selectedRarities": [
+            "Mythical+",
+            "Mythical",
+            "Legendary"
+          ],
+          "searchDate": "2026-01-28T16:31:50.348Z",
+          "totalNfts": 28125,
+          "foundNfts": 64,
+          "synergyCount": 48
+        }
+      }
+    }
+  ]
+}
