@@ -1,3 +1,25 @@
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Health check для Render
+app.get('/', (req, res) => {
+  res.send('🤖 Martian Bot is running on Render!');
+});
+
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    service: 'martian-bot'
+  });
+});
+
+// Запускаем сервер
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🌐 HTTP сервер запущен на порту ${PORT}`);
+});
+
 const { API_TOKEN } = require('./modules/utils.js');
 const TelegramBot = require('node-telegram-bot-api');
 
