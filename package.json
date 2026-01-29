@@ -5,9 +5,9 @@
   "license": "ISC",
   "author": "",
   "type": "commonjs",
-  "main": "src/bot_aanskv.js",
+  "main": "bot_aanskv.js",
   "scripts": {
-    "start": "node src/bot_aanskv.js",
+    "start": "node bot_aanskv.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
