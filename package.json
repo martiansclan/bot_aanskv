@@ -1,18 +1,24 @@
 {
-  "name": "martianvlabot",
+  "name": "martian-nft-analyzer",
   "version": "1.0.0",
-  "main": "bot_aanskv.js",
+  "description": "Web interface for Martian NFT analysis",
+  "main": "web_app.js",
   "scripts": {
-    "start": "node bot_aanskv.js"
+    "start": "node web_app.js",
+    "dev": "nodemon web_app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "axios": "^1.13.2",
-    "node-telegram-bot-api": "^0.67.0",
-    "sharp": "^0.34.5",
-    "dotenv": "^17.2.3",
-    "express": "^4.18.0"
+    "express": "^4.18.2",
+    "axios": "^1.6.2",
+    "sharp": "^0.33.1",
+    "dotenv": "^16.3.1",
+    "node-telegram-bot-api": "^0.64.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0"
   }
 }

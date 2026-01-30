@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сортировка NFT - Martian Analyzer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        header {
+            background: linear-gradient(to right, #1a1a2e, #16213e);
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(45deg, #00dbde, #fc00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            min-height: 600px;
+        }
+
+        .sidebar {
+            background: #f8fafc;
+            border-right: 1px solid #e2e8f0;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            padding: 30px;
+            background: white;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+
+        .option-item {
+            background: white;
+            border: 2px solid #cbd5e1;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .option-item:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .option-item.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .filters {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .filter-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 10px 15px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            user-select: none;
+        }
+
+        .filter-checkbox input {
+            display: none;
+        }
+
+        .filter-checkbox .checkmark {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #cbd5e1;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .filter-checkbox input:checked + .checkmark {
+            background: #667eea;
+            border-color: #667eea;
+        }
+
+        .filter-checkbox input:checked + .checkmark::after {
+            content: '✓';
+            color: white;
+            font-weight: bold;
+        }
+
+        .execute-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(to right, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .execute-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .execute-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results-container {
+            min-height: 400px;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            font-size: 1.2rem;
+            color: #64748b;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e2e8f0;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 15px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .nft-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .nft-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .nft-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #f8fafc;
+        }
+
+        .nft-info {
+            padding: 15px;
+        }
+
+        .nft-name {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2d3748;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .nft-stats {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .stat-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .synergy-badge {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .rarity-badge {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .skin-badge {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+            padding: 20px;
+        }
+
+        .page-btn {
+            padding: 8px 16px;
+            background: #f1f5f9;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .page-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .page-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        @media (max-width: 1024px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                border-right: none;
+                border-bottom: 1px solid #e2e8f0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .filters {
+                flex-direction: column;
+            }
+            
+            .options-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 Сортировка NFT по синергиям</h1>
+            <a href="/" class="back-btn">← На главную</a>
+        </header>
+        
+        <div class="content">
+            <!-- Боковая панель с настройками -->
+            <div class="sidebar">
+                <div class="section">
+                    <h3 class="section-title">🎯 Уровень синергии</h3>
+                    <div class="options-grid" id="synergyOptions">
+                        <!-- Заполняется JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3 class="section-title">🎨 Skin Tone</h3>
+                    <div class="options-grid" id="skinToneOptions">
+                        <!-- Заполняется JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3 class="section-title">⭐ Редкость атрибутов</h3>
+                    <div class="options-grid" id="rarityOptions">
+                        <!-- Заполняется JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="filters">
+                    <label class="filter-checkbox">
+                        <input type="checkbox" id="filterAll" checked>
+                        <span class="checkmark"></span>
+                        <span>Все NFT</span>
+                    </label>
+                    
+                    <label class="filter-checkbox">
+                        <input type="checkbox" id="filterOnSale">
+                        <span class="checkmark"></span>
+                        <span>На продаже</span>
+                    </label>
+                </div>
+                
+                <button class="execute-btn" id="executeBtn" onclick="executeSort()">
+                    🚀 Начать сортировку
+                </button>
+                
+                <div style="margin-top: 20px; padding: 15px; background: #f0f9ff; border-radius: 8px; font-size: 0.9rem; color: #0369a1;">
+                    💡 <strong>Как работает:</strong> Ищет NFT где атрибуты встречаются в одной синергии выбранное количество раз.
+                </div>
+            </div>
+            
+            <!-- Основная область с результатами -->
+            <div class="main-content">
+                <h2 style="margin-bottom: 20px;">Результаты поиска</h2>
+                
+                <div class="results-container">
+                    <div id="resultsArea">
+                        <div class="loading" id="initialLoading">
+                            <div class="spinner"></div>
+                            <span>Загружаю данные для сортировки...</span>
+                        </div>
+                        
+                        <div id="resultsContent" style="display: none;">
+                            <div id="resultsStats" style="margin-bottom: 20px;"></div>
+                            <div id="resultsGrid" class="results-grid"></div>
+                            <div id="pagination" class="pagination"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Глобальные переменные
+        let sortData = null;
+        let currentResults = null;
+        let currentPage = 1;
+        const pageSize = 12;
+        
+        // Загружаем данные при загрузке страницы
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadSortData();
+            setupFilterLogic();
+        });
+        
+        // Загружаем данные для сортировки
+        async function loadSortData() {
+            try {
+                const response = await fetch('/api/sort/data');
+                const data = await response.json();
+                
+                if (data.success) {
+                    sortData = data.data;
+                    renderInterface();
+                } else {
+                    throw new Error(data.error || 'Ошибка загрузки данных');
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки данных:', error);
+                document.getElementById('initialLoading').innerHTML = 
+                    `<span style="color: #dc2626;">❌ Ошибка: ${error.message}</span>`;
+            }
+        }
+        
+        // Рендерим интерфейс
+        function renderInterface() {
+            // Рендерим опции синергии
+            const synergyContainer = document.getElementById('synergyOptions');
+            synergyContainer.innerHTML = sortData.synergyOptions.map(level => `
+                <div class="option-item ${level === 2 ? 'selected' : ''}" 
+                     data-value="${level}"
+                     onclick="selectSynergy(this, ${level})">
+                    ${level}+ совпадений
+                </div>
+            `).join('');
+            
+            // Рендерим Skin Tone
+            const skinToneContainer = document.getElementById('skinToneOptions');
+            skinToneContainer.innerHTML = sortData.skinTones.map(tone => `
+                <div class="option-item" 
+                     data-value="${tone.name}"
+                     onclick="toggleOption(this, 'skinTone')">
+                    ${tone.name}
+                </div>
+            `).join('');
+            
+            // Рендерим редкости
+            const rarityContainer = document.getElementById('rarityOptions');
+            rarityContainer.innerHTML = sortData.rarities.map(rarity => `
+                <div class="option-item" 
+                     data-value="${rarity.name}"
+                     onclick="toggleOption(this, 'rarity')">
+                    ${rarity.name}
+                </div>
+            `).join('');
+            
+            // Скрываем индикатор загрузки
+            document.getElementById('initialLoading').style.display = 'none';
+        }
+        
+        // Выбор уровня синергии
+        function selectSynergy(element, level) {
+            // Убираем выделение у всех
+            document.querySelectorAll('#synergyOptions .option-item').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            // Добавляем выделение выбранному
+            element.classList.add('selected');
+            
+            // Сохраняем выбранный уровень
+            if (sortData) {
+                sortData.selectedSynergyLevel = level;
+            }
+        }
+        
+        // Переключение опции (Skin Tone / Rarity)
+        function toggleOption(element, type) {
+            element.classList.toggle('selected');
+            
+            // Обновляем статистику выбранных опций
+            updateSelectedCount(type);
+        }
+        
+        // Обновление счетчика выбранных опций
+        function updateSelectedCount(type) {
+            const containerId = type === 'skinTone' ? 'skinToneOptions' : 'rarityOptions';
+            const selectedCount = document.querySelectorAll(`#${containerId} .option-item.selected`).length;
+            const titleElement = document.querySelector(`#${containerId}`).previousElementSibling;
+            
+            if (selectedCount > 0) {
+                titleElement.textContent = titleElement.textContent.replace(/\(\d+\)/, '') + ` (${selectedCount})`;
+            } else {
+                titleElement.textContent = titleElement.textContent.replace(/ \(\d+\)/, '');
+            }
+        }
+        
+        // Настраиваем логику фильтров (взаимоисключающие)
+        function setupFilterLogic() {
+            const filterAll = document.getElementById('filterAll');
+            const filterOnSale = document.getElementById('filterOnSale');
+            
+            filterAll.addEventListener('change', () => {
+                if (filterAll.checked) {
+                    filterOnSale.checked = false;
+                }
+            });
+            
+            filterOnSale.addEventListener('change', () => {
+                if (filterOnSale.checked) {
+                    filterAll.checked = false;
+                }
+            });
+        }
+        
+        // Выполнение сортировки
+        async function executeSort() {
+            const executeBtn = document.getElementById('executeBtn');
+            const resultsArea = document.getElementById('resultsArea');
+            
+            try {
+                // Показываем загрузку
+                executeBtn.disabled = true;
+                executeBtn.innerHTML = '<div class="spinner" style="width: 20px; height: 20px; margin: 0 auto;"></div>';
+                
+                // Собираем параметры
+                const synergyLevel = sortData.selectedSynergyLevel || 2;
+                const selectedSkinTones = Array.from(
+                    document.querySelectorAll('#skinToneOptions .option-item.selected')
+                ).map(el => el.dataset.value);
+                
+                const selectedRarities = Array.from(
+                    document.querySelectorAll('#rarityOptions .option-item.selected')
+                ).map(el => el.dataset.value);
+                
+                const filterOptions = {
+                    allNfts: document.getElementById('filterAll').checked,
+                    onSaleOnly: document.getElementById('filterOnSale').checked
+                };
+                
+                // Показываем процесс выполнения
+                resultsArea.innerHTML = `
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <div>
+                            <div>🔍 Выполняю сортировку...</div>
+                            <div style="font-size: 0.9rem; margin-top: 10px; color: #64748b;">
+                                Параметры:<br>
+                                • Синергия: ${synergyLevel}+ совпадений<br>
+                                • Skin Tone: ${selectedSkinTones.length > 0 ? selectedSkinTones.length + ' выбрано' : 'Все'}<br>
+                                • Редкости: ${selectedRarities.length > 0 ? selectedRarities.length + ' выбрано' : 'Все'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Отправляем запрос на сервер
+                const response = await fetch('/api/sort/execute', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        synergyLevel,
+                        selectedSkinTones,
+                        selectedRarities,
+                        filterOptions,
+                        userId: 'web_user',
+                        username: 'web_user'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentResults = data.results;
+                    renderResults(data);
+                } else {
+                    throw new Error(data.error || 'Ошибка сортировки');
+                }
+                
+            } catch (error) {
+                console.error('Ошибка сортировки:', error);
+                resultsArea.innerHTML = `
+                    <div style="padding: 40px; text-align: center; color: #dc2626;">
+                        <div style="font-size: 3rem; margin-bottom: 20px;">❌</div>
+                        <h3 style="margin-bottom: 10px;">Ошибка сортировки</h3>
+                        <p>${error.message}</p>
+                        <button onclick="location.reload()" 
+                                style="margin-top: 20px; padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                            Попробовать снова
+                        </button>
+                    </div>
+                `;
+            } finally {
+                // Восстанавливаем кнопку
+                executeBtn.disabled = false;
+                executeBtn.innerHTML = '🚀 Начать сортировку';
+            }
+        }
+        
+        // Рендерим результаты
+        function renderResults(data) {
+            const resultsContent = document.getElementById('resultsContent');
+            const resultsStats = document.getElementById('resultsStats');
+            const resultsGrid = document.getElementById('resultsGrid');
+            const pagination = document.getElementById('pagination');
+            
+            // Показываем контейнер результатов
+            document.getElementById('initialLoading').style.display = 'none';
+            resultsContent.style.display = 'block';
+            
+            // Статистика
+            const stats = data.stats;
+            resultsStats.innerHTML = `
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div style="background: #f0f9ff; padding: 15px; border-radius: 8px; flex: 1; min-width: 200px;">
+                        <div style="font-size: 0.9rem; color: #0369a1; margin-bottom: 5px;">Всего найдено</div>
+                        <div style="font-size: 2rem; font-weight: bold; color: #0369a1;">${data.totalResults}</div>
+                    </div>
+                    
+                    <div style="background: #fef3c7; padding: 15px; border-radius: 8px; flex: 1; min-width: 200px;">
+                        <div style="font-size: 0.9rem; color: #92400e; margin-bottom: 5px;">Синергия 2</div>
+                        <div style="font-size: 2rem; font-weight: bold; color: #92400e;">${stats.synergyDistribution.level2}</div>
+                    </div>
+                    
+                    <div style="background: #dcfce7; padding: 15px; border-radius: 8px; flex: 1; min-width: 200px;">
+                        <div style="font-size: 0.9rem; color: #166534; margin-bottom: 5px;">Синергия 3+</div>
+                        <div style="font-size: 2rem; font-weight: bold; color: #166534;">${stats.synergyDistribution.level3 + stats.synergyDistribution.level4plus}</div>
+                    </div>
+                </div>
+            `;
+            
+            // Рендерим первую страницу
+            renderPage(1);
+            
+            // Рендерим пагинацию
+            renderPagination();
+            
+            function renderPage(page) {
+                currentPage = page;
+                const startIndex = (page - 1) * pageSize;
+                const endIndex = startIndex + pageSize;
+                const pageResults = data.results.results.slice(startIndex, endIndex);
+                
+                resultsGrid.innerHTML = pageResults.map(nft => `
+                    <div class="nft-card">
+                        ${nft.imageUrl ? `
+                            <img src="${nft.imageUrl}" alt="${nft.name}" class="nft-image" 
+                                 onerror="this.src='https://via.placeholder.com/300x200?text=NFT+Image'">
+                        ` : `
+                            <div class="nft-image" style="display: flex; align-items: center; justify-content: center; color: #94a3b8;">
+                                🖼️ Нет изображения
+                            </div>
+                        `}
+                        <div class="nft-info">
+                            <div class="nft-name" title="${nft.name}">${nft.name}</div>
+                            <div class="nft-stats">
+                                <span class="stat-badge synergy-badge">🎯 ${nft.synergyScore}</span>
+                                <span class="stat-badge rarity-badge">⭐ ${nft.rarity || 'Неизв.'}</span>
+                                <span class="stat-badge skin-badge">🎨 ${nft.skinTone}</span>
+                            </div>
+                            ${nft.matchingSynergies && nft.matchingSynergies.length > 0 ? `
+                                <div style="font-size: 0.9rem; color: #475569; margin-top: 10px;">
+                                    Синергия: <strong>${nft.matchingSynergies[0].synergyName}</strong>
+                                </div>
+                            ` : ''}
+                            <button onclick="viewNftDetails(${nft.nftIndex})" 
+                                    style="margin-top: 15px; padding: 8px 16px; width: 100%; 
+                                           background: #f1f5f9; border: 1px solid #cbd5e1; 
+                                           border-radius: 6px; cursor: pointer; font-size: 0.9rem;">
+                                Подробнее
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            function renderPagination() {
+                const totalPages = Math.ceil(data.results.results.length / pageSize);
+                
+                if (totalPages <= 1) {
+                    pagination.innerHTML = '';
+                    return;
+                }
+                
+                let paginationHTML = '';
+                
+                // Кнопка "Назад"
+                if (currentPage > 1) {
+                    paginationHTML += `<button class="page-btn" onclick="renderPage(${currentPage - 1})">← Назад</button>`;
+                }
+                
+                // Номера страниц
+                for (let i = 1; i <= totalPages; i++) {
+                    if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+                        paginationHTML += `
+                            <button class="page-btn ${i === currentPage ? 'active' : ''}" 
+                                    onclick="renderPage(${i})">
+                                ${i}
+                            </button>
+                        `;
+                    } else if (i === currentPage - 3 || i === currentPage + 3) {
+                        paginationHTML += `<span style="padding: 8px;">...</span>`;
+                    }
+                }
+                
+                // Кнопка "Вперед"
+                if (currentPage < totalPages) {
+                    paginationHTML += `<button class="page-btn" onclick="renderPage(${currentPage + 1})">Вперед →</button>`;
+                }
+                
+                pagination.innerHTML = paginationHTML;
+            }
+            
+            // Экспортируем функции для использования в onclick
+            window.renderPage = renderPage;
+        }
+        
+        // Просмотр деталей NFT
+        async function viewNftDetails(index) {
+            try {
+                const response = await fetch(`/api/sort/nft/${index}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNftModal(data.nft);
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки деталей NFT:', error);
+                alert('Не удалось загрузить детали NFT');
+            }
+        }
+        
+        // Модальное окно с деталями NFT
+        function showNftModal(nft) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                padding: 20px;
+            `;
+            
+            const attributesHTML = nft.attributes.map(attr => `
+                <tr>
+                    <td style="padding: 8px; border-bottom: 1px solid #e2e8f0;">${attr.trait_type}</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #e2e8f0;"><strong>${attr.value || 'Нет'}</strong></td>
+                    <td style="padding: 8px; border-bottom: 1px solid #e2e8f0;">${attr.rarity || 'Неизв.'}</td>
+                </tr>
+            `).join('');
+            
+            modal.innerHTML = `
+                <div style="
+                    background: white;
+                    border-radius: 20px;
+                    padding: 30px;
+                    max-width: 800px;
+                    width: 100%;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                    position: relative;
+                ">
+                    <button onclick="this.parentElement.parentElement.remove()" 
+                            style="position: absolute; top: 15px; right: 15px; 
+                                   background: none; border: none; font-size: 1.5rem; 
+                                   cursor: pointer; color: #64748b;">
+                        ×
+                    </button>
+                    
+                    <h2 style="margin-bottom: 20px; padding-right: 30px;">${nft.formatted.name}</h2>
+                    
+                    <div style="display: grid; grid-template-columns: 300px 1fr; gap: 30px; margin-bottom: 30px;">
+                        <div>
+                            ${nft.formatted.imageUrl ? `
+                                <img src="${nft.formatted.imageUrl}" 
+                                     alt="${nft.formatted.name}" 
+                                     style="width: 100%; border-radius: 10px;">
+                            ` : `
+                                <div style="width: 100%; height: 300px; background: #f8fafc; 
+                                            border-radius: 10px; display: flex; align-items: center; 
+                                            justify-content: center; color: #94a3b8;">
+                                    🖼️ Нет изображения
+                                </div>
+                            `}
+                        </div>
+                        
+                        <div>
+                            <h3 style="margin-bottom: 15px;">Информация</h3>
+                            <div style="background: #f8fafc; padding: 20px; border-radius: 10px;">
+                                <p><strong>Индекс:</strong> ${nft.index}</p>
+                                <p><strong>Адрес:</strong> ${nft.formatted.userFriendlyAddress || truncateText(nft.address, 30)}</p>
+                                <p><strong>Владелец:</strong> ${nft.formatted.owner}</p>
+                                ${nft.on_sale ? `
+                                    <p><strong>Статус:</strong> <span style="color: #16a34a;">💰 На продаже</span></p>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin-bottom: 15px;">Атрибуты (${nft.attributes.length})</h3>
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="background: #f1f5f9;">
+                                    <th style="padding: 12px; text-align: left;">Тип</th>
+                                    <th style="padding: 12px; text-align: left;">Значение</th>
+                                    <th style="padding: 12px; text-align: left;">Редкость</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${attributesHTML}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div style="margin-top: 30px; display: flex; gap: 15px;">
+                        ${nft.formatted.getgemsLink ? `
+                            <a href="${nft.formatted.getgemsLink}" target="_blank" 
+                               style="padding: 10px 20px; background: #667eea; color: white; 
+                                      text-decoration: none; border-radius: 6px;">
+                                На GetGems
+                            </a>
+                        ` : ''}
+                        
+                        ${nft.formatted.ownerLink ? `
+                            <a href="${nft.formatted.ownerLink}" target="_blank" 
+                               style="padding: 10px 20px; background: #f1f5f9; color: #333; 
+                                      text-decoration: none; border-radius: 6px; border: 1px solid #cbd5e1;">
+                                Владелец
+                            </a>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+        
+        // Вспомогательная функция для обрезания текста
+        function truncateText(text, maxLength) {
+            if (!text) return '';
+            if (text.length <= maxLength) return text;
+            return text.substring(0, maxLength) + '...';
+        }
+    </script>
+</body>
+</html>
