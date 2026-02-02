@@ -1,0 +1,463 @@
+/* ===== СТИЛИ ДЛЯ СТРАНИЦЫ POWER ===== */
+
+.power-container {
+    min-height: 100vh;
+    background-color: #f8f9fa;
+    padding: 20px;
+}
+
+.power-header {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    border: 1px solid #e0e0e0;
+}
+
+.power-header h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin: 10px 0;
+    color: #1a1a1a;
+}
+
+.power-subtitle {
+    color: #666666;
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 10px;
+    transition: color 0.2s;
+}
+
+.back-button:hover {
+    color: #5a67d8;
+}
+
+.power-content {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.power-controls {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.power-info p {
+    margin: 0;
+    color: #666666;
+    font-size: 0.95rem;
+}
+
+.results-section,
+.nft-example-section {
+    margin-bottom: 40px;
+}
+
+.results-section h2,
+.nft-example-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #1a1a1a;
+}
+
+.results-container,
+.nft-example {
+    background: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 30px;
+    min-height: 200px;
+}
+
+.empty-state {
+    text-align: center;
+    color: #666666;
+    padding: 40px 20px;
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    opacity: 0.5;
+}
+
+.empty-state p {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.empty-state small {
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+/* Специфичные стили модального окна для Power */
+.power-modal .modal-content {
+    background: #ffffff;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.power-modal .modal-header {
+    padding: 24px 30px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.power-modal .modal-header h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.power-modal .modal-body {
+    padding: 30px;
+}
+
+.progress-info {
+    text-align: center;
+}
+
+.progress-info p {
+    margin-bottom: 15px;
+    color: #1a1a1a;
+}
+
+.power-progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.power-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 4px;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.progress-stats {
+    color: #666666;
+    font-size: 0.9rem;
+}
+
+.result-item {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.result-item.success {
+    border-left: 4px solid #10B981;
+}
+
+.power-modal .modal-footer {
+    padding: 20px 30px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* В assets/css/power.css или добавить в конец файла */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: modalAppear 0.3s ease;
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.progress-container {
+    margin: 20px 0;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background: #e0e0e0;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #007bff, #00c6ff);
+    width: 0%;
+    transition: width 0.5s ease;
+    position: relative;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: #666;
+}
+
+.progress-message {
+    margin: 15px 0;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.progress-details {
+    margin: 15px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.detail-label {
+    font-weight: 500;
+    color: #495057;
+}
+
+.detail-value {
+    font-weight: 600;
+    color: #212529;
+}
+
+.progress-actions {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.ws-status {
+    margin-top: 15px;
+    padding: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 12px;
+    color: #6c757d;
+}
+
+/* Стили для результатов */
+.results-container {
+    margin-top: 20px;
+}
+
+.result-item {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid #007bff;
+}
+
+.result-item.success {
+    border-left-color: #28a745;
+}
+
+.result-item.error {
+    border-left-color: #dc3545;
+}
+
+.result-item.warning {
+    border-left-color: #ffc107;
+}
+
+.result-item.info {
+    border-left-color: #17a2b8;
+}
+
+.result-content {
+    margin: 15px 0;
+}
+
+.result-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.stat-item:last-child {
+    border-bottom: none;
+}
+
+.stat-label {
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-weight: 600;
+    color: #212529;
+}
+
+.result-message {
+    margin-top: 15px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    font-style: italic;
+    color: #6c757d;
+}
+
+.result-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6c757d;
+}
+
+.empty-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+/* В assets/css/power.css добавьте: */
+.result-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.stat-row:last-child {
+    border-bottom: none;
+}
+
+.stat-label {
+    font-weight: 500;
+    color: #495057;
+    font-size: 16px;
+}
+
+.stat-value {
+    font-weight: 600;
+    color: #212529;
+    font-size: 16px;
+    text-align: right;
+}
+
+/* Или альтернативный вариант с вертикальным расположением: */
+.alternative-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.alternative-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.alternative-stat .stat-label {
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.alternative-stat .stat-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: #212529;
+}

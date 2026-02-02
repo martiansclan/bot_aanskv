@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Расчет Power - Martian NFT Analyzer</title>
+    
+    <!-- Подключаем стили -->
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
+    <link rel="stylesheet" href="/assets/css/power.css">
+    
+    <!-- Иконка сайта -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+</head>
+<body>
+    <div class="power-container">
+        <header class="power-header">
+            <a href="/" class="back-button">← На главную</a>
+            <h1>⚡ Расчет Power</h1>
+            <p class="power-subtitle">Расчет показателя Power для всех NFT коллекции</p>
+        </header>
+
+        <div class="power-content">
+            <div class="power-controls">
+                <button id="calculatePowerBtn" class="btn btn-primary">
+                    🔢 Расчет Power по атрибутам
+                </button>                
+                <div class="power-info">
+                    <p>Функция рассчитывает Power для каждого NFT на основе редкости атрибутов</p>
+                </div>
+            </div>
+    
+            <div class="results-section">
+                <h2>Результаты расчета</h2>
+                <div id="calculationResults" class="results-container">
+                    <div class="empty-state">
+                        <div class="empty-icon">📝</div>
+                        <p>Здесь будут отображаться результаты расчета Power</p>
+                        <small>Нажмите кнопку "Расчет Power по атрибутам" чтобы начать</small>
+                    </div>
+                </div>
+            </div>            
+        </div>
+    </div>
+
+    <!-- Модальное окно прогресса с WebSocket -->
+    <div id="progressModal" class="modal">
+        <div class="modal-content">
+            <h3>⚡ Расчет Power в реальном времени</h3>
+            
+            <!-- Прогресс бар -->
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="progress-info">
+                    <span id="progressPercent">0</span>%
+                </div>
+            </div>
+            
+            <!-- Сообщение -->
+            <div id="progressMessage" class="progress-message">
+                Подготовка к расчету...
+            </div>
+            
+            <!-- Детали прогресса -->
+            <div id="progressDetails" class="progress-details">
+                <!-- Заполняется через WebSocket -->
+            </div>
+            
+            <!-- Кнопки -->
+            <div class="progress-actions">
+                <button id="cancelBtn" class="btn btn-danger">
+                    ❌ Отменить расчет
+                </button>
+            </div>
+            
+            <!-- WebSocket статус -->
+            <div id="wsStatus" class="ws-status">
+                <small>📡 Подключение к серверу...</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Подключаем JavaScript -->
+     <script src="/assets/js/power-websocket.js"></script>
+     <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/api.js"></script>    
+    <script src="/assets/js/power.js"></script>
+</body>
+</html>

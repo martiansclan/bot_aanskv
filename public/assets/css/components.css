@@ -1,0 +1,309 @@
+/* ===== КОМПОНЕНТЫ В СТИЛЕ GETGEMS (СВЕТЛАЯ ТЕМА) ===== */
+
+/* Модальное окно NFT */
+.nft-modal {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 800px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.nft-modal-header {
+    margin-bottom: 20px;
+    padding-right: 30px;
+}
+
+.nft-modal-title {
+    font-size: 1.8rem;
+    color: #1a1a1a;
+    font-weight: 600;
+}
+
+.nft-modal-grid {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+    .nft-modal-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.nft-modal-image {
+    width: 100%;
+    border-radius: 8px;
+    background: #f8f9fa;
+    border: 1px solid #e0e0e0;
+}
+
+.nft-modal-info {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.nft-info-row {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.nft-info-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.nft-info-label {
+    font-weight: 600;
+    color: #666666;
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.nft-info-value {
+    color: #1a1a1a;
+    font-size: 1rem;
+}
+
+/* Таблица атрибутов */
+.nft-attributes-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 24px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.nft-attributes-table th {
+    background: #f8f9fa;
+    padding: 12px;
+    text-align: left;
+    color: #666666;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.nft-attributes-table td {
+    padding: 12px;
+    border-bottom: 1px solid #e0e0e0;
+    color: #1a1a1a;
+}
+
+.nft-attributes-table tr:hover {
+    background: #f0f2f5;
+}
+
+.nft-modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.nft-action-btn {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.nft-action-btn:hover {
+    opacity: 0.9;
+}
+
+.nft-action-btn-secondary {
+    background: #ffffff;
+    color: #1a1a1a;
+    border: 1px solid #e0e0e0;
+}
+
+.nft-action-btn-secondary:hover {
+    background: #f8f9fa;
+    border-color: #667eea;
+}
+
+/* Таблицы общего назначения */
+.table-responsive {
+    overflow-x: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+    color: #1a1a1a;
+}
+
+.table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #666666;
+    font-size: 0.9rem;
+}
+
+.table tr:hover {
+    background: #f0f2f5;
+}
+
+/* Формы */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #666666;
+    font-size: 0.9rem;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    color: #1a1a1a;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form-error {
+    color: #e53e3e;
+    font-size: 0.85rem;
+    margin-top: 6px;
+}
+
+/* Уведомления */
+.alert {
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    border: 1px solid;
+}
+
+.alert-success {
+    background: rgba(16, 185, 129, 0.1);
+    color: #065f46;
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.alert-error {
+    background: rgba(229, 62, 62, 0.1);
+    color: #9b1c1c;
+    border-color: rgba(229, 62, 62, 0.3);
+}
+
+.alert-info {
+    background: rgba(59, 130, 246, 0.1);
+    color: #1e40af;
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+.alert-warning {
+    background: rgba(245, 158, 11, 0.1);
+    color: #92400e;
+    border-color: rgba(245, 158, 11, 0.3);
+}
+
+/* Бейджи */
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-primary {
+    background: rgba(102, 126, 234, 0.15);
+    color: #4c51bf;
+    border: 1px solid rgba(102, 126, 234, 0.3);
+}
+
+.badge-success {
+    background: rgba(16, 185, 129, 0.15);
+    color: #065f46;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.badge-danger {
+    background: rgba(229, 62, 62, 0.15);
+    color: #9b1c1c;
+    border: 1px solid rgba(229, 62, 62, 0.3);
+}
+
+.badge-warning {
+    background: rgba(245, 158, 11, 0.15);
+    color: #92400e;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.badge-info {
+    background: rgba(59, 130, 246, 0.15);
+    color: #1e40af;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+/* Прогресс-бары */
+.progress-bar {
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(to right, #667eea, #764ba2);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}

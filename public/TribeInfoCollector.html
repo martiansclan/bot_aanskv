@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сбор информации о NFT | Martian Clan</title>
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
+    <link rel="stylesheet" href="/assets/css/TribeInfoCollector.css">
+</head>
+<body>
+    <div class="navbar">
+        <div class="nav-brand">
+            <h1>Martian Clan</h1>
+        </div>
+        <nav class="nav-links">
+            <a href="/">Главная</a>            
+        </nav>
+    </div>
+
+    <div class="collector-container">
+        <div class="collector-header">
+            <h1>🔄 Сбор информации о NFT</h1>
+            <p class="subtitle">Автоматический сбор данных о NFT коллекции с блокчейна</p>
+        </div>
+
+        
+
+        <div class="stages-container">
+            <!-- Этап 1 -->
+            <div class="stage-container" id="stage1Container">
+                <div class="stage-header">
+                    <span class="stage-title">🚀 Этап 1: Базовая информация</span>
+                    <span class="stage-status" id="stage1Status">Ожидание</span>
+                </div>
+                <div class="stage-progress">
+                    <div class="progress-bar-stage" id="stage1Progress">
+                        <div class="progress-fill-stage" style="width: 0%"></div>
+                    </div>
+                    <span class="progress-text-stage" id="stage1Text">0%</span>
+                </div>
+                <div class="stage-details" id="stage1Details">-</div>
+            </div>
+            
+            <!-- Этап 2 -->
+            <div class="stage-container" id="stage2Container">
+                <div class="stage-header">
+                    <span class="stage-title">📊 Этап 2: Детали NFT</span>
+                    <span class="stage-status" id="stage2Status">Ожидание</span>
+                </div>
+                <div class="stage-progress">
+                    <div class="progress-bar-stage" id="stage2Progress">
+                        <div class="progress-fill-stage" style="width: 0%"></div>
+                    </div>
+                    <span class="progress-text-stage" id="stage2Text">0%</span>
+                </div>
+                <div class="stage-details" id="stage2Details">-</div>
+            </div>
+            
+            <!-- Этап 3 -->
+            <div class="stage-container" id="stage3Container">
+                <div class="stage-header">
+                    <span class="stage-title">🔗 Этап 3: Генерация ссылок</span>
+                    <span class="stage-status" id="stage3Status">Ожидание</span>
+                </div>
+                <div class="stage-progress">
+                    <div class="progress-bar-stage" id="stage3Progress">
+                        <div class="progress-fill-stage" style="width: 0%"></div>
+                    </div>
+                    <span class="progress-text-stage" id="stage3Text">0%</span>
+                </div>
+                <div class="stage-details" id="stage3Details">-</div>
+            </div>
+        </div>
+
+        <div class="collector-stats" id="statsContainer">
+            <div class="stat-card">
+                <div class="stat-label">Статус сбора</div>
+                <div class="stat-value" id="statusValue">Не активен</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-label">NFT в коллекции</div>
+                <div class="stat-value" id="collectionTotal">0</div>                
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-label">NFT в файле</div>
+                <div class="stat-value" id="nftsInFile">0</div>
+            </div>           
+        </div>
+
+        <div class="controls-section">
+            <h2>Управление сбором</h2>            
+            <div class="controls-grid">
+                <div>
+                    <button class="btn btn-primary btn-wide" id="startBtn">
+                        ▶️ Запустить сбор
+                    </button>
+                    <p class="help-text">Запуск полного сбора данных</p>
+                </div>
+                
+                <div>
+                    <button class="btn btn-warning btn-wide" id="continueBtn">
+                        🔄 Продолжить сбор
+                    </button>
+                    <p class="help-text">Продолжение с текущего этапа</p>
+                </div>
+                
+                <div>
+                    <button class="btn btn-danger btn-wide" id="stopBtn" disabled>
+                        ⏹️ Остановить
+                    </button>
+                    <p class="help-text">Остановка текущего сбора</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="log-container">
+            <div class="log-header">
+                <h3>Лог операций</h3>
+                <div>
+                    <button class="btn btn-secondary btn-sm" id="clearLogBtn">
+                        Очистить лог
+                    </button>
+                </div>
+            </div>
+            
+            <div class="log-content" id="logContent">
+                <!-- Лог будет добавляться динамически -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Подключаем общие скрипты -->
+     <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/api.js"></script>
+    
+    
+
+    <!-- Подключаем модуль Tribe Info Collector -->
+    <script src="/assets/js/TribeInfoCollector.js"></script>
+    
+</body>
+</html>

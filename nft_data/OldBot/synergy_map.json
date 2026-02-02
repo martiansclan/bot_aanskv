@@ -1,0 +1,1613 @@
+{
+  "metadata": {
+    "created_at": "2026-01-28T14:15:30.102Z",
+    "source_file": "attributes_power_data.json",
+    "total_attributes": 252,
+    "unique_values": 138,
+    "attribute_types": 14
+  },
+  "baseValues": [
+    "Breastplate Of The Dead",
+    "Aerated Concrete Block",
+    "New Brick Wall Chunk",
+    "Old Brick Wall Chunk",
+    "Traffic Police Baton",
+    "Fairytale Champagne",
+    "Mechanic’s Cocktail",
+    "Grandma’s Wallpaper",
+    "Spiked Mechanical",
+    "Tropical Cocktail",
+    "Zargates Business",
+    "Vintage Wallpaper",
+    "Phoenix Feathers",
+    "Ripped-Off Plank",
+    "Ripped-Off Fence",
+    "Magic Mushrooms",
+    "Mechanic’s Nuts",
+    "Fairytale Beads",
+    "Cosmic Cocktail",
+    "Mystic Smoothie",
+    "Chocolate Shake",
+    "Mechanic’s Gear",
+    "Spiked Demonic",
+    "Lunar Cocktail",
+    "Mushroom Juice",
+    "Swamp Cocktail",
+    "Taiga Tincture",
+    "Golden Bitcoin",
+    "Torn Cardboard",
+    "Concrete Block",
+    "Spiked Silver",
+    "Spiked Wooden",
+    "Spiked Cosmic",
+    "Protein Shake",
+    "Professor TON",
+    "Mountain Blue",
+    "Meadow Yellow",
+    "Dragon Teeth",
+    "Spiked Lunar",
+    "Runed Silver",
+    "Spiked Stone",
+    "Demonic Wine",
+    "Unicorn Milk",
+    "Martian Cola",
+    "Turtle Shell",
+    "Cosmic Black",
+    "Desert White",
+    "Cavern Brown",
+    "Forest Green",
+    "Copper Plate",
+    "Spiked Gold",
+    "No Earrings",
+    "Cyber Tonic",
+    "Forest Beer",
+    "Tribo Games",
+    "Pure Silver",
+    "Demonic Red",
+    "Burnt Paper",
+    "Toadstools",
+    "Fly Agaric",
+    "Runed Gold",
+    "Gold Braid",
+    "Mechanical",
+    "Stone Slab",
+    "Giant Fork",
+    "Lunar Blue",
+    "Fairytale",
+    "Steampunk",
+    "Gold Rope",
+    "Chocolate",
+    "Fake Gold",
+    "Cardboard",
+    "Styrofoam",
+    "Golf Club",
+    "Stop Sign",
+    "Mountain",
+    "Tropical",
+    "Zargates",
+    "Telegram",
+    "Elephant",
+    "Sea Blue",
+    "Tentacle",
+    "Demonic",
+    "Martian",
+    "Magical",
+    "Emerald",
+    "Diamond",
+    "Bitcoin",
+    "Phoenix",
+    "Leather",
+    "Granite",
+    "WС Sign",
+    "Crowbar",
+    "Golden",
+    "Cosmic",
+    "Cavern",
+    "Desert",
+    "Silver",
+    "Forest",
+    "Meadow",
+    "Wooden",
+    "Dollar",
+    "Dragon",
+    "Spiked",
+    "Guitar",
+    "Branch",
+    "Lunar",
+    "Urban",
+    "Beach",
+    "Swamp",
+    "Taiga",
+    "Bones",
+    "Stone",
+    "Paper",
+    "Latte",
+    "Cyber",
+    "Glass",
+    "Metal",
+    "Spear",
+    "Spine",
+    "Staff",
+    "Chair",
+    "Ruby",
+    "Gold",
+    "Bone",
+    "Rope",
+    "Iron",
+    "MAGA",
+    "Rail",
+    "Pipe",
+    "Sea",
+    "TON",
+    "ETH",
+    "RUB",
+    "Red",
+    "Bat",
+    "Oar",
+    "Mop"
+  ],
+  "baseMap": {
+    "golden": "Golden",
+    "lunar": "Lunar",
+    "cosmic": "Cosmic",
+    "demonic": "Demonic",
+    "cavern": "Cavern",
+    "desert": "Desert",
+    "fairytale": "Fairytale",
+    "martian": "Martian",
+    "magical": "Magical",
+    "silver": "Silver",
+    "forest": "Forest",
+    "urban": "Urban",
+    "beach": "Beach",
+    "mountain": "Mountain",
+    "meadow": "Meadow",
+    "swamp": "Swamp",
+    "tropical": "Tropical",
+    "taiga": "Taiga",
+    "emerald": "Emerald",
+    "dragon teeth": "Dragon Teeth",
+    "dragon": "Dragon",
+    "teeth": "Dragon Teeth",
+    "ruby": "Ruby",
+    "spiked gold": "Spiked Gold",
+    "spiked": "Spiked",
+    "gold": "Gold",
+    "diamond": "Diamond",
+    "no earrings": "No Earrings",
+    "earrings": "No Earrings",
+    "spiked silver": "Spiked Silver",
+    "magic mushrooms": "Magic Mushrooms",
+    "magic": "Magic Mushrooms",
+    "mushrooms": "Magic Mushrooms",
+    "phoenix feathers": "Phoenix Feathers",
+    "phoenix": "Phoenix",
+    "feathers": "Phoenix Feathers",
+    "toadstools": "Toadstools",
+    "mechanic’s nuts": "Mechanic’s Nuts",
+    "mechanic’s": "Mechanic’s Nuts",
+    "nuts": "Mechanic’s Nuts",
+    "spiked wooden": "Spiked Wooden",
+    "wooden": "Wooden",
+    "bones": "Bones",
+    "fly agaric": "Fly Agaric",
+    "fly": "Fly Agaric",
+    "agaric": "Fly Agaric",
+    "spiked lunar": "Spiked Lunar",
+    "runed gold": "Runed Gold",
+    "runed": "Runed Gold",
+    "spiked cosmic": "Spiked Cosmic",
+    "gold braid": "Gold Braid",
+    "braid": "Gold Braid",
+    "spiked demonic": "Spiked Demonic",
+    "spiked mechanical": "Spiked Mechanical",
+    "mechanical": "Mechanical",
+    "fairytale beads": "Fairytale Beads",
+    "beads": "Fairytale Beads",
+    "runed silver": "Runed Silver",
+    "spiked stone": "Spiked Stone",
+    "stone": "Stone",
+    "bone": "Bone",
+    "rope": "Rope",
+    "paper": "Paper",
+    "zargates": "Zargates",
+    "latte": "Latte",
+    "cosmic cocktail": "Cosmic Cocktail",
+    "cocktail": "Cosmic Cocktail",
+    "lunar cocktail": "Lunar Cocktail",
+    "demonic wine": "Demonic Wine",
+    "wine": "Demonic Wine",
+    "mystic smoothie": "Mystic Smoothie",
+    "mystic": "Mystic Smoothie",
+    "smoothie": "Mystic Smoothie",
+    "fairytale champagne": "Fairytale Champagne",
+    "champagne": "Fairytale Champagne",
+    "unicorn milk": "Unicorn Milk",
+    "unicorn": "Unicorn Milk",
+    "milk": "Unicorn Milk",
+    "cyber tonic": "Cyber Tonic",
+    "cyber": "Cyber",
+    "tonic": "Cyber Tonic",
+    "martian cola": "Martian Cola",
+    "cola": "Martian Cola",
+    "chocolate shake": "Chocolate Shake",
+    "chocolate": "Chocolate",
+    "shake": "Chocolate Shake",
+    "protein shake": "Protein Shake",
+    "protein": "Protein Shake",
+    "mushroom juice": "Mushroom Juice",
+    "mushroom": "Mushroom Juice",
+    "juice": "Mushroom Juice",
+    "forest beer": "Forest Beer",
+    "beer": "Forest Beer",
+    "swamp cocktail": "Swamp Cocktail",
+    "taiga tincture": "Taiga Tincture",
+    "tincture": "Taiga Tincture",
+    "tropical cocktail": "Tropical Cocktail",
+    "mechanic’s cocktail": "Mechanic’s Cocktail",
+    "zargates business": "Zargates Business",
+    "business": "Zargates Business",
+    "telegram": "Telegram",
+    "tribo games": "Tribo Games",
+    "tribo": "Tribo Games",
+    "games": "Tribo Games",
+    "bitcoin": "Bitcoin",
+    "professor ton": "Professor TON",
+    "professor": "Professor TON",
+    "ton": "TON",
+    "sea": "Sea",
+    "steampunk": "Steampunk",
+    "gold rope": "Gold Rope",
+    "eth": "ETH",
+    "rub": "RUB",
+    "dollar": "Dollar",
+    "elephant": "Elephant",
+    "breastplate of the dead": "Breastplate Of The Dead",
+    "breastplate": "Breastplate Of The Dead",
+    "the": "Breastplate Of The Dead",
+    "dead": "Breastplate Of The Dead",
+    "iron": "Iron",
+    "turtle shell": "Turtle Shell",
+    "turtle": "Turtle Shell",
+    "shell": "Turtle Shell",
+    "leather": "Leather",
+    "pure silver": "Pure Silver",
+    "pure": "Pure Silver",
+    "red": "Red",
+    "demonic red": "Demonic Red",
+    "maga": "MAGA",
+    "cosmic black": "Cosmic Black",
+    "black": "Cosmic Black",
+    "desert white": "Desert White",
+    "white": "Desert White",
+    "sea blue": "Sea Blue",
+    "blue": "Sea Blue",
+    "cavern brown": "Cavern Brown",
+    "brown": "Cavern Brown",
+    "mountain blue": "Mountain Blue",
+    "forest green": "Forest Green",
+    "green": "Forest Green",
+    "golden bitcoin": "Golden Bitcoin",
+    "mechanic’s gear": "Mechanic’s Gear",
+    "gear": "Mechanic’s Gear",
+    "fake gold": "Fake Gold",
+    "fake": "Fake Gold",
+    "grandma’s wallpaper": "Grandma’s Wallpaper",
+    "grandma’s": "Grandma’s Wallpaper",
+    "wallpaper": "Grandma’s Wallpaper",
+    "cardboard": "Cardboard",
+    "torn cardboard": "Torn Cardboard",
+    "torn": "Torn Cardboard",
+    "burnt paper": "Burnt Paper",
+    "burnt": "Burnt Paper",
+    "vintage wallpaper": "Vintage Wallpaper",
+    "vintage": "Vintage Wallpaper",
+    "glass": "Glass",
+    "granite": "Granite",
+    "metal": "Metal",
+    "copper plate": "Copper Plate",
+    "copper": "Copper Plate",
+    "plate": "Copper Plate",
+    "new brick wall chunk": "New Brick Wall Chunk",
+    "new": "New Brick Wall Chunk",
+    "brick": "New Brick Wall Chunk",
+    "wall": "New Brick Wall Chunk",
+    "chunk": "New Brick Wall Chunk",
+    "aerated concrete block": "Aerated Concrete Block",
+    "aerated": "Aerated Concrete Block",
+    "concrete": "Aerated Concrete Block",
+    "block": "Aerated Concrete Block",
+    "styrofoam": "Styrofoam",
+    "concrete block": "Concrete Block",
+    "ripped-off plank": "Ripped-Off Plank",
+    "ripped-off": "Ripped-Off Plank",
+    "plank": "Ripped-Off Plank",
+    "stone slab": "Stone Slab",
+    "slab": "Stone Slab",
+    "ripped-off fence": "Ripped-Off Fence",
+    "fence": "Ripped-Off Fence",
+    "old brick wall chunk": "Old Brick Wall Chunk",
+    "old": "Old Brick Wall Chunk",
+    "traffic police baton": "Traffic Police Baton",
+    "traffic": "Traffic Police Baton",
+    "police": "Traffic Police Baton",
+    "baton": "Traffic Police Baton",
+    "guitar": "Guitar",
+    "bat": "Bat",
+    "golf club": "Golf Club",
+    "golf": "Golf Club",
+    "club": "Golf Club",
+    "wс sign": "WС Sign",
+    "sign": "WС Sign",
+    "stop sign": "Stop Sign",
+    "stop": "Stop Sign",
+    "giant fork": "Giant Fork",
+    "giant": "Giant Fork",
+    "fork": "Giant Fork",
+    "rail": "Rail",
+    "spear": "Spear",
+    "spine": "Spine",
+    "staff": "Staff",
+    "tentacle": "Tentacle",
+    "crowbar": "Crowbar",
+    "oar": "Oar",
+    "pipe": "Pipe",
+    "mop": "Mop",
+    "chair": "Chair",
+    "branch": "Branch",
+    "lunar blue": "Lunar Blue",
+    "meadow yellow": "Meadow Yellow",
+    "yellow": "Meadow Yellow"
+  },
+  "rarityMap": {
+    "golden": "Legendary",
+    "lunar": "Legendary",
+    "cosmic": "Legendary",
+    "demonic": "Legendary",
+    "cavern": "Epic",
+    "desert": "Epic",
+    "fairytale": "Epic",
+    "martian": "Epic",
+    "magical": "Epic",
+    "silver": "Epic",
+    "forest": "Common",
+    "urban": "Common",
+    "beach": "Common",
+    "mountain": "Common",
+    "meadow": "Common",
+    "swamp": "Common",
+    "tropical": "Common",
+    "taiga": "Common",
+    "emerald": "Legendary",
+    "dragon teeth": "Legendary",
+    "dragon": "Legendary",
+    "teeth": "Legendary",
+    "ruby": "Legendary",
+    "spiked gold": "Legendary",
+    "spiked": "Epic",
+    "gold": "Legendary",
+    "diamond": "Legendary",
+    "no earrings": "Legendary",
+    "earrings": "Legendary",
+    "spiked silver": "Epic",
+    "magic mushrooms": "Epic",
+    "magic": "Epic",
+    "mushrooms": "Epic",
+    "phoenix feathers": "Epic",
+    "phoenix": "Epic",
+    "feathers": "Epic",
+    "toadstools": "Common",
+    "mechanic’s nuts": "Common",
+    "mechanic’s": "Common",
+    "nuts": "Common",
+    "spiked wooden": "Common",
+    "wooden": "Common",
+    "bones": "Common",
+    "fly agaric": "Common",
+    "fly": "Common",
+    "agaric": "Common",
+    "spiked lunar": "Legendary",
+    "runed gold": "Legendary",
+    "runed": "Epic",
+    "spiked cosmic": "Legendary",
+    "gold braid": "Legendary",
+    "braid": "Legendary",
+    "spiked demonic": "Legendary",
+    "spiked mechanical": "Epic",
+    "mechanical": "Common",
+    "fairytale beads": "Epic",
+    "beads": "Epic",
+    "runed silver": "Epic",
+    "spiked stone": "Epic",
+    "stone": "Common",
+    "bone": "Common",
+    "rope": "Common",
+    "paper": "Legendary",
+    "zargates": "Mythical",
+    "latte": "Legendary",
+    "cosmic cocktail": "Legendary",
+    "cocktail": "Common",
+    "lunar cocktail": "Legendary",
+    "demonic wine": "Legendary",
+    "wine": "Legendary",
+    "mystic smoothie": "Epic",
+    "mystic": "Epic",
+    "smoothie": "Epic",
+    "fairytale champagne": "Epic",
+    "champagne": "Epic",
+    "unicorn milk": "Epic",
+    "unicorn": "Epic",
+    "milk": "Epic",
+    "cyber tonic": "Epic",
+    "cyber": "Epic",
+    "tonic": "Epic",
+    "martian cola": "Epic",
+    "cola": "Epic",
+    "chocolate shake": "Common",
+    "chocolate": "Common",
+    "shake": "Common",
+    "protein shake": "Common",
+    "protein": "Common",
+    "mushroom juice": "Common",
+    "mushroom": "Common",
+    "juice": "Common",
+    "forest beer": "Common",
+    "beer": "Common",
+    "swamp cocktail": "Common",
+    "taiga tincture": "Common",
+    "tincture": "Common",
+    "tropical cocktail": "Common",
+    "mechanic’s cocktail": "Common",
+    "zargates business": "Mythical+",
+    "business": "Mythical+",
+    "telegram": "Legendary",
+    "tribo games": "Legendary",
+    "tribo": "Legendary",
+    "games": "Legendary",
+    "bitcoin": "Legendary",
+    "professor ton": "Legendary",
+    "professor": "Legendary",
+    "ton": "Legendary",
+    "sea": "Epic",
+    "steampunk": "Common",
+    "gold rope": "Legendary",
+    "eth": "Epic",
+    "rub": "Epic",
+    "dollar": "Epic",
+    "elephant": "Common",
+    "breastplate of the dead": "Legendary",
+    "breastplate": "Legendary",
+    "the": "Legendary",
+    "dead": "Legendary",
+    "iron": "Common",
+    "turtle shell": "Common",
+    "turtle": "Common",
+    "shell": "Common",
+    "leather": "Common",
+    "pure silver": "Epic",
+    "pure": "Epic",
+    "red": "Legendary",
+    "demonic red": "Legendary",
+    "maga": "Legendary",
+    "cosmic black": "Legendary",
+    "black": "Legendary",
+    "desert white": "Epic",
+    "white": "Epic",
+    "sea blue": "Epic",
+    "blue": "Common",
+    "cavern brown": "Epic",
+    "brown": "Epic",
+    "mountain blue": "Common",
+    "forest green": "Common",
+    "green": "Common",
+    "golden bitcoin": "Legendary",
+    "mechanic’s gear": "Common",
+    "gear": "Common",
+    "fake gold": "Common",
+    "fake": "Common",
+    "grandma’s wallpaper": "Mythical",
+    "grandma’s": "Mythical",
+    "wallpaper": "Legendary",
+    "cardboard": "Legendary",
+    "torn cardboard": "Legendary",
+    "torn": "Legendary",
+    "burnt paper": "Legendary",
+    "burnt": "Legendary",
+    "vintage wallpaper": "Legendary",
+    "vintage": "Legendary",
+    "glass": "Epic",
+    "granite": "Epic",
+    "metal": "Epic",
+    "copper plate": "Epic",
+    "copper": "Epic",
+    "plate": "Epic",
+    "new brick wall chunk": "Epic",
+    "new": "Epic",
+    "brick": "Common",
+    "wall": "Common",
+    "chunk": "Common",
+    "aerated concrete block": "Epic",
+    "aerated": "Epic",
+    "concrete": "Epic",
+    "block": "Epic",
+    "styrofoam": "Epic",
+    "concrete block": "Epic",
+    "ripped-off plank": "Common",
+    "ripped-off": "Common",
+    "plank": "Common",
+    "stone slab": "Common",
+    "slab": "Common",
+    "ripped-off fence": "Common",
+    "fence": "Common",
+    "old brick wall chunk": "Common",
+    "old": "Common",
+    "traffic police baton": "Mythical",
+    "traffic": "Mythical",
+    "police": "Mythical",
+    "baton": "Mythical",
+    "guitar": "Legendary",
+    "bat": "Legendary",
+    "golf club": "Legendary",
+    "golf": "Legendary",
+    "club": "Legendary",
+    "wс sign": "Legendary",
+    "sign": "Legendary",
+    "stop sign": "Legendary",
+    "stop": "Legendary",
+    "giant fork": "Epic",
+    "giant": "Epic",
+    "fork": "Epic",
+    "rail": "Epic",
+    "spear": "Epic",
+    "spine": "Epic",
+    "staff": "Epic",
+    "tentacle": "Epic",
+    "crowbar": "Epic",
+    "oar": "Epic",
+    "pipe": "Common",
+    "mop": "Common",
+    "chair": "Common",
+    "branch": "Common",
+    "lunar blue": "Legendary",
+    "meadow yellow": "Common",
+    "yellow": "Common"
+  },
+  "attributeTypes": {
+    "Skin Tone": [
+      {
+        "value": "Golden",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Lunar",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Cosmic",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Demonic",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Cavern",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Desert",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Fairytale",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Martian",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Magical",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Silver",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Forest",
+        "rarity": "Common"
+      },
+      {
+        "value": "Urban",
+        "rarity": "Common"
+      },
+      {
+        "value": "Beach",
+        "rarity": "Common"
+      },
+      {
+        "value": "Mountain",
+        "rarity": "Common"
+      },
+      {
+        "value": "Meadow",
+        "rarity": "Common"
+      },
+      {
+        "value": "Swamp",
+        "rarity": "Common"
+      },
+      {
+        "value": "Tropical",
+        "rarity": "Common"
+      },
+      {
+        "value": "Taiga",
+        "rarity": "Common"
+      }
+    ],
+    "Earrings": [
+      {
+        "value": "Emerald",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Dragon Teeth",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Ruby",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Demonic",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Spiked Gold",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Diamond",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "No Earrings",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Gold",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Spiked Silver",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Magic Mushrooms",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Phoenix Feathers",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Silver",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Toadstools",
+        "rarity": "Common"
+      },
+      {
+        "value": "Mechanic’s Nuts",
+        "rarity": "Common"
+      },
+      {
+        "value": "Spiked Wooden",
+        "rarity": "Common"
+      },
+      {
+        "value": "Bones",
+        "rarity": "Common"
+      },
+      {
+        "value": "Fly Agaric",
+        "rarity": "Common"
+      },
+      {
+        "value": "Wooden",
+        "rarity": "Common"
+      }
+    ],
+    "Bracelet": [
+      {
+        "value": "Spiked Gold",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Spiked Lunar",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Runed Gold",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Spiked Cosmic",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Gold Braid",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Spiked Demonic",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Spiked Mechanical",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Fairytale Beads",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Runed Silver",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Spiked Silver",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Spiked Stone",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Tropical",
+        "rarity": "Common"
+      },
+      {
+        "value": "Stone",
+        "rarity": "Common"
+      },
+      {
+        "value": "Wooden",
+        "rarity": "Common"
+      },
+      {
+        "value": "Bone",
+        "rarity": "Common"
+      },
+      {
+        "value": "Rope",
+        "rarity": "Common"
+      },
+      {
+        "value": "Mechanical",
+        "rarity": "Common"
+      },
+      {
+        "value": "Paper",
+        "rarity": "Common"
+      }
+    ],
+    "Cup": [
+      {
+        "value": "Zargates",
+        "rarity": "Mythical"
+      },
+      {
+        "value": "Latte",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Cosmic Cocktail",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Lunar Cocktail",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Demonic Wine",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Mystic Smoothie",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Fairytale Champagne",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Unicorn Milk",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Cyber Tonic",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Martian Cola",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Chocolate Shake",
+        "rarity": "Common"
+      },
+      {
+        "value": "Protein Shake",
+        "rarity": "Common"
+      },
+      {
+        "value": "Mushroom Juice",
+        "rarity": "Common"
+      },
+      {
+        "value": "Forest Beer",
+        "rarity": "Common"
+      },
+      {
+        "value": "Swamp Cocktail",
+        "rarity": "Common"
+      },
+      {
+        "value": "Taiga Tincture",
+        "rarity": "Common"
+      },
+      {
+        "value": "Tropical Cocktail",
+        "rarity": "Common"
+      },
+      {
+        "value": "Mechanic’s Cocktail",
+        "rarity": "Common"
+      }
+    ],
+    "Glasses": [
+      {
+        "value": "Zargates Business",
+        "rarity": "Mythical+"
+      },
+      {
+        "value": "Zargates",
+        "rarity": "Mythical"
+      },
+      {
+        "value": "Telegram",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Tribo Games",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Bitcoin",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Professor TON",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Cosmic",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Gold",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Demonic",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Desert",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Cyber",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Sea",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Phoenix",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Martian",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Fairytale",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Steampunk",
+        "rarity": "Common"
+      },
+      {
+        "value": "Tropical",
+        "rarity": "Common"
+      },
+      {
+        "value": "Mountain",
+        "rarity": "Common"
+      }
+    ],
+    "Pendant Chain": [
+      {
+        "value": "Zargates",
+        "rarity": "Mythical"
+      },
+      {
+        "value": "Gold",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Bitcoin",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Tribo Games",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Telegram",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "TON",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Demonic",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Lunar",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Gold Rope",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Fairytale",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Phoenix",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Silver",
+        "rarity": "Epic"
+      },
+      {
+        "value": "ETH",
+        "rarity": "Epic"
+      },
+      {
+        "value": "RUB",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Dollar",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Magical",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Elephant",
+        "rarity": "Common"
+      },
+      {
+        "value": "Rope",
+        "rarity": "Common"
+      }
+    ],
+    "Armor": [
+      {
+        "value": "Dragon",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Ruby",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Breastplate Of The Dead",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Fairytale",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Sea",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Martian",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Cyber",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Magical",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Phoenix",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Spiked",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Mountain",
+        "rarity": "Common"
+      },
+      {
+        "value": "Iron",
+        "rarity": "Common"
+      },
+      {
+        "value": "Tropical",
+        "rarity": "Common"
+      },
+      {
+        "value": "Wooden",
+        "rarity": "Common"
+      },
+      {
+        "value": "Turtle Shell",
+        "rarity": "Common"
+      },
+      {
+        "value": "Paper",
+        "rarity": "Common"
+      },
+      {
+        "value": "Forest",
+        "rarity": "Common"
+      },
+      {
+        "value": "Leather",
+        "rarity": "Common"
+      }
+    ],
+    "Heart": [
+      {
+        "value": "Zargates",
+        "rarity": "Mythical"
+      },
+      {
+        "value": "Bitcoin",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Lunar",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "TON",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Ruby",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Telegram",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Tribo Games",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Pure Silver",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Sea",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Phoenix",
+        "rarity": "Epic"
+      },
+      {
+        "value": "ETH",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Silver",
+        "rarity": "Epic"
+      },
+      {
+        "value": "RUB",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Dollar",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Elephant",
+        "rarity": "Common"
+      },
+      {
+        "value": "Stone",
+        "rarity": "Common"
+      },
+      {
+        "value": "Red",
+        "rarity": "Common"
+      },
+      {
+        "value": "Chocolate",
+        "rarity": "Common"
+      }
+    ],
+    "Cap": [
+      {
+        "value": "Zargates",
+        "rarity": "Mythical"
+      },
+      {
+        "value": "TON",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Gold",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Demonic Red",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Telegram",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Bitcoin",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "MAGA",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Cosmic Black",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Desert White",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Sea Blue",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Phoenix",
+        "rarity": "Epic"
+      },
+      {
+        "value": "RUB",
+        "rarity": "Epic"
+      },
+      {
+        "value": "ETH",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Dollar",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Cavern Brown",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Elephant",
+        "rarity": "Common"
+      },
+      {
+        "value": "Mountain Blue",
+        "rarity": "Common"
+      },
+      {
+        "value": "Forest Green",
+        "rarity": "Common"
+      }
+    ],
+    "Earring": [
+      {
+        "value": "Gold",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Spiked Gold",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Ruby",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Diamond",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Demonic",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Emerald",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "No Earrings",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Dragon Teeth",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Phoenix Feathers",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Spiked Silver",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Magic Mushrooms",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Silver",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Fly Agaric",
+        "rarity": "Common"
+      },
+      {
+        "value": "Mechanic’s Nuts",
+        "rarity": "Common"
+      },
+      {
+        "value": "Wooden",
+        "rarity": "Common"
+      },
+      {
+        "value": "Toadstools",
+        "rarity": "Common"
+      },
+      {
+        "value": "Bones",
+        "rarity": "Common"
+      },
+      {
+        "value": "Spiked Wooden",
+        "rarity": "Common"
+      }
+    ],
+    "Ring": [
+      {
+        "value": "Zargates",
+        "rarity": "Mythical"
+      },
+      {
+        "value": "Diamond",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Tribo Games",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "TON",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Emerald",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Lunar",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Telegram",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Golden Bitcoin",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Spiked Silver",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Dollar",
+        "rarity": "Epic"
+      },
+      {
+        "value": "RUB",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Silver",
+        "rarity": "Epic"
+      },
+      {
+        "value": "ETH",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Mechanic’s Gear",
+        "rarity": "Common"
+      },
+      {
+        "value": "Elephant",
+        "rarity": "Common"
+      },
+      {
+        "value": "Stone",
+        "rarity": "Common"
+      },
+      {
+        "value": "Wooden",
+        "rarity": "Common"
+      },
+      {
+        "value": "Fake Gold",
+        "rarity": "Common"
+      }
+    ],
+    "Sign": [
+      {
+        "value": "Grandma’s Wallpaper",
+        "rarity": "Mythical"
+      },
+      {
+        "value": "Cardboard",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Torn Cardboard",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Paper",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Burnt Paper",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Vintage Wallpaper",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Glass",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Granite",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Metal",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Copper Plate",
+        "rarity": "Epic"
+      },
+      {
+        "value": "New Brick Wall Chunk",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Aerated Concrete Block",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Styrofoam",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Concrete Block",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Ripped-Off Plank",
+        "rarity": "Common"
+      },
+      {
+        "value": "Stone Slab",
+        "rarity": "Common"
+      },
+      {
+        "value": "Ripped-Off Fence",
+        "rarity": "Common"
+      },
+      {
+        "value": "Old Brick Wall Chunk",
+        "rarity": "Common"
+      }
+    ],
+    "Stick": [
+      {
+        "value": "Traffic Police Baton",
+        "rarity": "Mythical"
+      },
+      {
+        "value": "Guitar",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Bat",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Golf Club",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "WС Sign",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Stop Sign",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Giant Fork",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Rail",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Spear",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Spine",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Staff",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Tentacle",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Crowbar",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Oar",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Pipe",
+        "rarity": "Common"
+      },
+      {
+        "value": "Mop",
+        "rarity": "Common"
+      },
+      {
+        "value": "Chair",
+        "rarity": "Common"
+      },
+      {
+        "value": "Branch",
+        "rarity": "Common"
+      }
+    ],
+    "Hamster": [
+      {
+        "value": "Zargates",
+        "rarity": "Mythical"
+      },
+      {
+        "value": "Lunar Blue",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Telegram",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Demonic Red",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "TON",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Cosmic Black",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Tribo Games",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Gold",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Bitcoin",
+        "rarity": "Legendary"
+      },
+      {
+        "value": "Dollar",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Cavern Brown",
+        "rarity": "Epic"
+      },
+      {
+        "value": "RUB",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Desert White",
+        "rarity": "Epic"
+      },
+      {
+        "value": "ETH",
+        "rarity": "Epic"
+      },
+      {
+        "value": "Elephant",
+        "rarity": "Common"
+      },
+      {
+        "value": "Meadow Yellow",
+        "rarity": "Common"
+      },
+      {
+        "value": "Forest Green",
+        "rarity": "Common"
+      },
+      {
+        "value": "Mountain Blue",
+        "rarity": "Common"
+      }
+    ]
+  }
+}
