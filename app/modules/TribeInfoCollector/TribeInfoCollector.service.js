@@ -2,7 +2,6 @@ const fs = require('fs').promises;
 const path = require('path');
 const CONSTANTS = require('./TribeInfoCollector.constants');
 const utils = require('./TribeInfoCollector.utils');
-const wsManager = require('./websocket-manager');
 
 class TribeInfoCollectorService {
     constructor() {
@@ -10,16 +9,21 @@ class TribeInfoCollectorService {
         this.constants = CONSTANTS;
         this.utils = utils;
         
-        // WebSocket менеджер
-        this.wsManager = wsManager;
-        
         // Состояние процесса сбора
         this.collectionProcess = {
             isRunning: false,
             currentStage: CONSTANTS.COLLECTION_STATUS.NOT_STARTED,
             calculationId: null,
-            progressListeners: new Map()
+            lastProgressUpdate: null
         };
+        
+        // Хранилище прогресса для polling
+        this.progressStore = new Map();
+        
+        // Кеш для данных, чтобы не читать файл каждый раз
+        this.dataCache = null;
+        this.cacheTimestamp = null;
+        this.cacheTimeout = 5000; // 5 секунд
         
         this.logger = {
             info: (msg, ...args) => console.log(`[${CONSTANTS.LOG_TAGS.INFO}][${CONSTANTS.LOG_TAGS.MODULE_PREFIX}] ${msg}`, ...args),
@@ -57,56 +61,57 @@ class TribeInfoCollectorService {
     }
 
     /**
-     * Создает или проверяет файл данных
+     * Читает данные из файла с обработкой ошибок и кешированием
      */
-    async ensureDataFile() {
-        const filePath = this.getCollectedDataPath();
-        
-        try {
-            // Создаем директорию если нужно
-            await this.utils.ensureDataDir();
-            
-            try {
-                // Проверяем существование файла
-                await fs.access(filePath);
-                
-                // Читаем файл
-                const content = await fs.readFile(filePath, 'utf8');
-                if (content.trim() === '') {
-                    // Файл пустой, создаем структуру
-                    const initialData = this.createDataStructure();
-                    await fs.writeFile(filePath, JSON.stringify(initialData, null, 2), 'utf8');
-                    this.logger.info('📁 Создана структура файла данных');
-                    return { success: true, created: true };
-                }
-                
-                this.logger.info(`📁 Файл данных найден: ${path.basename(filePath)}`);
-                return { success: true, created: false };
-                
-            } catch (err) {
-                // Файла нет, создаем с структурой
-                const initialData = this.createDataStructure();
-                await fs.writeFile(filePath, JSON.stringify(initialData, null, 2), 'utf8');
-                this.logger.info(`📁 Создан файл данных: ${path.basename(filePath)}`);
-                return { success: true, created: true };
-            }
-            
-        } catch (error) {
-            this.logger.error('❌ Ошибка создания файла данных:', error.message);
-            return { success: false, error: error.message };
+    async readDataFile(forceRefresh = false) {
+        // Проверяем кеш
+        const now = Date.now();
+        if (!forceRefresh && this.dataCache && this.cacheTimestamp && 
+            (now - this.cacheTimestamp) < this.cacheTimeout) {
+            return this.dataCache;
         }
-    }
-
-    /**
-     * Читает данные из файла
-     */
-    async readDataFile() {
+        
         const filePath = this.getCollectedDataPath();
         
         try {
             await fs.access(filePath);
             const content = await fs.readFile(filePath, 'utf8');
-            return JSON.parse(content);
+            
+            // Проверяем и чиним JSON если нужно
+            let data;
+            try {
+                data = JSON.parse(content);
+            } catch (parseError) {
+                this.logger.warn(`❌ Ошибка парсинга JSON, пытаюсь восстановить: ${parseError.message}`);
+                
+                // Пытаемся восстановить JSON
+                const repairedContent = this.repairJson(content);
+                
+                try {
+                    data = JSON.parse(repairedContent);
+                    this.logger.info('✅ JSON успешно восстановлен');
+                    
+                    // Сохраняем исправленную версию
+                    await fs.writeFile(filePath, repairedContent, 'utf8');
+                    this.logger.info('📁 Исправленный файл сохранен');
+                } catch (repairError) {
+                    this.logger.error(`❌ Не удалось восстановить JSON: ${repairError.message}`);
+                    
+                    // Создаем новую структуру если файл полностью битый
+                    this.logger.info('🔄 Создание новой структуры данных');
+                    data = this.createDataStructure();
+                    
+                    // Сохраняем новую структуру
+                    await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf8');
+                }
+            }
+            
+            // Кешируем данные
+            this.dataCache = data;
+            this.cacheTimestamp = Date.now();
+            
+            return data;
+            
         } catch (error) {
             if (error.code === 'ENOENT') {
                 // Файл не существует, создаем новый
@@ -117,6 +122,10 @@ class TribeInfoCollectorService {
                 await fs.writeFile(filePath, JSON.stringify(newData, null, 2), 'utf8');
                 this.logger.info(`✅ Создан файл данных: ${path.basename(filePath)}`);
                 
+                // Кешируем
+                this.dataCache = newData;
+                this.cacheTimestamp = Date.now();
+                
                 return newData;
             }
             
@@ -126,23 +135,127 @@ class TribeInfoCollectorService {
     }
 
     /**
-     * Записывает данные в файл (без создания бэкапов)
+     * Пытается восстановить поврежденный JSON
+     */
+    repairJson(content) {
+        let repaired = content;
+        
+        // Удаляем незавершенные строки в конце файла
+        const lines = repaired.split('\n');
+        let inString = false;
+        let escapeNext = false;
+        let repairedLines = [];
+        
+        for (let line of lines) {
+            let lineResult = '';
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                const prevChar = i > 0 ? line[i - 1] : '';
+                
+                if (escapeNext) {
+                    escapeNext = false;
+                    lineResult += char;
+                    continue;
+                }
+                
+                if (char === '\\') {
+                    escapeNext = true;
+                    lineResult += char;
+                    continue;
+                }
+                
+                if (char === '"' && !escapeNext) {
+                    inString = !inString;
+                }
+                
+                lineResult += char;
+            }
+            
+            // Если в конце строки остаемся внутри строки, добавляем закрывающую кавычку
+            if (inString) {
+                lineResult += '"';
+                inString = false;
+            }
+            
+            repairedLines.push(lineResult);
+        }
+        
+        repaired = repairedLines.join('\n');
+        
+        // Убедимся, что JSON правильно закрыт
+        let openBrackets = 0;
+        let openBraces = 0;
+        
+        for (let char of repaired) {
+            if (char === '[') openBrackets++;
+            if (char === ']') openBrackets--;
+            if (char === '{') openBraces++;
+            if (char === '}') openBraces--;
+        }
+        
+        // Добавляем недостающие закрывающие скобки
+        while (openBrackets > 0) {
+            repaired += ']';
+            openBrackets--;
+        }
+        
+        while (openBraces > 0) {
+            repaired += '}';
+            openBraces--;
+        }
+        
+        // Убедимся, что последний объект в массиве правильно закрыт
+        const lastCommaIndex = repaired.lastIndexOf(',}');
+        if (lastCommaIndex !== -1) {
+            repaired = repaired.slice(0, lastCommaIndex) + '}' + repaired.slice(lastCommaIndex + 2);
+        }
+        
+        // Удаляем лишние запятые перед закрывающими скобками
+        repaired = repaired.replace(/,\s*([\]}])/g, '$1');
+        
+        return repaired;
+    }
+
+    /**
+     * Записывает данные в файл и обновляет кеш
      */
     async writeDataFile(data) {
         const filePath = this.getCollectedDataPath();
         
         try {
-            // Просто записываем данные без создания бэкапов
-            await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf8');
+            // Преобразуем данные в JSON с форматированием
+            const jsonContent = JSON.stringify(data, null, 2);
+            
+            // Пишем во временный файл сначала
+            const tempPath = filePath + '.tmp';
+            await fs.writeFile(tempPath, jsonContent, 'utf8');
+            
+            // Проверяем что файл валидный
+            await fs.readFile(tempPath, 'utf8').then(content => JSON.parse(content));
+            
+            // Заменяем старый файл новым
+            await fs.rename(tempPath, filePath);
             
             // Обновляем timestamp
             data[CONSTANTS.COLLECTION_KEYS.COLLECTION_INFO][CONSTANTS.COLLECTION_KEYS.LAST_UPDATED] = 
                 new Date().toISOString();
-                
+            
+            // Обновляем кеш
+            this.dataCache = data;
+            this.cacheTimestamp = Date.now();
+            
             return { success: true, filePath };
             
         } catch (error) {
             this.logger.error('❌ Ошибка записи в файл данных:', error.message);
+            
+            // Пытаемся удалить временный файл если он существует
+            try {
+                await fs.unlink(filePath + '.tmp').catch(() => {});
+            } catch (unlinkError) {
+                // Игнорируем ошибку удаления
+            }
+            
             return { success: false, error: error.message };
         }
     }
@@ -203,7 +316,7 @@ class TribeInfoCollectorService {
                     this.logger.info(`📦 Пачка ${batchNumber}: offset=${offset}, лимит=${limit}, обработано=${totalProcessed}/${remaining}`);
                     
                     // Обновляем прогресс
-                    this.updateProgressListeners(
+                    this.updateProgressStore(
                         CONSTANTS.COLLECTION_STATUS.STAGE_1,
                         totalProcessed,
                         remaining,
@@ -333,7 +446,7 @@ class TribeInfoCollectorService {
                     this.logger.info(`📊 Прогресс этапа 2: ${processedCount}/${pendingCount} (${((processedCount/pendingCount)*100).toFixed(1)}%)`);
                     
                     // Обновляем прогресс
-                    this.updateProgressListeners(
+                    this.updateProgressStore(
                         CONSTANTS.COLLECTION_STATUS.STAGE_2,
                         processedCount,
                         pendingCount,
@@ -450,7 +563,7 @@ class TribeInfoCollectorService {
                     this.logger.info(`📊 Прогресс этапа 3: ${processedCount}/${pendingCount} (${((processedCount/pendingCount)*100).toFixed(1)}%)`);
                     
                     // Обновляем прогресс
-                    this.updateProgressListeners(
+                    this.updateProgressStore(
                         CONSTANTS.COLLECTION_STATUS.STAGE_3,
                         processedCount,
                         pendingCount,
@@ -513,9 +626,6 @@ class TribeInfoCollectorService {
             calculationId = `collect_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
         } = options;
 
-        // Обеспечиваем существование файла данных
-        await this.ensureDataFile();
-        
         if (this.collectionProcess.isRunning) {
             throw new Error(CONSTANTS.ERROR_MESSAGES.PROCESS_ALREADY_RUNNING);
         }
@@ -528,8 +638,8 @@ class TribeInfoCollectorService {
             
             this.logger.info(`🚀 Запуск сбора данных (ID: ${calculationId})`);
 
-            // Отправляем начальное событие через WebSocket
-            this.updateProgressListeners(
+            // Сохраняем начальный прогресс
+            this.updateProgressStore(
                 startFromStage,
                 0,
                 0,
@@ -543,7 +653,7 @@ class TribeInfoCollectorService {
             if (startFromStage <= CONSTANTS.COLLECTION_STATUS.STAGE_1 && this.collectionProcess.isRunning) {
                 this.collectionProcess.currentStage = CONSTANTS.COLLECTION_STATUS.STAGE_1;
                 
-                this.updateProgressListeners(
+                this.updateProgressStore(
                     CONSTANTS.COLLECTION_STATUS.STAGE_1,
                     0,
                     0,
@@ -557,7 +667,7 @@ class TribeInfoCollectorService {
                         throw new Error(`Этап 1 завершился с ошибкой: ${stage1Result.error}`);
                     }
                     
-                    this.updateProgressListeners(
+                    this.updateProgressStore(
                         CONSTANTS.COLLECTION_STATUS.STAGE_1,
                         stage1Result.processed || 0,
                         stage1Result.totalNfts || 0,
@@ -585,7 +695,7 @@ class TribeInfoCollectorService {
             if (this.collectionProcess.isRunning) {
                 this.collectionProcess.currentStage = CONSTANTS.COLLECTION_STATUS.STAGE_2;
                 
-                this.updateProgressListeners(
+                this.updateProgressStore(
                     CONSTANTS.COLLECTION_STATUS.STAGE_2,
                     0,
                     0,
@@ -599,7 +709,7 @@ class TribeInfoCollectorService {
                         throw new Error(`Этап 2 завершился с ошибкой: ${stage2Result.error}`);
                     }
                     
-                    this.updateProgressListeners(
+                    this.updateProgressStore(
                         CONSTANTS.COLLECTION_STATUS.STAGE_2,
                         stage2Result.processed || 0,
                         stage2Result.total || (stage1Result?.totalNfts || 0),
@@ -627,7 +737,7 @@ class TribeInfoCollectorService {
             if (this.collectionProcess.isRunning) {
                 this.collectionProcess.currentStage = CONSTANTS.COLLECTION_STATUS.STAGE_3;
                 
-                this.updateProgressListeners(
+                this.updateProgressStore(
                     CONSTANTS.COLLECTION_STATUS.STAGE_3,
                     0,
                     0,
@@ -641,7 +751,7 @@ class TribeInfoCollectorService {
                         throw new Error(`Этап 3 завершился с ошибкой: ${stage3Result.error}`);
                     }
                     
-                    this.updateProgressListeners(
+                    this.updateProgressStore(
                         CONSTANTS.COLLECTION_STATUS.STAGE_3,
                         stage3Result.processed || 0,
                         stage3Result.total || (stage1Result?.totalNfts || 0),
@@ -669,7 +779,7 @@ class TribeInfoCollectorService {
             if (this.collectionProcess.isRunning) {
                 this.collectionProcess.currentStage = CONSTANTS.COLLECTION_STATUS.COMPLETED;
                 
-                this.updateProgressListeners(
+                this.updateProgressStore(
                     CONSTANTS.COLLECTION_STATUS.COMPLETED,
                     95,
                     100,
@@ -722,19 +832,14 @@ class TribeInfoCollectorService {
                         }
                     };
                     
-                    // Отправляем финальное событие через WebSocket
-                    this.updateProgressListeners(
+                    // Сохраняем финальный прогресс
+                    this.updateProgressStore(
                         CONSTANTS.COLLECTION_STATUS.COMPLETED,
                         100,
                         100,
                         'Сбор данных завершен!',
                         finalResult
                     );
-                    
-                    // Отправляем событие завершения через WebSocket менеджер
-                    if (this.wsManager) {
-                        this.wsManager.completeCalculation(calculationId, finalResult);
-                    }
                     
                     this.logger.info(`🎉 Сбор данных завершен! (ID: ${calculationId})`);
                     this.logger.info(`📊 Статистика:`);
@@ -766,19 +871,14 @@ class TribeInfoCollectorService {
                 timestamp: new Date().toISOString()
             };
             
-            // Отправляем событие ошибки через WebSocket
-            this.updateProgressListeners(
+            // Сохраняем прогресс ошибки
+            this.updateProgressStore(
                 this.collectionProcess.currentStage,
                 0,
                 0,
                 `Ошибка: ${error.message}`,
                 errorResult
             );
-            
-            // Отправляем ошибку через WebSocket менеджер
-            if (this.wsManager && this.collectionProcess.calculationId) {
-                this.wsManager.failCalculation(this.collectionProcess.calculationId, error);
-            }
             
             throw error;
             
@@ -830,80 +930,46 @@ class TribeInfoCollectorService {
             this.logger.info(`🛑 Остановка сбора данных на этапе ${stageName}`);
             this.logger.info(`📊 Прогресс: Этап 1: ${stage1Count}/${totalNfts}, Этап 2: ${stage2Count}/${totalNfts}, Этап 3: ${stage3Count}/${totalNfts}`);
             
-            // Отправляем событие остановки через WebSocket
-            if (this.wsManager && currentCalculationId) {
-                this.wsManager.updateProgress(
-                    currentCalculationId,
-                    processedPercent,
-                    `Сбор данных остановлен на этапе: ${stageName}`,
-                    {
-                        stage: currentStage,
-                        stageName: stageName,
-                        stoppedByUser: true,
-                        timestamp: new Date().toISOString(),
-                        progress: {
-                            stage1: { completed: stage1Count, total: totalNfts },
-                            stage2: { completed: stage2Count, total: totalNfts },
-                            stage3: { completed: stage3Count, total: totalNfts },
-                            overall: processedPercent
-                        },
-                        calculationId: currentCalculationId,
-                        action: 'stop',
-                        canContinue: true // Можно продолжить
-                    }
-                );
-                
-                // Также отправляем специальное событие остановки
-                this.wsManager.broadcastToCalculation(currentCalculationId, {
-                    type: 'stopped',
-                    calculationId: currentCalculationId,
-                    message: `Сбор данных остановлен на этапе: ${stageName}`,
+            // Обновляем прогресс
+            this.updateProgressStore(
+                currentStage,
+                stage1Count,
+                totalNfts,
+                `Сбор данных остановлен на этапе: ${stageName}`,
+                {
                     stage: currentStage,
                     stageName: stageName,
+                    stoppedByUser: true,
+                    timestamp: new Date().toISOString(),
                     progress: {
                         stage1: { completed: stage1Count, total: totalNfts },
                         stage2: { completed: stage2Count, total: totalNfts },
                         stage3: { completed: stage3Count, total: totalNfts },
                         overall: processedPercent
                     },
-                    timestamp: new Date().toISOString(),
-                    stoppedAt: new Date().toISOString()
-                });
-            }
-            
-            // Обновляем слушателей прогресса
-            this.updateProgressListeners(
-                currentStage,
-                stage1Count,
-                totalNfts,
-                `Сбор данных остановлен на этапе ${stageName}`,
-                {
-                    stoppedByUser: true,
-                    stage1: { completed: stage1Count, total: totalNfts },
-                    stage2: { completed: stage2Count, total: totalNfts },
-                    stage3: { completed: stage3Count, total: totalNfts },
-                    calculationId: currentCalculationId
+                    calculationId: currentCalculationId,
+                    action: 'stop',
+                    canContinue: true // Можно продолжить
                 }
             );
             
         } catch (error) {
             this.logger.error('❌ Ошибка при получении данных для остановки:', error.message);
             
-            // Все равно отправляем событие остановки
-            if (this.wsManager && currentCalculationId) {
-                this.wsManager.updateProgress(
-                    currentCalculationId,
-                    0,
-                    `Сбор данных остановлен (ошибка при получении прогресса)`,
-                    {
-                        stage: currentStage,
-                        stageName: stageName,
-                        stoppedByUser: true,
-                        error: error.message,
-                        timestamp: new Date().toISOString()
-                    }
-                );
-            }
+            // Все равно сохраняем прогресс
+            this.updateProgressStore(
+                currentStage,
+                0,
+                0,
+                `Сбор данных остановлен (ошибка при получении прогресса)`,
+                {
+                    stage: currentStage,
+                    stageName: stageName,
+                    stoppedByUser: true,
+                    error: error.message,
+                    timestamp: new Date().toISOString()
+                }
+            );
         }
         
         // Сохраняем состояние остановки в файл
@@ -934,7 +1000,6 @@ class TribeInfoCollectorService {
         this.collectionProcess.isRunning = false;
         this.collectionProcess.currentStage = CONSTANTS.COLLECTION_STATUS.NOT_STARTED;
         // Не очищаем calculationId, чтобы можно было отслеживать остановленный процесс
-        // this.collectionProcess.calculationId = null;
         
         return {
             success: true,
@@ -967,102 +1032,64 @@ class TribeInfoCollectorService {
     }
 
     /**
-     * Продолжение сбора с текущего этапа с проверкой
-     */
-    async continueCollection(options = {}) {
-        try {
-            const { calculationId } = options;
-            
-            // Проверяем, можно ли продолжить
-            const canContinue = await this.canContinueCollection(calculationId);
-            
-            if (!canContinue.canContinue) {
-                throw new Error(`Невозможно продолжить сбор: ${canContinue.reason}`);
-            }
-            
-            if (this.collectionProcess.isRunning) {
-                throw new Error(CONSTANTS.ERROR_MESSAGES.PROCESS_ALREADY_RUNNING);
-            }
-            
-            // Восстанавливаем calculationId из сохраненного состояния
-            const continueCalculationId = calculationId || canContinue.calculationId || 
-                `continue_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-            
-            // Получаем данные для определения с какого этапа продолжать
-            const allData = await this.readDataFile();
-            const lastStopStage = canContinue.lastStop?.stage || CONSTANTS.COLLECTION_STATUS.STAGE_1;
-            
-            this.logger.info(`🔄 Продолжение сбора с этапа ${this.getStageName(lastStopStage)}`);
-            
-            // Отправляем событие начала продолжения через WebSocket
-            if (this.wsManager) {
-                this.wsManager.updateProgress(
-                    continueCalculationId,
-                    0,
-                    `Продолжение сбора данных с этапа: ${this.getStageName(lastStopStage)}`,
-                    {
-                        stage: lastStopStage,
-                        stageName: this.getStageName(lastStopStage),
-                        continuing: true,
-                        previousCalculationId: calculationId,
-                        timestamp: new Date().toISOString()
-                    }
-                );
-            }
-            
-            // Запускаем сбор с нужного этапа
-            return await this.collectAllNfts({ 
-                startFromStage: lastStopStage,
-                calculationId: continueCalculationId
-            });
-            
-        } catch (error) {
-            this.logger.error('❌ Ошибка продолжения сбора:', error);
-            
-            // Отправляем ошибку через WebSocket
-            if (this.wsManager && options.calculationId) {
-                this.wsManager.failCalculation(options.calculationId, error);
-            }
-            
-            throw error;
-        }
-    }
-
-    /**
-     * Показывает статус сбора данных
+     * Показывает статус сбора данных (с обработкой ошибок файла)
      */
     async getCollectionStatus() {
-        const allData = await this.readDataFile();
-        
-        const stage1Count = allData[CONSTANTS.COLLECTION_KEYS.NFTS].filter(n => n[CONSTANTS.NFT_KEYS.STAGE1_COMPLETED]).length;
-        const stage2Count = allData[CONSTANTS.COLLECTION_KEYS.NFTS].filter(n => n[CONSTANTS.NFT_KEYS.STAGE2_COMPLETED]).length;
-        const stage3Count = allData[CONSTANTS.COLLECTION_KEYS.NFTS].filter(n => n[CONSTANTS.NFT_KEYS.STAGE3_COMPLETED]).length;
-        
-        return {
-            isRunning: this.collectionProcess.isRunning,
-            currentStage: this.collectionProcess.currentStage,
-            calculationId: this.collectionProcess.calculationId,
-            collectionInfo: {
-                totalInCollection: allData[CONSTANTS.COLLECTION_KEYS.COLLECTION_INFO][CONSTANTS.COLLECTION_KEYS.NFT_QUANTITY] || 0,
-                nftsInFile: allData[CONSTANTS.COLLECTION_KEYS.NFTS].length,
-                lastUpdated: allData[CONSTANTS.COLLECTION_KEYS.COLLECTION_INFO][CONSTANTS.COLLECTION_KEYS.LAST_UPDATED],
-                lastProcessedIndex: allData[CONSTANTS.COLLECTION_KEYS.COLLECTION_INFO][CONSTANTS.COLLECTION_KEYS.LAST_PROCESSED_INDEX]
-            },
-            progress: {
-                stage1: {
-                    completed: stage1Count,
-                    total: allData[CONSTANTS.COLLECTION_KEYS.NFTS].length
+        try {
+            const allData = await this.readDataFile();
+            
+            const stage1Count = allData[CONSTANTS.COLLECTION_KEYS.NFTS].filter(n => n[CONSTANTS.NFT_KEYS.STAGE1_COMPLETED]).length;
+            const stage2Count = allData[CONSTANTS.COLLECTION_KEYS.NFTS].filter(n => n[CONSTANTS.NFT_KEYS.STAGE2_COMPLETED]).length;
+            const stage3Count = allData[CONSTANTS.COLLECTION_KEYS.NFTS].filter(n => n[CONSTANTS.NFT_KEYS.STAGE3_COMPLETED]).length;
+            
+            return {
+                isRunning: this.collectionProcess.isRunning,
+                currentStage: this.collectionProcess.currentStage,
+                calculationId: this.collectionProcess.calculationId,
+                collectionInfo: {
+                    totalInCollection: allData[CONSTANTS.COLLECTION_KEYS.COLLECTION_INFO][CONSTANTS.COLLECTION_KEYS.NFT_QUANTITY] || 0,
+                    nftsInFile: allData[CONSTANTS.COLLECTION_KEYS.NFTS].length,
+                    lastUpdated: allData[CONSTANTS.COLLECTION_KEYS.COLLECTION_INFO][CONSTANTS.COLLECTION_KEYS.LAST_UPDATED],
+                    lastProcessedIndex: allData[CONSTANTS.COLLECTION_KEYS.COLLECTION_INFO][CONSTANTS.COLLECTION_KEYS.LAST_PROCESSED_INDEX]
                 },
-                stage2: {
-                    completed: stage2Count,
-                    total: allData[CONSTANTS.COLLECTION_KEYS.NFTS].length
-                },
-                stage3: {
-                    completed: stage3Count,
-                    total: allData[CONSTANTS.COLLECTION_KEYS.NFTS].length
+                progress: {
+                    stage1: {
+                        completed: stage1Count,
+                        total: allData[CONSTANTS.COLLECTION_KEYS.NFTS].length
+                    },
+                    stage2: {
+                        completed: stage2Count,
+                        total: allData[CONSTANTS.COLLECTION_KEYS.NFTS].length
+                    },
+                    stage3: {
+                        completed: stage3Count,
+                        total: allData[CONSTANTS.COLLECTION_KEYS.NFTS].length
+                    }
                 }
-            }
-        };
+            };
+            
+        } catch (error) {
+            this.logger.error('❌ Ошибка получения статуса:', error.message);
+            
+            // Возвращаем базовый статус при ошибке
+            return {
+                isRunning: this.collectionProcess.isRunning,
+                currentStage: this.collectionProcess.currentStage,
+                calculationId: this.collectionProcess.calculationId,
+                collectionInfo: {
+                    totalInCollection: 0,
+                    nftsInFile: 0,
+                    lastUpdated: null,
+                    lastProcessedIndex: 0
+                },
+                progress: {
+                    stage1: { completed: 0, total: 0 },
+                    stage2: { completed: 0, total: 0 },
+                    stage3: { completed: 0, total: 0 }
+                },
+                error: error.message
+            };
+        }
     }
 
     /**
@@ -1114,7 +1141,7 @@ class TribeInfoCollectorService {
     }
 
     /**
-     * Создает сводный файл данных
+     * Создает сводный файл данных с обработкой ошибок
      */
     async createSummaryFile() {
         try {
@@ -1158,9 +1185,18 @@ class TribeInfoCollectorService {
                 a[CONSTANTS.NFT_KEYS.INDEX] - b[CONSTANTS.NFT_KEYS.INDEX]
             );
             
-            // 5. Записываем файл
+            // 5. Записываем во временный файл
             const filePath = this.getSummaryDataPath();
-            await fs.writeFile(filePath, JSON.stringify(summaryData, null, 2), 'utf8');
+            const tempPath = filePath + '.tmp';
+            const jsonContent = JSON.stringify(summaryData, null, 2);
+            
+            await fs.writeFile(tempPath, jsonContent, 'utf8');
+            
+            // Проверяем что файл валидный
+            await fs.readFile(tempPath, 'utf8').then(content => JSON.parse(content));
+            
+            // Заменяем старый файл новым
+            await fs.rename(tempPath, filePath);
             
             // Проверяем что файл создан
             const fileSize = (await fs.stat(filePath)).size;
@@ -1187,44 +1223,42 @@ class TribeInfoCollectorService {
     }
 
     /**
-     * Обновляет слушателей прогресса
+     * Обновляет хранилище прогресса для polling
      */
-    updateProgressListeners(stage, processed, total, message, details = {}) {
+    updateProgressStore(stage, processed, total, message, details = {}) {
         try {
-            // Форматируем сообщение о прогрессе
-            const progressData = this.utils.formatProgressMessage(stage, processed, total, stage);
-            
             const calculationId = this.collectionProcess.calculationId;
             
             if (!calculationId) {
-                this.logger.warn('❌ Нет calculationId для отправки прогресса');
                 return;
             }
             
-            // Формируем полный объект прогресса для WebSocket
-            const fullProgressData = {
-                ...progressData,
-                stage: stage,
-                processed: processed,
-                total: total,
-                message: message,
-                details: {
-                    ...progressData.details,
-                    ...details,
-                    stage: stage,
-                    calculationId: calculationId
-                },
-                timestamp: new Date().toISOString()
+            const progressData = {
+                calculationId,
+                stage,
+                processed,
+                total,
+                message,
+                details,
+                timestamp: new Date().toISOString(),
+                status: stage === CONSTANTS.COLLECTION_STATUS.COMPLETED ? 'completed' : 
+                       stage === CONSTANTS.COLLECTION_STATUS.NOT_STARTED ? 'not_started' : 'in_progress'
             };
             
-            // Отправляем через WebSocket менеджер
-            if (this.wsManager) {
-                const progressPercentage = total > 0 ? Math.round((processed / total) * 100) : 0;
-                this.wsManager.updateProgress(calculationId, progressPercentage, message, fullProgressData);
-            }
+            // Сохраняем в хранилище
+            this.progressStore.set(calculationId, progressData);
             
-            // Логируем
-            this.logger.info(`📊 ${message} (${processed}/${total})`);
+            // Обновляем время последнего обновления
+            this.collectionProcess.lastProgressUpdate = Date.now();
+            
+            // Логируем важные события
+            if (stage === CONSTANTS.COLLECTION_STATUS.COMPLETED || 
+                stage === CONSTANTS.COLLECTION_STATUS.NOT_STARTED ||
+                message.includes('Ошибка') ||
+                message.includes('завершен') ||
+                processed === total) {
+                this.logger.info(`📊 ${message} (${processed}/${total})`);
+            }
             
         } catch (error) {
             this.logger.error('❌ Ошибка обновления прогресса:', error.message);
@@ -1232,12 +1266,33 @@ class TribeInfoCollectorService {
     }
 
     /**
-     * Получает кешированные данные (для избежания частого чтения файла)
+     * Получает текущий прогресс для calculationId
      */
-    getCachedData() {
-        // В реальной реализации здесь может быть кеш
-        // Пока возвращаем null, данные будут передаваться через параметры
-        return null;
+    getProgress(calculationId) {
+        const progress = this.progressStore.get(calculationId);
+        
+        if (!progress) {
+            return {
+                calculationId,
+                status: 'not_found',
+                message: 'Прогресс не найден',
+                timestamp: new Date().toISOString()
+            };
+        }
+        
+        // Проверяем, не устарели ли данные (больше 5 минут)
+        const now = Date.now();
+        const updateTime = new Date(progress.timestamp).getTime();
+        
+        if (now - updateTime > 5 * 60 * 1000) {
+            return {
+                ...progress,
+                status: 'stale',
+                message: 'Данные прогресса устарели'
+            };
+        }
+        
+        return progress;
     }
 
     /**
@@ -1256,7 +1311,16 @@ class TribeInfoCollectorService {
                 await fs.access(file.path);
                 const stats = await fs.stat(file.path);
                 const content = await fs.readFile(file.path, 'utf8');
-                const data = JSON.parse(content);
+                
+                // Пытаемся парсить JSON
+                let data;
+                let isValidJson = true;
+                try {
+                    data = JSON.parse(content);
+                } catch (error) {
+                    isValidJson = false;
+                    data = {};
+                }
                 
                 results.push({
                     name: file.name,
@@ -1264,7 +1328,8 @@ class TribeInfoCollectorService {
                     size: stats.size,
                     sizeMB: (stats.size / 1024 / 1024).toFixed(2),
                     nftCount: data[CONSTANTS.COLLECTION_KEYS.NFTS]?.length || 0,
-                    lastModified: stats.mtime
+                    lastModified: stats.mtime,
+                    isValidJson: isValidJson
                 });
             } catch (error) {
                 results.push({

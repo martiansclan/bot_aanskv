@@ -1,4 +1,5 @@
-/* Основные стили для модуля Tribe Info Collector */
+/* TribeInfoCollector.css - стили для модуля */
+
 .collector-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -7,270 +8,26 @@
 
 .collector-header {
     text-align: center;
-    margin-bottom: 40px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid var(--border-color);
-}
-
-.collector-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
     margin-bottom: 30px;
 }
 
-.stat-card {
-    background: var(--card-bg);
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: var(--shadow-sm);
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.collector-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    color: #333;
 }
 
-.stat-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-}
-
-.stat-value {
-    font-size: 2rem;
-    font-weight: bold;
-    color: var(--primary-color);
-    margin: 10px 0;
-}
-
-.stat-label {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.controls-section {
-    background: var(--card-bg);
-    border-radius: 10px;
-    padding: 25px;
-    margin-bottom: 30px;
-    box-shadow: var(--shadow-md);
-}
-
-.controls-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 15px;
-}
-
-
-
-.stage {
-    text-align: center;
-    flex: 1;
-    padding: 10px;
-    position: relative;
-    z-index: 1;
-}
-
-.stage.active {
-    color: var(--primary-color);
-    font-weight: bold;
-}
-
-.stage.completed {
-    color: var(--success-color);
-}
-
-.stage:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    top: 25px;
-    right: -50%;
-    width: 100%;
-    height: 2px;
-    background: var(--border-color);
-    z-index: 1;
-}
-
-.stage.active::after,
-.stage.completed::after {
-    background: var(--primary-color);
-}
-
-.stage-number {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: var(--border-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 10px;
-    font-weight: bold;
-    position: relative;
-    z-index: 2;
-    transition: all 0.3s ease;
-}
-
-.stage.active .stage-number {
-    background: var(--primary-color);
-    color: white;
-    transform: scale(1.1);
-}
-
-.stage.completed .stage-number {
-    background: var(--success-color);
-    color: white;
-}
-
-.stage-title {
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-
-.stage-description {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    line-height: 1.3;
-}
-
-.log-container {
-    background: var(--card-bg);
-    border-radius: 10px;
-    padding: 20px;
-    margin-top: 30px;
-    box-shadow: var(--shadow-md);
-}
-
-.log-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.log-content {
-    max-height: 400px;
-    overflow-y: auto;
-    background: var(--bg-secondary);
-    border-radius: 8px;
-    padding: 15px;
-    font-family: 'Courier New', monospace;
-    font-size: 0.9rem;
-    line-height: 1.5;
-}
-
-.log-content::-webkit-scrollbar {
-    width: 8px;
-}
-
-.log-content::-webkit-scrollbar-track {
-    background: var(--border-color);
-    border-radius: 4px;
-}
-
-.log-content::-webkit-scrollbar-thumb {
-    background: var(--text-secondary);
-    border-radius: 4px;
-}
-
-.log-content::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-color);
-}
-
-.log-entry {
-    margin-bottom: 8px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
-    align-items: flex-start;
-}
-
-.log-entry:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-}
-
-.log-time {
-    color: var(--text-secondary);
-    font-size: 0.8rem;
-    margin-right: 10px;
-    min-width: 70px;
-    flex-shrink: 0;
-}
-
-.log-message {
-    color: var(--text-primary);
-    word-break: break-word;
-    flex-grow: 1;
-}
-
-.log-message.success {
-    color: var(--success-color);
-}
-
-.log-message.error {
-    color: var(--error-color);
-}
-
-.log-message.warning {
-    color: var(--warning-color);
-}
-
-.log-message.info {
-    color: var(--info-color);
-}
-
-.log-icon {
-    margin-right: 8px;
+.subtitle {
     font-size: 1.1rem;
+    color: #666;
 }
 
-.btn-group {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+.module-info {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
 }
-
-.btn-wide {
-    min-width: 200px;
-}
-
-.progress-bar-container {
-    margin-top: 10px;
-}
-
-.progress-info {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-    font-size: 0.9rem;
-}
-
-.progress-bar {
-    width: 100%;
-    height: 8px;
-    background: var(--border-color);
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    height: 100%;
-    background: var(--primary-color);
-    transition: width 0.3s ease;
-    border-radius: 4px;
-}
-
-.help-text {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    margin-top: 5px;
-    line-height: 1.4;
-}
-
-
 
 .info-grid {
     display: grid;
@@ -285,318 +42,254 @@
 }
 
 .info-label {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    margin-bottom: 3px;
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 5px;
 }
 
 .info-value {
-    font-weight: 600;
-    color: var(--text-primary);
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
 }
 
-/* Адаптивные стили */
-@media (max-width: 768px) {
-    .collector-container {
-        padding: 15px;
-    }
-    
-    .collector-stats {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .controls-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .stage-indicator {
-        flex-direction: column;
-        gap: 20px;
-    }
-    
-    .stage:not(:last-child)::after {
-        display: none;
-    }
-    
-    .stage::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 20px;
-        width: 2px;
-        height: 100%;
-        background: var(--border-color);
-        z-index: 1;
-    }
-    
-    .stage.active::before,
-    .stage.completed::before {
-        background: var(--primary-color);
-    }
-    
-    .stage-number {
-        margin-left: 0;
-    }
-    
-    .stage {
-        text-align: left;
-        padding-left: 60px;
-        padding-right: 0;
-    }
-    
-    .btn-group {
-        flex-direction: column;
-    }
-    
-    .btn-wide {
-        width: 100%;
-    }
-    
-    .log-content {
-        max-height: 300px;
-    }
+.status-active {
+    color: #28a745 !important;
 }
 
-@media (max-width: 480px) {
-    .collector-stats {
-        grid-template-columns: 1fr;
-    }
-    
-    .stat-value {
-        font-size: 1.7rem;
-    }
-    
-    .controls-section {
-        padding: 15px;
-    }
-    
-    .log-container {
-        padding: 15px;
-    }
+.status-stopped {
+    color: #dc3545 !important;
 }
 
-/* Анимации */
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.7; }
-    100% { opacity: 1; }
+.status-completed {
+    color: #28a745 !important;
 }
 
-.collecting-active {
-    animation: pulse 2s infinite;
+.status-error {
+    color: #dc3545 !important;
 }
 
-/* Состояния кнопок */
-.btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-/* Уведомления */
-.notification {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 15px 20px;
-    background: var(--card-bg);
-    border-radius: 8px;
-    box-shadow: var(--shadow-lg);
-    border-left: 4px solid var(--primary-color);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    max-width: 400px;
-    animation: slideIn 0.3s ease;
-}
-
-.notification.success {
-    border-left-color: var(--success-color);
-}
-
-.notification.error {
-    border-left-color: var(--error-color);
-}
-
-.notification.warning {
-    border-left-color: var(--warning-color);
-}
-
-.notification.info {
-    border-left-color: var(--info-color);
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-/* Исправление для кнопок */
-.btn {
-    display: inline-block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-.btn-wide {
-    width: 100%;
-    min-width: 200px;
-}
-
-.controls-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    margin: 20px 0;
-}
-
-.controls-grid > div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 15px;
-    border-radius: 8px;
-    background: var(--bg-secondary);
-}
-
-
-
-.btn-group {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 15px;
-}
-
-.btn-group .btn {
-    flex: 1;
-    min-width: 200px;
-    max-width: 300px;
-}
-
-/* Если кнопки скрыты другими стилями */
-button[class*="btn-"]:not([disabled]) {
-    display: inline-flex !important;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    cursor: pointer;
-}
-
+/* Контейнеры этапов */
 .stages-container {
-    margin: 20px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    display: grid;
+    gap: 20px;
+    margin-bottom: 30px;
 }
 
 .stage-container {
-    background: var(--card-bg, #f8f9fa);
-    border-radius: 8px;
-    padding: 15px;
-    border: 1px solid var(--border-color, #dee2e6);
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 20px;
     transition: all 0.3s ease;
 }
 
-.stage-container.active {
-    border-color: var(--primary-color, #007bff);
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
-    background: rgba(0, 123, 255, 0.02);
-}
-
-.stage-container.completed {
-    border-color: var(--success-color, #28a745);
-    background: rgba(40, 167, 69, 0.02);
+.stage-container:hover {
+    border-color: #007bff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 .stage-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .stage-title {
-    font-weight: 600;
-    font-size: 14px;
-    color: var(--text-color, #212529);
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
 }
 
 .stage-status {
-    font-size: 12px;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-weight: 500;
-}
-
-.stage-status.waiting {
-    background: var(--light-color, #e9ecef);
-    color: var(--secondary-color, #6c757d);
-}
-
-.stage-status.active {
-    background: var(--primary-light, #cce5ff);
-    color: var(--primary-color, #007bff);
-}
-
-.stage-status.completed {
-    background: var(--success-light, #d4edda);
-    color: var(--success-color, #28a745);
-}
-
-.stage-status.error {
-    background: var(--danger-light, #f8d7da);
-    color: var(--danger-color, #dc3545);
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background: #e9ecef;
+    color: #333;
 }
 
 .stage-progress {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin: 10px 0;
+    gap: 15px;
+    margin-bottom: 10px;
 }
 
 .progress-bar-stage {
     flex: 1;
-    height: 8px;
-    background: var(--light-color, #e9ecef);
-    border-radius: 4px;
+    height: 10px;
+    background: #e9ecef;
+    border-radius: 5px;
     overflow: hidden;
 }
 
 .progress-fill-stage {
     height: 100%;
-    background: var(--primary-color, #007bff);
-    border-radius: 4px;
-    transition: width 0.3s ease;
-}
-
-.stage-container.active .progress-fill-stage {
-    background: var(--primary-color, #007bff);
-}
-
-.stage-container.completed .progress-fill-stage {
-    background: var(--success-color, #28a745);
+    background: #6c757d;
+    border-radius: 5px;
+    transition: width 0.5s ease, background-color 0.5s ease;
 }
 
 .progress-text-stage {
-    font-size: 12px;
-    font-weight: 600;
-    min-width: 40px;
-    text-align: right;
-    color: var(--text-color, #212529);
+    font-size: 0.9rem;
+    color: #666;
+    min-width: 80px;
 }
 
 .stage-details {
-    font-size: 12px;
-    color: var(--secondary-color, #6c757d);
+    font-size: 0.9rem;
+    color: #666;
+    font-style: italic;
+}
+
+/* Статистика */
+.collector-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Управление */
+.controls-section {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.controls-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.btn-wide {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+}
+
+.help-text {
+    font-size: 0.85rem;
+    color: #666;
     margin-top: 5px;
-    min-height: 18px;
+    text-align: center;
+}
+
+.stage-controls {
+    margin-top: 30px;
+}
+
+.stage-indicator {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.btn-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Лог */
+.log-container {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.log-content {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #e9ecef;
+    border-radius: 5px;
+    padding: 15px;
+    background: #f8f9fa;
+}
+
+.log-entry {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border-bottom: 1px solid #e9ecef;
+    font-size: 0.9rem;
+}
+
+.log-entry:last-child {
+    border-bottom: none;
+}
+
+.log-time {
+    color: #666;
+    min-width: 80px;
+}
+
+.log-icon {
+    min-width: 20px;
+}
+
+.log-info .log-icon { color: #17a2b8; }
+.log-success .log-icon { color: #28a745; }
+.log-warning .log-icon { color: #ffc107; }
+.log-error .log-icon { color: #dc3545; }
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .collector-container {
+        padding: 10px;
+    }
+    
+    .controls-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+    }
+    
+    .stage-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .stage-status {
+        align-self: flex-start;
+    }
 }

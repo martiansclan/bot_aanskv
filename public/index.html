@@ -48,8 +48,18 @@
                         Получение базовых данных, метаданных и генерация ссылок.
                     </p>
                 </a>
+
+                <!-- НОВЫЙ МОДУЛЬ: Обмен орками -->
+                <a href="/orc-exchange" class="menu-card">
+                    <div class="card-icon">🤝</div>
+                    <h2 class="card-title">Обмен орками</h2>
+                    <p class="card-description">
+                        Оптимизация обмена карточками орков между игроками.
+                        Максимизация мощности команд через анализ бонусов за предметы.
+                    </p>
+                </a>
                 
-                <div class="menu-card" id="statsCard">
+                <div class="menu-card stats-card">
                     <div class="card-icon">📊</div>
                     <h2 class="card-title">Статистика</h2>
                     <p class="card-description">
@@ -58,7 +68,7 @@
                     </p>
                 </div>
                 
-                <div class="menu-card" id="resultsCard">
+                <div class="menu-card results-card">
                     <div class="card-icon">📁</div>
                     <h2 class="card-title">Мои результаты</h2>
                     <p class="card-description">
@@ -67,7 +77,7 @@
                     </p>
                 </div>
                 
-                <div class="menu-card" id="nftCard">
+                <div class="menu-card nft-card">
                     <div class="card-icon">🎴</div>
                     <h2 class="card-title">Просмотр NFT</h2>
                     <p class="card-description">
@@ -77,30 +87,15 @@
                 </div>
             </div>
             
-            <div class="system-status">
-                <h3>Статус системы</h3>
-                <div class="status-grid">
-                    <div class="status-item">
-                        <span class="status-label">API сервер:</span>
-                        <span class="status-value" id="apiStatus">Проверка...</span>
-                    </div>
-                    <div class="status-item">
-                        <span class="status-label">Данные NFT:</span>
-                        <span class="status-value" id="dataStatus">Проверка...</span>
-                    </div>
-                    <div class="status-item">
-                        <span class="status-label">Модули:</span>
-                        <span class="status-value" id="modulesStatus">Проверка...</span>
-                    </div>
-                </div>
-            </div>
+           
         </div>
     </div>
 
     <!-- Подключаем JavaScript -->
-    
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/api.js"></script>
     <script src="/assets/js/home.js"></script>
+    
+    
 </body>
 </html>

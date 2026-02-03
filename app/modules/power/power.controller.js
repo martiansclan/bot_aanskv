@@ -1,44 +1,49 @@
-// app/modules/power/power.controller.js - WebSocket версия
+// app/modules/power/power.controller.js - версия без WebSocket
 const powerService = require('./power.service');
 const coreLogger = require('../../core/utils/logger');
 const CONSTANTS = require('./power.constants');
-
-// Проверяем наличие WebSocket менеджера
-let wsManager;
-try {
-    wsManager = require('./websocket-manager');
-} catch (error) {
-    console.warn('⚠️ WebSocket менеджер не найден, используем обычный режим');
-    wsManager = null;
-}
 
 class PowerController {
     constructor() {
         this.config = require('./power.config');
         this.constants = CONSTANTS;
         this.logger = coreLogger.child({ module: this.config.moduleName });
-        this.activeCalculations = new Map(); // Для отмены расчетов
+        this.activeCalculations = new Map(); // Для хранения состояния расчетов
     }
 
-    // API для запуска расчета с WebSocket прогрессом
+    // API для запуска расчета
     async calculatePower(req, res) {
         const calculationId = `calc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
         
         try {
-            this.logger.info(`POST /api/power/calculate (WS ID: ${calculationId})`);
+            this.logger.info(`POST /api/power/calculate (ID: ${calculationId})`);
             
-            // Немедленно возвращаем ответ с ID расчета
+            // Сразу запускаем расчет в фоне
+            const startData = {
+                id: calculationId,
+                startTime: Date.now(),
+                status: 'running',
+                progress: 0,
+                message: 'Инициализация расчета...',
+                details: {},
+                result: null,
+                error: null
+            };
+            
+            this.activeCalculations.set(calculationId, startData);
+            
+            // Запускаем расчет в фоновом режиме
+            this.runCalculation(calculationId);
+            
+            // Возвращаем ID расчета
             res.json({ 
                 success: true, 
                 module: this.config.moduleName,
                 calculationId,
-                wsEndpoint: `/api/power/ws?calculationId=${calculationId}`,
-                message: 'Расчет Power запущен с WebSocket прогрессом',
-                startedAt: new Date().toISOString()
+                message: 'Расчет Power запущен',
+                startedAt: new Date().toISOString(),
+                statusEndpoint: `/api/power/status/${calculationId}`
             });
-            
-            // Запускаем расчет в фоновом режиме
-            this.runCalculationWithProgress(calculationId);
             
         } catch (error) {
             this.logger.error('Ошибка запуска расчета:', error);
@@ -50,26 +55,24 @@ class PowerController {
         }
     }
     
-    // Запуск расчета с обновлением прогресса через WebSocket
-    async runCalculationWithProgress(calculationId) {
+    // Запуск расчета с обновлением прогресса
+    async runCalculation(calculationId) {
         const startTime = Date.now();
         
         try {
-            this.logger.info(`[${calculationId}] Запуск расчета с WebSocket прогрессом`);
+            this.logger.info(`[${calculationId}] Запуск расчета Power`);
             
-            // Обновляем прогресс через WebSocket если доступен
-            if (wsManager) {
-                wsManager.updateProgress(calculationId, 0, 'Инициализация расчета...');
-            }
+            // Обновляем статус
+            this.updateCalculationStatus(calculationId, 0, 'Инициализация расчета...');
             
             // 1. Загружаем данные
-            if (wsManager) wsManager.updateProgress(calculationId, 5, 'Загрузка данных атрибутов...');
+            this.updateCalculationStatus(calculationId, 5, 'Загрузка данных атрибутов...');
             const powerData = await powerService.loadAttributesPowerData();
             
-            if (wsManager) wsManager.updateProgress(calculationId, 10, 'Загрузка данных о синергиях...');
+            this.updateCalculationStatus(calculationId, 10, 'Загрузка данных о синергиях...');
             const synergyData = await powerService.loadSynergyData();
             
-            if (wsManager) wsManager.updateProgress(calculationId, 15, 'Загрузка оригинальных данных NFT...');
+            this.updateCalculationStatus(calculationId, 15, 'Загрузка оригинальных данных NFT...');
             const originalData = await powerService.loadOriginalNFTs();
             
             if (!originalData.nfts || !Array.isArray(originalData.nfts)) {
@@ -77,14 +80,10 @@ class PowerController {
             }
             
             const totalNFTs = originalData.nfts.length;
-            if (wsManager) {
-                wsManager.updateProgress(
-                    calculationId, 
-                    20, 
-                    `Начинаем обработку ${totalNFTs} NFT...`,
-                    { totalNFTs, processed: 0 }
-                );
-            }
+            this.updateCalculationStatus(calculationId, 20, 
+                `Начинаем обработку ${totalNFTs} NFT...`,
+                { totalNFTs, processed: 0 }
+            );
             
             // 2. Создаем структуру для результата
             const powerResult = {
@@ -96,33 +95,24 @@ class PowerController {
                     [CONSTANTS.COLLECTION_KEYS.ORIGINAL_FILE]: 'all_nft_info.json',
                     [CONSTANTS.COLLECTION_KEYS.POWER_VERSION]: CONSTANTS.MODULE.VERSION,
                     [CONSTANTS.COLLECTION_KEYS.SYNERGY_TYPES_COUNT]: Object.keys(synergyData).length,
-                    processing_mode: 'websocket_progress',
+                    processing_mode: 'server_optimized',
                     calculation_id: calculationId
                 }
             };
             
             let processedCount = 0;
-            let updatedCount = 0;
             let nftsWithSynergyCount = 0;
             
-            // Сохраняем ссылку для возможности отмены
-            this.activeCalculations.set(calculationId, {
-                id: calculationId,
-                startTime,
-                abort: false
-            });
-            
-            // 3. Обрабатываем NFT чанками с прогрессом
+            // 3. Обрабатываем NFT чанками
             const powerUtils = require('./power.utils');
             const chunkSize = CONSTANTS.OPTIMIZATION.CHUNK_SIZE;
             
             for (let i = 0; i < originalData.nfts.length; i += chunkSize) {
                 // Проверяем флаг отмены
-                if (this.activeCalculations.get(calculationId)?.abort) {
-                    this.logger.info(`[${calculationId}] Расчет отменен пользователем`);
-                    if (wsManager) {
-                        wsManager.updateProgress(calculationId, 0, 'Расчет отменен');
-                    }
+                const calculation = this.activeCalculations.get(calculationId);
+                if (calculation && calculation.status === 'cancelled') {
+                    this.logger.info(`[${calculationId}] Расчет отменен`);
+                    this.updateCalculationStatus(calculationId, 0, 'Расчет отменен', { status: 'cancelled' });
                     this.activeCalculations.delete(calculationId);
                     return;
                 }
@@ -136,34 +126,25 @@ class PowerController {
                     const nft = JSON.parse(JSON.stringify(originalNft));
                     const result = powerUtils.calculateNFTpower(nft, powerData, synergyData);
                     
-                    if (result.updated) updatedCount++;
                     if (result.synergyPower > 0) nftsWithSynergyCount++;
                     
                     powerResult[CONSTANTS.COLLECTION_KEYS.NFTS].push(nft);
                 }
                 
-                // Обновляем прогресс через WebSocket
-                if (wsManager) {
-                    const progress = 20 + Math.round((processedCount / totalNFTs) * 70);
-                    if (processedCount % 1000 === 0 || i + chunkSize >= originalData.nfts.length) {
-                        wsManager.updateProgress(
-                            calculationId, 
-                            progress, 
-                            `Обработано ${processedCount}/${totalNFTs} NFT`,
-                            { 
-                                processed: processedCount,
-                                updated: updatedCount,
-                                withSynergy: nftsWithSynergyCount,
-                                estimatedRemaining: this.estimateRemainingTime(startTime, processedCount, totalNFTs)
-                            }
-                        );
-                    }
-                }
-                
-                // Логируем прогресс в консоль
-                if (processedCount % 5000 === 0) {
-                    const progress = Math.round((processedCount / totalNFTs) * 100);
-                    this.logger.info(`[${calculationId}] Прогресс: ${progress}% (${processedCount}/${totalNFTs})`);
+                // Обновляем прогресс
+                const progress = 20 + Math.round((processedCount / totalNFTs) * 70);
+                if (processedCount % 1000 === 0 || i + chunkSize >= originalData.nfts.length) {
+                    this.updateCalculationStatus(
+                        calculationId, 
+                        progress, 
+                        `Обработано ${processedCount}/${totalNFTs} NFT`,
+                        { 
+                            processed: processedCount,
+                            total: totalNFTs,
+                            withSynergy: nftsWithSynergyCount,
+                            estimatedRemaining: this.estimateRemainingTime(startTime, processedCount, totalNFTs)
+                        }
+                    );
                 }
                 
                 // Даем event loop передохнуть
@@ -173,36 +154,48 @@ class PowerController {
             }
             
             // 4. Сохраняем результат
-            if (wsManager) {
-                wsManager.updateProgress(calculationId, 95, 'Сохранение результатов...');
-            }
-            
+            this.updateCalculationStatus(calculationId, 95, 'Сохранение результатов...');
             await powerService.savePowerNFTs(powerResult);
             
             // 5. Завершаем расчет
             const processingTime = Date.now() - startTime;
             const result = {
                 totalProcessed: processedCount,
-                totalUpdated: updatedCount,
                 nftsWithSynergy: nftsWithSynergyCount,
                 processingTimeMs: processingTime,
                 fileSaved: 'all_nft_info_power.json',
                 calculationId
             };
             
-            if (wsManager) {
-                wsManager.completeCalculation(calculationId, result);
-            }
+            this.updateCalculationStatus(
+                calculationId, 
+                100, 
+                'Расчет завершен!',
+                result,
+                'completed'
+            );
             
             this.logger.info(`[${calculationId}] Расчет завершен за ${processingTime}ms`);
-            this.activeCalculations.delete(calculationId);
+            
+            // Удаляем через 5 минут после завершения
+            setTimeout(() => {
+                this.activeCalculations.delete(calculationId);
+            }, 300000);
             
         } catch (error) {
             this.logger.error(`[${calculationId}] Ошибка расчета:`, error);
-            if (wsManager) {
-                wsManager.failCalculation(calculationId, error);
-            }
-            this.activeCalculations.delete(calculationId);
+            this.updateCalculationStatus(
+                calculationId, 
+                0, 
+                'Ошибка расчета',
+                { error: error.message },
+                'error'
+            );
+            
+            // Удаляем через 2 минуты после ошибки
+            setTimeout(() => {
+                this.activeCalculations.delete(calculationId);
+            }, 120000);
         }
     }
     
@@ -227,10 +220,7 @@ class PowerController {
                 });
             }
             
-            calculation.abort = true;
-            if (wsManager) {
-                wsManager.updateProgress(calculationId, 0, 'Расчет отменен пользователем');
-            }
+            calculation.status = 'cancelled';
             
             res.json({
                 success: true,
@@ -251,7 +241,6 @@ class PowerController {
     async getCalculationStatus(req, res) {
         try {
             const { calculationId } = req.params;
-            this.logger.info(`GET /api/power/status/${calculationId}`);
             
             if (!calculationId) {
                 return res.status(CONSTANTS.HTTP_STATUS.BAD_REQUEST).json({
@@ -262,13 +251,7 @@ class PowerController {
             
             const calculation = this.activeCalculations.get(calculationId);
             
-            // Получаем прогресс из WebSocket менеджера если есть
-            let wsProgress = null;
-            if (wsManager) {
-                wsProgress = wsManager.calculationProgress.get(calculationId);
-            }
-            
-            if (!calculation && !wsProgress) {
+            if (!calculation) {
                 return res.status(CONSTANTS.HTTP_STATUS.NOT_FOUND).json({
                     success: false,
                     error: 'Расчет не найден'
@@ -278,9 +261,7 @@ class PowerController {
             res.json({
                 success: true,
                 calculationId,
-                isActive: !!calculation,
-                progress: wsProgress || null,
-                wsEndpoint: `/api/power/ws?calculationId=${calculationId}`
+                ...calculation
             });
             
         } catch (error) {
@@ -483,8 +464,6 @@ class PowerController {
                     heapTotalMB: Math.round(memoryUsage.heapTotal / 1024 / 1024)
                 },
                 environment: process.env.NODE_ENV || 'development',
-                processingMode: 'websocket_progress',
-                websocketAvailable: !!wsManager,
                 activeCalculations: this.activeCalculations.size
             };
             
@@ -492,7 +471,7 @@ class PowerController {
                 success: true,
                 module: this.config.moduleName,
                 status,
-                message: 'Режим с WebSocket прогрессом активен'
+                message: 'Режим polling прогресса активен'
             });
         } catch (error) {
             this.logger.error('Ошибка получения статуса оптимизаций:', error);
@@ -562,6 +541,23 @@ class PowerController {
                 module: this.config.moduleName,
                 error: error.message 
             });
+        }
+    }
+    
+    // Вспомогательный метод для обновления статуса расчета
+    updateCalculationStatus(calculationId, progress, message, details = {}, status = 'running') {
+        const calculation = this.activeCalculations.get(calculationId);
+        if (calculation) {
+            calculation.progress = progress;
+            calculation.message = message;
+            calculation.details = details;
+            calculation.status = status;
+            calculation.lastUpdated = Date.now();
+            
+            if (status === 'completed' || status === 'error' || status === 'cancelled') {
+                calculation.endTime = Date.now();
+                calculation.result = details;
+            }
         }
     }
     

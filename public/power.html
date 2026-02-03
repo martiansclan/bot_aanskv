@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -28,7 +27,7 @@
                     🔢 Расчет Power по атрибутам
                 </button>                
                 <div class="power-info">
-                    <p>Функция рассчитывает Power для каждого NFT на основе редкости атрибутов</p>
+                    <p>Функция рассчитывает Power для каждого NFT на основе редкости атрибутов и синергий</p>
                 </div>
             </div>
     
@@ -45,10 +44,10 @@
         </div>
     </div>
 
-    <!-- Модальное окно прогресса с WebSocket -->
+    <!-- Модальное окно прогресса -->
     <div id="progressModal" class="modal">
         <div class="modal-content">
-            <h3>⚡ Расчет Power в реальном времени</h3>
+            <h3>⚡ Расчет Power в процессе</h3>
             
             <!-- Прогресс бар -->
             <div class="progress-container">
@@ -67,7 +66,7 @@
             
             <!-- Детали прогресса -->
             <div id="progressDetails" class="progress-details">
-                <!-- Заполняется через WebSocket -->
+                <!-- Заполняется через polling -->
             </div>
             
             <!-- Кнопки -->
@@ -77,16 +76,15 @@
                 </button>
             </div>
             
-            <!-- WebSocket статус -->
-            <div id="wsStatus" class="ws-status">
-                <small>📡 Подключение к серверу...</small>
+            <!-- Статус -->
+            <div class="polling-status">
+                <small>🔄 Обновление каждую секунду...</small>
             </div>
         </div>
     </div>
 
     <!-- Подключаем JavaScript -->
-     <script src="/assets/js/power-websocket.js"></script>
-     <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/main.js"></script>
     <script src="/assets/js/api.js"></script>    
     <script src="/assets/js/power.js"></script>
 </body>

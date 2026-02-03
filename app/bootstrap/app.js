@@ -23,8 +23,7 @@ class Application {
         // Загрузка маршрутов
         this.setupRoutes();
         
-        // Настройка WebSocket если доступно
-        this.setupWebSocket();
+        // Убрана настройка WebSocket
         
         // Настройка обработки ошибок
         this.setupErrorHandlers();
@@ -52,29 +51,7 @@ class Application {
         this.app.use(router);
     }
     
-    setupWebSocket() {
-        try {
-            // Ищем модули с поддержкой WebSocket
-            Object.values(this.modules).forEach(module => {
-                const wsManagerPath = path.join(module.path, 'websocket-manager.js');
-                
-                if (fs.existsSync(wsManagerPath)) {
-                    try {
-                        const WebSocketManager = require(wsManagerPath);
-                        if (WebSocketManager && typeof WebSocketManager.initialize === 'function') {
-                            // WebSocket инициализируется позже, когда будет создан сервер
-                            this.wsManager = WebSocketManager;
-                            logger.info(`✅ WebSocket менеджер для модуля "${module.name}" доступен`);
-                        }
-                    } catch (error) {
-                        logger.warning(`Не удалось загрузить WebSocket для модуля "${module.name}":`, error.message);
-                    }
-                }
-            });
-        } catch (error) {
-            logger.warning('Ошибка настройки WebSocket:', error);
-        }
-    }
+    // Удален метод setupWebSocket()
     
     setupErrorHandlers() {
         // Обработка 404 для API
@@ -108,15 +85,7 @@ class Application {
     start() {
         this.server = http.createServer(this.app);
         
-        // Инициализация WebSocket после создания сервера
-        if (this.wsManager && this.server) {
-            try {
-                this.wsManager.initialize(this.server);
-                logger.success('WebSocket сервер инициализирован');
-            } catch (error) {
-                logger.error('Ошибка инициализации WebSocket:', error);
-            }
-        }
+        // Убрана инициализация WebSocket
         
         this.server.listen(this.port, () => {
             console.log('='.repeat(50));
@@ -136,9 +105,6 @@ class Application {
             
             console.log('='.repeat(50));
             console.log(`🌐 Главная: http://localhost:${this.port}/`);
-            if (this.wsManager) {
-                console.log(`📡 WebSocket: ws://localhost:${this.port}/api/power/ws`);
-            }
             console.log('='.repeat(50));
         });
         

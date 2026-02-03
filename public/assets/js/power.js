@@ -1,4 +1,4 @@
-// public/assets/js/power.js - обновленная версия для вашего HTML
+// public/assets/js/power.js - версия без WebSocket
 document.addEventListener('DOMContentLoaded', async () => {
     console.log('=== Power.js загружен ===');
     
@@ -12,24 +12,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     console.log('✅ PowerAPI доступен');
     
-    // Проверяем WebSocket
-    if (!window.PowerWebSocket) {
-        console.warn('⚠️ WebSocket клиент не загружен');
-    } else {
-        console.log('✅ WebSocket клиент доступен');
-    }
-    
     setupEventListeners();
 });
 
 // Настройка обработчиков событий
 function setupEventListeners() {
-    const calculateBtn = document.getElementById('calculatePowerBtn');    
+    const calculateBtn = document.getElementById('calculatePowerBtn');
     const cancelBtn = document.getElementById('cancelBtn');
     
     if (calculateBtn) {
         calculateBtn.addEventListener('click', startPowerCalculation);
-    }       
+    }
     
     if (cancelBtn) {
         cancelBtn.addEventListener('click', cancelCalculation);
@@ -39,6 +32,8 @@ function setupEventListeners() {
 let calculationInProgress = false;
 let calculationAborted = false;
 let startTime = null;
+let currentCalculationId = null;
+let progressCheckInterval = null;
 
 // Начало расчета Power
 async function startPowerCalculation() {
@@ -57,6 +52,7 @@ async function startPowerCalculation() {
         calculationInProgress = true;
         calculationAborted = false;
         startTime = Date.now();
+        currentCalculationId = null;
         
         // Показываем модальное окно прогресса
         showProgressModal();
@@ -77,20 +73,13 @@ async function startPowerCalculation() {
             throw new Error(response.error || 'Ошибка запуска расчета');
         }
         
-        const { calculationId, wsEndpoint } = response;
-        console.log(`📋 ID расчета: ${calculationId}`);
-        console.log(`🔌 WebSocket endpoint: ${wsEndpoint}`);
+        currentCalculationId = response.calculationId;
+        console.log(`📋 ID расчета: ${currentCalculationId}`);
         
-        // Показываем ID расчета
-        updateProgress(0, 'Запуск расчета...', `ID: ${calculationId}`);
+        updateProgress(0, 'Запуск расчета...', `ID: ${currentCalculationId}`);
         
-        // Пробуем подключиться к WebSocket для реального прогресса
-        if (window.PowerWebSocket) {
-            setupWebSocketProgress(calculationId);
-        } else {
-            // Если WebSocket недоступен, показываем анимированный прогресс
-            setupFallbackProgress(calculationId);
-        }
+        // Начинаем проверять статус расчета
+        startProgressPolling();
         
     } catch (error) {
         console.error('❌ Ошибка запуска расчета:', error);
@@ -108,165 +97,115 @@ async function startPowerCalculation() {
     }
 }
 
-// Настройка WebSocket для прогресса
-function setupWebSocketProgress(calculationId) {
-    window.PowerWebSocket.connect(calculationId);
+// Запуск polling для проверки прогресса
+function startProgressPolling() {
+    if (progressCheckInterval) {
+        clearInterval(progressCheckInterval);
+    }
     
-    // Обновляем статус WebSocket
-    updateWsStatus('Подключение...');
-    
-    window.PowerWebSocket.onProgress((data) => {
-        updateProgress(data.progress, data.message, data.details);
-        updateWsStatus('✅ Подключено');
-    });
-    
-    window.PowerWebSocket.onComplete((data) => {
-        updateProgress(100, 'Расчет завершен!', data.details);
-        updateWsStatus('✅ Расчет завершен');
-        
-        // Показываем успешный результат
-        setTimeout(() => {
-            hideProgressModal();
-            calculationInProgress = false;
-            resetCalculateButton();
-            
-            showCalculationResults({
-                success: true,
-                ...data.result,
-                processingTime: Date.now() - startTime
-            });
-            
-            if (window.showNotification) {
-                window.showNotification(`Расчет завершен! Обработано ${data.result.totalProcessed || 0} NFT`, 'success');
-            }
-        }, 1000);
-    });
-    
-    window.PowerWebSocket.onError((data) => {
-        updateProgress(0, 'Ошибка расчета', data.error);
-        updateWsStatus('❌ Ошибка');
-        
-        setTimeout(() => {
-            hideProgressModal();
-            calculationInProgress = false;
-            resetCalculateButton();
-            
-            showCalculationResults({
-                error: true,
-                message: data.error || 'Ошибка расчета'
-            });
-        }, 2000);
-    });
-}
-
-// Fallback прогресс (если WebSocket недоступен)
-function setupFallbackProgress(calculationId) {
-    updateWsStatus('⚠️ Используется fallback режим');
-    
-    // Периодически проверяем статус через API
-    let progress = 0;
-    const checkInterval = setInterval(async () => {
-        if (calculationAborted || !calculationInProgress) {
-            clearInterval(checkInterval);
+    progressCheckInterval = setInterval(async () => {
+        if (calculationAborted || !calculationInProgress || !currentCalculationId) {
+            clearInterval(progressCheckInterval);
             return;
         }
         
         try {
-            const status = await window.PowerAPI.getCalculationStatus(calculationId);
+            const status = await window.PowerAPI.getCalculationStatus(currentCalculationId);
             
-            if (status.success && status.progress) {
-                const newProgress = status.progress.progress || 0;
-                
-                // Обновляем только если прогресс изменился
-                if (newProgress > progress) {
-                    progress = newProgress;
-                    updateProgress(
-                        progress,
-                        status.progress.message || 'В процессе...',
-                        status.progress.details
-                    );
-                }
+            if (status.success) {
+                updateProgress(
+                    status.progress || 0,
+                    status.message || 'В процессе...',
+                    status.details || {}
+                );
                 
                 // Если расчет завершен
-                if (status.progress.status === 'completed') {
-                    clearInterval(checkInterval);
-                    
-                    updateProgress(100, 'Расчет завершен!', status.progress.details);
-                    updateWsStatus('✅ Завершен через API');
-                    
-                    setTimeout(() => {
-                        hideProgressModal();
-                        calculationInProgress = false;
-                        resetCalculateButton();
-                        
-                        showCalculationResults({
-                            success: true,
-                            ...status.progress.result,
-                            processingTime: Date.now() - startTime
-                        });
-                    }, 1000);
+                if (status.status === 'completed') {
+                    finishCalculation(status);
+                } else if (status.status === 'error') {
+                    failCalculation(status);
+                } else if (status.status === 'cancelled') {
+                    abortCalculation(status);
                 }
             }
         } catch (error) {
             console.warn('Ошибка проверки статуса:', error);
         }
-    }, 2000); // Проверяем каждые 2 секунды
+    }, 1000); // Проверяем каждую секунду
+}
+
+// Завершение расчета
+function finishCalculation(status) {
+    clearInterval(progressCheckInterval);
     
-    // Анимируем прогресс между проверками
-    let animatedProgress = 0;
-    const animationInterval = setInterval(() => {
-        if (calculationAborted || !calculationInProgress) {
-            clearInterval(animationInterval);
-            return;
-        }
+    updateProgress(100, 'Расчет завершен!', status.details);
+    
+    setTimeout(() => {
+        hideProgressModal();
+        calculationInProgress = false;
+        resetCalculateButton();
         
-        // Плавно увеличиваем прогресс до достигнутого уровня
-        if (animatedProgress < progress) {
-            animatedProgress = Math.min(animatedProgress + 1, progress);
-            
-            // Обновляем только если нет WebSocket
-            if (!window.PowerWebSocket) {
-                const progressEl = document.getElementById('progressPercent');
-                const fillEl = document.getElementById('progressFill');
-                
-                if (progressEl) progressEl.textContent = animatedProgress;
-                if (fillEl) fillEl.style.width = `${animatedProgress}%`;
-            }
-        }
+        showCalculationResults({
+            success: true,
+            ...status.details,
+            processingTime: Date.now() - startTime
+        });
         
-        // Если достигли 100%, останавливаем анимацию
-        if (animatedProgress >= 100) {
-            clearInterval(animationInterval);
+        if (window.showNotification) {
+            const processed = status.details?.totalProcessed || 0;
+            window.showNotification(`Расчет завершен! Обработано ${processed} NFT`, 'success');
         }
-    }, 100);
+    }, 1000);
+}
+
+// Ошибка расчета
+function failCalculation(status) {
+    clearInterval(progressCheckInterval);
+    
+    updateProgress(0, 'Ошибка расчета', status.details?.error || 'Неизвестная ошибка');
+    
+    setTimeout(() => {
+        hideProgressModal();
+        calculationInProgress = false;
+        resetCalculateButton();
+        
+        showCalculationResults({
+            error: true,
+            message: status.details?.error || 'Ошибка расчета'
+        });
+    }, 2000);
 }
 
 // Отмена расчета
-function cancelCalculation() {
-    if (calculationInProgress) {
+function abortCalculation(status) {
+    clearInterval(progressCheckInterval);
+    
+    updateProgress(0, 'Расчет отменен', {});
+    
+    setTimeout(() => {
+        hideProgressModal();
+        calculationInProgress = false;
+        resetCalculateButton();
+        
+        showCalculationResults({
+            aborted: true,
+            message: 'Расчет отменен пользователем'
+        });
+    }, 500);
+}
+
+// Отмена расчета
+async function cancelCalculation() {
+    if (calculationInProgress && currentCalculationId) {
         calculationAborted = true;
         
-        if (window.PowerWebSocket && window.PowerWebSocket.calculationId) {
-            window.PowerWebSocket.cancelCalculation();
+        updateProgress(0, 'Отмена расчета...');
+        
+        try {
+            await window.PowerAPI.cancelCalculation(currentCalculationId);
+        } catch (error) {
+            console.warn('Ошибка отмены расчета:', error);
         }
-        
-        updateProgress(0, 'Расчет отменен...');
-        updateWsStatus('⏹️ Отменяется...');
-        
-        setTimeout(() => {
-            hideProgressModal();
-            calculationInProgress = false;
-            resetCalculateButton();
-            
-            showCalculationResults({
-                aborted: true,
-                message: 'Расчет отменен пользователем'
-            });
-            
-            if (window.showNotification) {
-                window.showNotification('Расчет отменен', 'info');
-            }
-        }, 500);
     }
 }
 
@@ -276,7 +215,6 @@ function showProgressModal() {
     if (modal) {
         modal.style.display = 'flex';
         updateProgress(0, 'Подготовка к расчету...');
-        updateWsStatus('⏳ Инициализация...');
     }
 }
 
@@ -314,30 +252,18 @@ function updateProgress(percent, message, details = null) {
         let detailsHTML = '';
         
         // Добавляем обработанные NFT
-        if (details.processed !== undefined && details.totalNFTs !== undefined) {
+        if (details.processed !== undefined && details.total !== undefined) {
             const formattedProcessed = window.formatNumber ? 
                 window.formatNumber(details.processed) : details.processed;
             const formattedTotal = window.formatNumber ? 
-                window.formatNumber(details.totalNFTs) : details.totalNFTs;
-            const progressPercent = details.totalNFTs > 0 ? 
-                Math.round((details.processed / details.totalNFTs) * 100) : 0;
+                window.formatNumber(details.total) : details.total;
+            const progressPercent = details.total > 0 ? 
+                Math.round((details.processed / details.total) * 100) : 0;
             
             detailsHTML += `
                 <div class="detail-item">
                     <span class="detail-label">Обработано NFT:</span>
                     <span class="detail-value">${formattedProcessed} / ${formattedTotal} (${progressPercent}%)</span>
-                </div>
-            `;
-        }
-        
-        // Добавляем NFT с Power
-        if (details.updated !== undefined) {
-            const formatted = window.formatNumber ? 
-                window.formatNumber(details.updated) : details.updated;
-            detailsHTML += `
-                <div class="detail-item">
-                    <span class="detail-label">NFT с Power:</span>
-                    <span class="detail-value">${formatted}</span>
                 </div>
             `;
         }
@@ -350,16 +276,6 @@ function updateProgress(percent, message, details = null) {
                 <div class="detail-item">
                     <span class="detail-label">NFT с синергиями:</span>
                     <span class="detail-value">${formatted}</span>
-                </div>
-            `;
-        }
-        
-        // Добавляем скорость обработки
-        if (details.speed !== undefined) {
-            detailsHTML += `
-                <div class="detail-item">
-                    <span class="detail-label">Скорость:</span>
-                    <span class="detail-value">${details.speed} NFT/сек</span>
                 </div>
             `;
         }
@@ -378,15 +294,17 @@ function updateProgress(percent, message, details = null) {
             `;
         }
         
+        // Добавляем ошибку
+        if (details.error !== undefined) {
+            detailsHTML += `
+                <div class="detail-item error">
+                    <span class="detail-label">Ошибка:</span>
+                    <span class="detail-value">${details.error}</span>
+                </div>
+            `;
+        }
+        
         progressDetails.innerHTML = detailsHTML;
-    }
-}
-
-// Обновление статуса WebSocket
-function updateWsStatus(status) {
-    const wsStatus = document.getElementById('wsStatus');
-    if (wsStatus) {
-        wsStatus.innerHTML = `<small>📡 ${status}</small>`;
     }
 }
 
@@ -430,7 +348,7 @@ function showCalculationResults(result) {
             </div>
         `;
     } else if (result.success) {
-        // Показываем только основные результаты БЕЗ дополнительной информации
+        // Показываем только основные результаты
         const synergyPercent = result.totalProcessed > 0 ? 
             Math.round((result.nftsWithSynergy / result.totalProcessed) * 100) : 0;
         
@@ -453,28 +371,10 @@ function showCalculationResults(result) {
                             <div class="stat-label">Процент с синергиями:</div>
                             <div class="stat-value">${synergyPercent}%</div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        `;
-    } else {
-        // Общий результат
-        resultsHTML = `
-            <div class="result-item">
-                <h4>Расчет выполнен</h4>
-                <div class="result-content">
-                    <div class="result-stats">
-                        <div class="stat-item">
-                            <span class="stat-label">Обработано NFT:</span>
-                            <span class="stat-value">${formatNum(result.totalProcessed || 0)}</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">NFT с Power:</span>
-                            <span class="stat-value">${formatNum(result.totalUpdated || 0)}</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">NFT с синергиями:</span>
-                            <span class="stat-value">${formatNum(result.nftsWithSynergy || 0)}</span>
+                        
+                        <div class="stat-row">
+                            <div class="stat-label">Время выполнения:</div>
+                            <div class="stat-value">${Math.round(result.processingTime / 1000)} сек</div>
                         </div>
                     </div>
                 </div>
@@ -484,11 +384,3 @@ function showCalculationResults(result) {
     
     resultsContainer.innerHTML = resultsHTML;
 }
-
-// Вспомогательные функции
-
-/*
-function downloadResults() {
-    window.location.href = '/api/power/export-power-only';
-}
-*/

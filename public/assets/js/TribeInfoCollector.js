@@ -1,776 +1,713 @@
-// TribeInfoCollector.js - ОСНОВНОЙ ФАЙЛ ДЛЯ РАБОТЫ С МОДУЛЕМ
+// TribeInfoCollector.js - фронтенд для модуля TribeInfoCollector (без WebSocket)
 
-// ========== КОНФИГУРАЦИЯ ==========
-const API_BASE = '/api/TribeInfoCollector';
-let calculationId = null;
-let websocket = null;
-let isConnected = false;
-let reconnectAttempts = 0;
-const MAX_RECONNECT_ATTEMPTS = 5;
-const RECONNECT_DELAY = 3000;
-let collectionIsRunning = false; // Флаг состояния процесса сбора
-
-// ========== ФУНКЦИИ ДЛЯ РАБОТЫ С API ==========
-
-/**
- * Выполняет API запрос
- */
-async function apiCall(endpoint, method = 'GET', data = null) {
-    const url = `${API_BASE}${endpoint}`;
-    
-    const options = {
-        method: method,
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    };
-    
-    if (data) {
-        options.body = JSON.stringify(data);
+class TribeInfoCollectorFrontend {
+    constructor() {
+        this.moduleName = 'TribeInfoCollector';
+        this.baseUrl = '/api/TribeInfoCollector';
+        this.currentCalculationId = null;
+        this.pollingInterval = null;
+        this.pollingDelay = 1000; // 1 секунда
+        this.maxPollingAttempts = 300; // 5 минут при опросе раз в секунду
+        this.currentPollingAttempt = 0;
+        this.isCollecting = false;
+        
+        this.initializeElements();
+        this.bindEvents();
+        this.loadModuleInfo();
+        this.loadCollectionStatus();
     }
     
-    try {
-        const response = await fetch(url, options);
+    initializeElements() {
+        // Основные элементы
+        this.startBtn = document.getElementById('startBtn');
+        this.stopBtn = document.getElementById('stopBtn');
+        this.continueBtn = document.getElementById('continueBtn');
+        this.createSummaryBtn = document.getElementById('createSummaryBtn');
+        this.refreshCollectionInfoBtn = document.getElementById('refreshCollectionInfo');
+        this.clearLogBtn = document.getElementById('clearLogBtn');
         
-        if (!response.ok) {
-            throw new Error(`HTTP ошибка ${response.status}: ${response.statusText}`);
-        }
+        // Статус и прогресс
+        this.statusValue = document.getElementById('statusValue');
+        this.collectionTotal = document.getElementById('collectionTotal');
+        this.nftsInFile = document.getElementById('nftsInFile');
+        this.currentStage = document.getElementById('currentStage');
         
-        return await response.json();
-    } catch (error) {
-        console.error(`❌ Ошибка API запроса ${endpoint}:`, error);
-        logToConsole(`❌ Ошибка API: ${error.message}`, 'error');
-        throw error;
+        // Прогресс этапов
+        this.stage1Progress = document.getElementById('stage1Progress');
+        this.stage1Text = document.getElementById('stage1Text');
+        this.stage1Status = document.getElementById('stage1Status');
+        this.stage1Details = document.getElementById('stage1Details');
+        
+        this.stage2Progress = document.getElementById('stage2Progress');
+        this.stage2Text = document.getElementById('stage2Text');
+        this.stage2Status = document.getElementById('stage2Status');
+        this.stage2Details = document.getElementById('stage2Details');
+        
+        this.stage3Progress = document.getElementById('stage3Progress');
+        this.stage3Text = document.getElementById('stage3Text');
+        this.stage3Status = document.getElementById('stage3Status');
+        this.stage3Details = document.getElementById('stage3Details');
+        
+        // Лог
+        this.logContent = document.getElementById('logContent');
+        
+        // Информация о модуле
+        this.moduleVersion = document.getElementById('moduleVersion');
+        this.moduleStatus = document.getElementById('moduleStatus');
+        this.lastUpdated = document.getElementById('lastUpdated');
+        this.wsStatus = document.getElementById('wsStatus');
     }
-}
-
-/**
- * Инициализация WebSocket соединения
- */
-function initWebSocket() {
-    if (websocket && websocket.readyState === WebSocket.OPEN) {
-        return;
+    
+    bindEvents() {
+        // Основные кнопки
+        this.startBtn?.addEventListener('click', () => this.startCollection());
+        this.stopBtn?.addEventListener('click', () => this.stopCollection());
+        this.continueBtn?.addEventListener('click', () => this.continueCollection());
+        this.createSummaryBtn?.addEventListener('click', () => this.createSummary());
+        this.refreshCollectionInfoBtn?.addEventListener('click', () => this.loadCollectionInfo());
+        this.clearLogBtn?.addEventListener('click', () => this.clearLog());
+        
+        // Кнопки этапов
+        const stageButtons = document.querySelectorAll('.stage-btn-1, .stage-btn-2, .stage-btn-3');
+        stageButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const stageNum = e.target.classList.contains('stage-btn-1') ? 1 :
+                                e.target.classList.contains('stage-btn-2') ? 2 : 3;
+                this.startSpecificStage(stageNum);
+            });
+        });
+        
+        // Автообновление информации каждые 30 секунд
+        setInterval(() => {
+            if (!this.isCollecting) {
+                this.loadModuleInfo();
+                this.loadCollectionStatus();
+            }
+        }, 30000);
     }
     
-    const wsUrl = `ws://${window.location.host}/api/TribeInfoCollector/ws`;
-    websocket = new WebSocket(wsUrl);
+    // ========== API МЕТОДЫ ==========
     
-    websocket.onopen = () => {
-        console.log('✅ WebSocket подключен к Tribe Info Collector');
-        isConnected = true;
-        reconnectAttempts = 0;
-        updateConnectionStatus(true);
+    async apiRequest(endpoint, options = {}) {
+        const defaultOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
         
-        // Подписываемся на расчет если есть ID
-        if (calculationId) {
-            subscribeToCalculation(calculationId);
-        }
-    };
-    
-    websocket.onmessage = (event) => {
+        const finalOptions = { ...defaultOptions, ...options };
+        
         try {
-            const data = JSON.parse(event.data);
-            handleWebSocketMessage(data);
+            this.logToConsole(`📡 Отправка запроса: ${endpoint}`, 'info');
+            const response = await fetch(`${this.baseUrl}${endpoint}`, finalOptions);
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`HTTP ${response.status}: ${errorText}`);
+            }
+            
+            const data = await response.json();
+            this.logToConsole(`📡 Ответ получен: ${endpoint}`, 'success');
+            return data;
+            
         } catch (error) {
-            console.error('❌ Ошибка обработки WebSocket сообщения:', error);
-        }
-    };
-    
-    websocket.onclose = (event) => {
-        console.log('🔌 WebSocket отключен:', event.code, event.reason);
-        isConnected = false;
-        updateConnectionStatus(false);
-        
-        // Пытаемся переподключиться
-        if (reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
-            reconnectAttempts++;
-            console.log(`🔄 Попытка переподключения ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS}...`);
-            logToConsole(`🔄 Переподключение WebSocket... (${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS})`, 'info');
-            setTimeout(initWebSocket, RECONNECT_DELAY);
-        }
-    };
-    
-    websocket.onerror = (error) => {
-        console.error('❌ WebSocket ошибка:', error);
-        isConnected = false;
-        updateConnectionStatus(false);
-    };
-}
-
-/**
- * Подписывается на расчет через WebSocket
- */
-function subscribeToCalculation(calcId) {
-    if (!websocket || websocket.readyState !== WebSocket.OPEN) {
-        console.warn('⚠️ WebSocket не подключен, подписка невозможна');
-        return;
-    }
-    
-    const message = {
-        type: 'subscribe',
-        calculationId: calcId
-    };
-    
-    websocket.send(JSON.stringify(message));
-    console.log(`📡 Подписались на расчет ${calcId}`);
-}
-
-/**
- * Обрабатывает сообщения WebSocket
- */
-function handleWebSocketMessage(data) {
-    switch (data.type) {
-        case 'progress':
-            handleProgressUpdate(data);
-            break;
-            
-        case 'complete':
-            handleComplete(data);
-            break;
-            
-        case 'error':
-            handleError(data);
-            break;
-            
-        case 'pong':
-            // Ответ на ping, можно игнорировать
-            break;
-            
-        default:
-            console.log('📨 Получено неизвестное WebSocket сообщение:', data);
-    }
-}
-
-/**
- * Обрабатывает обновление прогресса (упрощенная версия)
- */
-function handleProgressUpdate(data) {
-    const { progress, message, details } = data;
-    
-    // Общий прогресс-бар
-    updateProgressBar(progress);
-    updateStatus(message);
-    
-    // Обновляем состояние процесса
-    collectionIsRunning = data.status === 'in_progress';
-    updateButtonStates();
-    
-    // Логируем важные обновления
-    if (progress % 10 === 0 || progress >= 100) {
-        logToConsole(`📊 Прогресс: ${progress}% - ${message}`, 'progress');
-    }
-}
-
-/**
- * Обрабатывает завершение расчета (упрощенная версия)
- */
-function handleComplete(data) {
-    const { result, message } = data;
-    
-    logToConsole(`✅ ${message}`, 'success');
-    
-    // Обновляем UI
-    updateProgressBar(100);
-    updateStatus('Завершено');
-    collectionIsRunning = false;
-    updateButtonStates();
-    
-    // Показываем уведомление
-    showNotification('Сбор данных завершен!', 'success');
-}
-
-/**
- * Обрабатывает ошибку (упрощенная версия)
- */
-function handleError(data) {
-    const { error, message } = data;
-    
-    logToConsole(`❌ ${message}: ${error}`, 'error');
-    updateStatus('Ошибка');
-    collectionIsRunning = false;
-    updateButtonStates();
-    updateProgressBar(0);
-    
-    showNotification(`Ошибка: ${error}`, 'error');
-}
-
-// ========== ФУНКЦИИ ДЛЯ РАБОТЫ С UI ==========
-
-/**
- * Логирует сообщение в консоль на странице
- */
-function logToConsole(message, type = 'info') {
-    const logContent = document.getElementById('logContent');
-    if (!logContent) return;
-    
-    const timestamp = new Date().toLocaleTimeString();
-    const logEntry = document.createElement('div');
-    logEntry.className = `log-entry log-${type}`;
-    
-    const typeIcon = {
-        'info': 'ℹ️',
-        'error': '❌',
-        'success': '✅',
-        'warning': '⚠️',
-        'progress': '📊'
-    }[type] || '📝';
-    
-    logEntry.innerHTML = `
-        <span class="log-time">${timestamp}</span>
-        <span class="log-icon">${typeIcon}</span>
-        <span class="log-message">${message}</span>
-    `;
-    
-    logContent.appendChild(logEntry);
-    logContent.scrollTop = logContent.scrollHeight;
-}
-
-/**
- * Обновляет индикатор прогресса
- */
-function updateProgressBar(percentage) {
-    const progressBar = document.querySelector('.progress-bar');
-    if (progressBar) {
-        progressBar.style.width = `${percentage}%`;
-        progressBar.textContent = `${Math.round(percentage)}%`;
-    }
-    
-    const progressText = document.querySelector('.progress-text');
-    if (progressText) {
-        progressText.textContent = `Прогресс: ${Math.round(percentage)}%`;
-    }
-}
-
-/**
- * Обновляет статус процесса
- */
-function updateStatus(message) {
-    const statusValue = document.getElementById('statusValue');
-    if (statusValue) {
-        statusValue.textContent = message;
-        
-        // Обновляем цвет в зависимости от статуса
-        if (message.includes('Ошибка')) {
-            statusValue.className = 'stat-value status-error';
-        } else if (message.includes('Завершено')) {
-            statusValue.className = 'stat-value status-success';
-        } else if (message.includes('Запущен') || message.includes('Этап')) {
-            statusValue.className = 'stat-value status-active';
-        } else {
-            statusValue.className = 'stat-value';
+            console.error(`❌ API ошибка ${endpoint}:`, error);
+            this.logToConsole(`❌ Ошибка: ${error.message}`, 'error');
+            this.showNotification(`Ошибка: ${error.message}`, 'error');
+            throw error;
         }
     }
-}
-
-/**
- * Обновляет информацию о стадии
- */
-function updateStageInfo(details) {
-    const currentStage = document.getElementById('currentStage');
-    if (currentStage && details.stage) {
-        currentStage.textContent = details.stage;
-    }
     
-    const statsContainer = document.getElementById('statsContainer');
-    if (statsContainer && details.processed !== undefined && details.total !== undefined) {
-        statsContainer.innerHTML = `
-            <div class="stat-item">
-                <span class="stat-label">Обработано:</span>
-                <span class="stat-value">${details.processed}/${details.total}</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">Прогресс:</span>
-                <span class="stat-value">${Math.round((details.processed / details.total) * 100)}%</span>
-            </div>
-        `;
-    }
-}
-
-/**
- * Обновляет состояние кнопок
- */
-function updateButtonStates() {
-    const startBtn = document.getElementById('startBtn');
-    const continueBtn = document.getElementById('continueBtn');
-    const stopBtn = document.getElementById('stopBtn');
+    // ========== ОСНОВНЫЕ ФУНКЦИИ ==========
     
-    if (startBtn) startBtn.disabled = collectionIsRunning;
-    if (continueBtn) continueBtn.disabled = collectionIsRunning;
-    if (stopBtn) stopBtn.disabled = !collectionIsRunning;
-}
-
-/**
- * Обновляет информацию о коллекции
- */
-async function updateCollectionInfo() {
-    try {
-        const status = await apiCall('/status');
-        
-        if (status.success) {
-            const { isRunning, collectionInfo } = status.status;
+    async loadModuleInfo() {
+        try {
+            const data = await this.apiRequest('/module-info');
             
-            // Обновляем флаг состояния процесса
-            collectionIsRunning = isRunning;
-            updateButtonStates();
-            
-            // Обновляем только общую информацию
-            const collectionTotal = document.getElementById('collectionTotal');
-            const nftsInFile = document.getElementById('nftsInFile');
-            
-            if (collectionTotal) {
-                collectionTotal.textContent = collectionInfo.totalInCollection || 0;
+            if (data.success) {
+                this.updateModuleInfo(data);
             }
             
-            if (nftsInFile) {
-                nftsInFile.textContent = collectionInfo.nftsInFile || 0;
+        } catch (error) {
+            console.error('❌ Ошибка загрузки информации модуля:', error);
+        }
+    }
+    
+    async loadCollectionStatus() {
+        try {
+            const data = await this.apiRequest('/status');
+            
+            if (data.success) {
+                this.updateStatus(data.status);
             }
             
-            // Обновляем статус
-            updateStatus(isRunning ? 'Сбор выполняется...' : 
-                        collectionInfo.lastUpdated ? 'Завершено' : 'Не активен');
+        } catch (error) {
+            console.error('❌ Ошибка загрузки статуса:', error);
         }
-    } catch (error) {
-        console.error('❌ Ошибка обновления информации о коллекции:', error);
     }
-}
-
-/**
- * Обновляет индикаторы этапов
- */
-function updateStageIndicators(progress) {
-    const indicators = document.querySelectorAll('.stage-indicator .indicator');
     
-    indicators.forEach((indicator, index) => {
-        const stageKey = `stage${index + 1}`;
-        if (progress && progress[stageKey]) {
-            const stageProgress = progress[stageKey];
-            const percent = stageProgress.total > 0 ? 
-                Math.round((stageProgress.completed / stageProgress.total) * 100) : 0;
+    async loadCollectionInfo() {
+        try {
+            this.logToConsole('Загрузка информации о коллекции...', 'info');
+            const data = await this.apiRequest('/collection-info');
             
-            indicator.innerHTML = `
-                <span class="indicator-label">Этап ${index + 1}</span>
-                <span class="indicator-progress">${stageProgress.completed}/${stageProgress.total}</span>
-                <div class="progress-bar-small">
-                    <div class="progress-fill" style="width: ${percent}%"></div>
-                </div>
-            `;
+            if (data.success) {
+                this.collectionTotal.textContent = data.totalNfts || 0;
+                this.logToConsole(`Информация о коллекции: ${data.totalNfts} NFT`, 'success');
+            }
             
-            // Добавляем класс завершенности
-            if (percent >= 100) {
-                indicator.classList.add('completed');
+        } catch (error) {
+            console.error('❌ Ошибка загрузки информации коллекции:', error);
+        }
+    }
+    
+    async startCollection() {
+        try {
+            this.logToConsole('Запуск сбора данных...', 'info');
+            
+            const response = await this.apiRequest('/start', {
+                method: 'POST',
+                body: JSON.stringify({ startFromStage: 1 })
+            });
+            
+            if (response.success) {
+                this.currentCalculationId = response.calculationId;
+                this.logToConsole(`✅ Сбор данных запущен (ID: ${response.calculationId})`, 'success');
+                this.showNotification(`Сбор данных запущен (ID: ${response.calculationId})`, 'success');
+                
+                // Обновляем UI
+                this.isCollecting = true;
+                this.updateButtons(true);
+                this.statusValue.textContent = 'Активен';
+                this.statusValue.className = 'stat-value status-active';
+                
+                // Запускаем polling
+                this.startPolling(response.calculationId);
+                
+                // Обновляем информацию
+                setTimeout(() => {
+                    this.loadCollectionStatus();
+                }, 1000);
+            }
+            
+        } catch (error) {
+            console.error('❌ Ошибка запуска сбора:', error);
+            this.showNotification(`❌ Ошибка: ${error.message}`, 'error');
+        }
+    }
+    
+    async stopCollection() {
+        try {
+            this.logToConsole('Остановка сбора данных...', 'warning');
+            
+            const response = await this.apiRequest('/stop', {
+                method: 'POST'
+            });
+            
+            if (response.success) {
+                this.logToConsole(`🛑 Сбор данных остановлен`, 'warning');
+                this.showNotification('Сбор данных остановлен', 'warning');
+                
+                // Обновляем UI
+                this.isCollecting = false;
+                this.updateButtons(false);
+                this.statusValue.textContent = 'Остановлен';
+                this.statusValue.className = 'stat-value status-stopped';
+                
+                // Останавливаем polling
+                this.stopPolling();
+                
+                // Обновляем информацию
+                setTimeout(() => {
+                    this.loadCollectionStatus();
+                }, 1000);
+            }
+            
+        } catch (error) {
+            console.error('❌ Ошибка остановки сбора:', error);
+            this.showNotification(`❌ Ошибка: ${error.message}`, 'error');
+        }
+    }
+    
+    async continueCollection() {
+        try {
+            this.logToConsole('Продолжение сбора данных...', 'info');
+            
+            const response = await this.apiRequest('/continue', {
+                method: 'POST',
+                body: JSON.stringify({ calculationId: this.currentCalculationId })
+            });
+            
+            if (response.success) {
+                this.currentCalculationId = response.calculationId;
+                this.logToConsole(`🔄 Продолжение сбора (новый ID: ${response.calculationId})`, 'success');
+                this.showNotification('Продолжение сбора данных', 'info');
+                
+                // Обновляем UI
+                this.isCollecting = true;
+                this.updateButtons(true);
+                this.statusValue.textContent = 'Активен';
+                this.statusValue.className = 'stat-value status-active';
+                
+                // Запускаем polling
+                this.startPolling(response.calculationId);
+            }
+            
+        } catch (error) {
+            console.error('❌ Ошибка продолжения сбора:', error);
+            this.showNotification(`❌ Ошибка: ${error.message}`, 'error');
+        }
+    }
+    
+    async createSummary() {
+        try {
+            this.logToConsole('Создание сводного файла...', 'info');
+            this.showNotification('Создание сводного файла...', 'info');
+            
+            const response = await this.apiRequest('/create-summary', {
+                method: 'POST'
+            });
+            
+            if (response.success) {
+                this.logToConsole(`✅ ${response.message}`, 'success');
+                this.showNotification(response.message, 'success');
+                
+                // Обновляем информацию о файлах
+                setTimeout(() => {
+                    this.loadModuleInfo();
+                }, 1000);
             } else {
-                indicator.classList.remove('completed');
+                this.logToConsole(`❌ ${response.error}`, 'error');
+                this.showNotification(response.error, 'error');
             }
-        }
-    });
-}
-
-/**
- * Обновляет статус подключения
- */
-function updateConnectionStatus(connected) {
-    const connectionIndicator = document.querySelector('.connection-indicator');
-    if (connectionIndicator) {
-        if (connected) {
-            connectionIndicator.innerHTML = '<span class="indicator-dot connected"></span> WebSocket подключен';
-            connectionIndicator.className = 'connection-indicator connected';
-        } else {
-            connectionIndicator.innerHTML = '<span class="indicator-dot disconnected"></span> WebSocket отключен';
-            connectionIndicator.className = 'connection-indicator disconnected';
+            
+        } catch (error) {
+            console.error('❌ Ошибка создания сводного файла:', error);
+            this.showNotification(`❌ Ошибка: ${error.message}`, 'error');
         }
     }
-}
-
-/**
- * Показывает уведомление
- */
-function showNotification(message, type = 'info') {
-    // Создаем элемент уведомления
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.innerHTML = `
-        <div class="notification-content">
-            <span class="notification-icon">${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span>
-            <span class="notification-message">${message}</span>
-        </div>
-    `;
     
-    // Добавляем на страницу
-    document.body.appendChild(notification);
-    
-    // Автоматически скрываем через 5 секунд
-    setTimeout(() => {
-        notification.classList.add('fade-out');
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
-        }, 300);
-    }, 5000);
-}
-
-// ========== ОСНОВНЫЕ ДЕЙСТВИЯ ==========
-
-/**
- * Запускает сбор данных
- */
-async function startCollection(startFromStage = null) {
-    try {
-        logToConsole('🚀 Запуск сбора данных...', 'info');
-        updateStatus('Запуск...');
-        collectionIsRunning = true;
-        updateButtonStates();
-        
-        // Сбрасываем все этапы перед началом нового сбора
-        resetAllStages();
-        
-        const data = startFromStage ? { startFromStage } : {};
-        const result = await apiCall('/start', 'POST', data);
-        
-        if (result.success) {
-            calculationId = result.calculationId;
-            logToConsole(`✅ Сбор данных запущен (ID: ${calculationId})`, 'success');
+    async startSpecificStage(stageNumber) {
+        try {
+            this.logToConsole(`Запуск сбора с этапа ${stageNumber}...`, 'info');
             
-            // Устанавливаем начальный этап
-            if (startFromStage) {
-                activateStage(startFromStage);
-                updateStageProgress(startFromStage, 0, 'Начинается...', 'Подготовка к сбору');
-            } else {
-                activateStage(1);
-                updateStageProgress(1, 0, 'Начинается...', 'Подготовка к сбору');
+            const response = await this.apiRequest('/start', {
+                method: 'POST',
+                body: JSON.stringify({ startFromStage: stageNumber })
+            });
+            
+            if (response.success) {
+                this.currentCalculationId = response.calculationId;
+                this.logToConsole(`✅ Сбор с этапа ${stageNumber} запущен`, 'success');
+                this.showNotification(`Сбор с этапа ${stageNumber} запущен`, 'success');
+                
+                // Обновляем UI
+                this.isCollecting = true;
+                this.updateButtons(true);
+                this.statusValue.textContent = 'Активен';
+                this.statusValue.className = 'stat-value status-active';
+                
+                // Запускаем polling
+                this.startPolling(response.calculationId);
             }
             
-            // Подписываемся на обновления через WebSocket
-            if (isConnected) {
-                subscribeToCalculation(calculationId);
-            } else {
-                logToConsole('⚠️ WebSocket не подключен, обновления прогресса недоступны', 'warning');
-            }
-            
-            showNotification('Сбор данных запущен', 'success');
+        } catch (error) {
+            console.error('❌ Ошибка запуска этапа:', error);
+            this.showNotification(`❌ Ошибка: ${error.message}`, 'error');
         }
-    } catch (error) {
-        logToConsole(`❌ Ошибка запуска сбора: ${error.message}`, 'error');
-        collectionIsRunning = false;
-        updateButtonStates();
-        showNotification(`Ошибка запуска: ${error.message}`, 'error');
     }
-}
-
-/**
- * Останавливает сбор данных
- */
-async function stopCollection() {
-    try {
-        // Проверяем, что процесс запущен
-        if (!collectionIsRunning) {
-            logToConsole('⚠️ Сбор данных не запущен, остановка невозможна', 'warning');
-            showNotification('Сбор данных не запущен', 'warning');
+    
+    // ========== POLLING МЕХАНИЗМ ==========
+    
+    startPolling(calculationId) {
+        // Останавливаем предыдущий polling
+        this.stopPolling();
+        
+        this.currentCalculationId = calculationId;
+        this.currentPollingAttempt = 0;
+        
+        // Начинаем polling
+        this.pollingInterval = setInterval(async () => {
+            await this.pollProgress(calculationId);
+        }, this.pollingDelay);
+        
+        // Первый запрос сразу
+        setTimeout(() => this.pollProgress(calculationId), 100);
+    }
+    
+    stopPolling() {
+        if (this.pollingInterval) {
+            clearInterval(this.pollingInterval);
+            this.pollingInterval = null;
+        }
+        
+        this.currentPollingAttempt = 0;
+    }
+    
+    async pollProgress(calculationId) {
+        if (this.currentPollingAttempt >= this.maxPollingAttempts) {
+            this.logToConsole('⚠️ Достигнут лимит опросов прогресса', 'warning');
+            this.stopPolling();
+            this.isCollecting = false;
+            this.updateButtons(false);
             return;
         }
         
-        logToConsole('⏹️ Остановка сбора данных...', 'warning');
-        updateStatus('Остановка...');
+        this.currentPollingAttempt++;
         
-        const result = await apiCall('/stop', 'POST');
-        
-        if (result.success) {
-            logToConsole('✅ Сбор данных остановлен', 'success');
-            updateStatus('Остановлен');
-            collectionIsRunning = false;
-            updateButtonStates();
-            showNotification('Сбор данных остановлен', 'success');
-        }
-    } catch (error) {
-        logToConsole(`❌ Ошибка остановки сбора: ${error.message}`, 'error');
-        collectionIsRunning = false;
-        updateButtonStates();
-        showNotification(`Ошибка остановки: ${error.message}`, 'error');
-    }
-}
-
-/**
- * Продолжает сбор данных
- */
-async function continueCollection() {
-    try {
-        logToConsole('🔄 Продолжение сбора данных...', 'info');
-        updateStatus('Продолжение...');
-        collectionIsRunning = true;
-        updateButtonStates();
-        
-        const result = await apiCall('/continue', 'POST');
-        
-        if (result.success) {
-            calculationId = result.calculationId;
-            logToConsole(`✅ Продолжение сбора запущено (ID: ${calculationId})`, 'success');
+        try {
+            const data = await this.apiRequest(`/progress?calculationId=${calculationId}`);
             
-            if (isConnected) {
-                subscribeToCalculation(calculationId);
+            if (data.success && data.progress) {
+                this.updateProgress(data.progress);
+                
+                // Если расчет завершен, останавливаем polling
+                if (data.progress.status === 'completed' || 
+                    data.progress.status === 'error' || 
+                    data.progress.status === 'not_found') {
+                    
+                    this.stopPolling();
+                    this.isCollecting = false;
+                    this.updateButtons(false);
+                    
+                    if (data.progress.status === 'completed') {
+                        this.logToConsole('🎉 Сбор данных завершен!', 'success');
+                        this.showNotification('Сбор данных завершен!', 'success');
+                        this.statusValue.textContent = 'Завершен';
+                        this.statusValue.className = 'stat-value status-completed';
+                        
+                        // Обновляем информацию
+                        setTimeout(() => {
+                            this.loadModuleInfo();
+                            this.loadCollectionStatus();
+                        }, 1000);
+                    } else if (data.progress.status === 'error') {
+                        this.logToConsole(`❌ Ошибка: ${data.progress.message}`, 'error');
+                        this.statusValue.textContent = 'Ошибка';
+                        this.statusValue.className = 'stat-value status-error';
+                    }
+                }
             }
             
-            showNotification('Продолжение сбора запущено', 'success');
+        } catch (error) {
+            console.error('❌ Ошибка polling:', error);
+            
+            // Если много ошибок подряд, останавливаем polling
+            if (this.currentPollingAttempt > 10) {
+                this.logToConsole('⚠️ Прервано из-за ошибок соединения', 'warning');
+                this.stopPolling();
+                this.isCollecting = false;
+                this.updateButtons(false);
+            }
         }
-    } catch (error) {
-        logToConsole(`❌ Ошибка продолжения сбора: ${error.message}`, 'error');
-        collectionIsRunning = false;
-        updateButtonStates();
-        showNotification(`Ошибка продолжения: ${error.message}`, 'error');
-    }
-}
-
-
-
-// ========== УПРАВЛЕНИЕ ПРОГРЕСС-БАРАМИ ЭТАПОВ ==========
-
-/**
- * Сбрасывает все этапы в начальное состояние
- */
-function resetAllStages() {
-    for (let i = 1; i <= 3; i++) {
-        updateStageProgress(i, 0, 'Ожидание', '-');
-        document.getElementById(`stage${i}Container`).className = 'stage-container';
-        document.getElementById(`stage${i}Status`).className = 'stage-status waiting';
-    }
-}
-
-/**
- * Обновляет прогресс конкретного этапа
- */
-function updateStageProgress(stageNumber, percentage, status, details) {
-    const container = document.getElementById(`stage${stageNumber}Container`);
-    const statusElement = document.getElementById(`stage${stageNumber}Status`);
-    const progressBar = document.querySelector(`#stage${stageNumber}Progress .progress-fill-stage`);
-    const progressText = document.getElementById(`stage${stageNumber}Text`);
-    const detailsElement = document.getElementById(`stage${stageNumber}Details`);
-    
-    // Обновляем прогресс-бар
-    if (progressBar) {
-        progressBar.style.width = `${percentage}%`;
     }
     
-    if (progressText) {
-        progressText.textContent = `${Math.round(percentage)}%`;
+    // ========== ОБНОВЛЕНИЕ UI ==========
+    
+    updateModuleInfo(data) {
+        if (this.moduleVersion) this.moduleVersion.textContent = data.version;
+        if (this.moduleStatus) {
+            this.moduleStatus.textContent = data.enabled ? 'Активен' : 'Отключен';
+            this.moduleStatus.className = `info-value ${data.enabled ? 'status-active' : 'status-stopped'}`;
+        }
+        if (this.lastUpdated) {
+            this.lastUpdated.textContent = new Date(data.serverTime).toLocaleString('ru-RU');
+        }
+        if (this.wsStatus) {
+            this.wsStatus.textContent = 'Не используется';
+            this.wsStatus.className = 'info-value status-stopped';
+        }
     }
     
-    // Обновляем статус
-    if (statusElement) {
-        statusElement.textContent = status;
+    updateStatus(status) {
+        // Статус сбора
+        if (this.statusValue) {
+            if (status.isRunning) {
+                this.statusValue.textContent = 'Активен';
+                this.statusValue.className = 'stat-value status-active';
+            } else {
+                this.statusValue.textContent = 'Не активен';
+                this.statusValue.className = 'stat-value status-stopped';
+            }
+        }
         
-        // Обновляем классы статуса
-        statusElement.className = 'stage-status';
-        if (percentage >= 100) {
-            statusElement.classList.add('completed');
-        } else if (status.includes('Выполняется') || status.includes('Активен')) {
-            statusElement.classList.add('active');
-        } else if (status.includes('Ошибка')) {
-            statusElement.classList.add('error');
-        } else {
-            statusElement.classList.add('waiting');
+        // Статистика коллекции
+        if (this.collectionTotal) {
+            this.collectionTotal.textContent = status.collectionInfo.totalInCollection || 0;
+        }
+        
+        if (this.nftsInFile) {
+            this.nftsInFile.textContent = status.collectionInfo.nftsInFile || 0;
+        }
+        
+        if (this.currentStage) {
+            const stageNames = {
+                0: 'Не начат',
+                1: 'Этап 1',
+                2: 'Этап 2',
+                3: 'Этап 3',
+                4: 'Завершено'
+            };
+            this.currentStage.textContent = stageNames[status.currentStage] || '-';
+        }
+        
+        // Обновляем прогресс этапов
+        this.updateStageProgress(
+            1, 
+            status.progress.stage1.completed, 
+            status.progress.stage1.total,
+            status.currentStage === 1 && status.isRunning ? 'В процессе' : 'Ожидание'
+        );
+        
+        this.updateStageProgress(
+            2, 
+            status.progress.stage2.completed, 
+            status.progress.stage2.total,
+            status.currentStage === 2 && status.isRunning ? 'В процессе' : 'Ожидание'
+        );
+        
+        this.updateStageProgress(
+            3, 
+            status.progress.stage3.completed, 
+            status.progress.stage3.total,
+            status.currentStage === 3 && status.isRunning ? 'В процессе' : 'Ожидание'
+        );
+    }
+    
+    updateProgress(progress) {
+        // Обновляем текущий этап
+        const stage = progress.stage || 1;
+        const processed = progress.processed || 0;
+        const total = progress.total || 100;
+        const percent = total > 0 ? Math.round((processed / total) * 100) : 0;
+        const message = progress.message || 'В процессе...';
+        
+        // Обновляем активный этап
+        const stageNames = {
+            1: 'Этап 1: Базовая информация',
+            2: 'Этап 2: Детали NFT',
+            3: 'Этап 3: Генерация ссылок',
+            4: 'Завершено'
+        };
+        
+        if (this.currentStage) {
+            this.currentStage.textContent = stageNames[stage] || `Этап ${stage}`;
+        }
+        
+        // Обновляем прогресс для текущего этапа
+        this.updateStageProgress(
+            stage,
+            processed,
+            total,
+            message,
+            true // isActive
+        );
+        
+        // Если есть детали по всем этапам
+        if (progress.details && progress.details.stage1) {
+            this.updateStageProgress(
+                1,
+                progress.details.stage1.completed || 0,
+                progress.details.stage1.total || 100,
+                progress.details.stage1.completed === progress.details.stage1.total ? 'Завершен' : 'Ожидание'
+            );
+            
+            this.updateStageProgress(
+                2,
+                progress.details.stage2.completed || 0,
+                progress.details.stage2.total || 100,
+                progress.details.stage2.completed === progress.details.stage2.total ? 'Завершен' : 'Ожидание'
+            );
+            
+            this.updateStageProgress(
+                3,
+                progress.details.stage3.completed || 0,
+                progress.details.stage3.total || 100,
+                progress.details.stage3.completed === progress.details.stage3.total ? 'Завершен' : 'Ожидание'
+            );
         }
     }
     
-    // Обновляем детали
-    if (detailsElement) {
-        detailsElement.textContent = details;
+    updateStageProgress(stageNumber, completed, total, statusText, isActive = false) {
+        const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+        
+        let stageElement, textElement, statusElement, detailsElement;
+        
+        switch(stageNumber) {
+            case 1:
+                stageElement = this.stage1Progress?.querySelector('.progress-fill-stage');
+                textElement = this.stage1Text;
+                statusElement = this.stage1Status;
+                detailsElement = this.stage1Details;
+                break;
+            case 2:
+                stageElement = this.stage2Progress?.querySelector('.progress-fill-stage');
+                textElement = this.stage2Text;
+                statusElement = this.stage2Status;
+                detailsElement = this.stage2Details;
+                break;
+            case 3:
+                stageElement = this.stage3Progress?.querySelector('.progress-fill-stage');
+                textElement = this.stage3Text;
+                statusElement = this.stage3Status;
+                detailsElement = this.stage3Details;
+                break;
+        }
+        
+        if (stageElement) {
+            stageElement.style.width = `${percent}%`;
+            
+            // Цвет в зависимости от статуса
+            if (isActive) {
+                stageElement.style.backgroundColor = '#007bff'; // синий для активного
+            } else if (percent === 100) {
+                stageElement.style.backgroundColor = '#28a745'; // зеленый для завершенного
+            } else {
+                stageElement.style.backgroundColor = '#6c757d'; // серый для ожидания
+            }
+        }
+        
+        if (textElement) {
+            textElement.textContent = `${percent}% (${completed}/${total})`;
+        }
+        
+        if (statusElement) {
+            statusElement.textContent = statusText;
+            statusElement.className = `stage-status ${
+                isActive ? 'status-active' : 
+                percent === 100 ? 'status-completed' : 'status-pending'
+            }`;
+        }
+        
+        if (detailsElement) {
+            detailsElement.textContent = isActive ? `Обработано: ${completed} из ${total} NFT` : '-';
+        }
     }
     
-    // Обновляем контейнер
-    if (container) {
-        container.className = 'stage-container';
-        if (percentage >= 100) {
-            container.classList.add('completed');
-        } else if (status.includes('Выполняется') || status.includes('Активен')) {
-            container.classList.add('active');
+    updateButtons(isRunning) {
+        if (this.startBtn) {
+            this.startBtn.disabled = isRunning;
+            this.startBtn.style.opacity = isRunning ? '0.6' : '1';
+        }
+        
+        if (this.stopBtn) {
+            this.stopBtn.disabled = !isRunning;
+            this.stopBtn.style.opacity = isRunning ? '1' : '0.6';
+        }
+        
+        if (this.continueBtn) {
+            this.continueBtn.disabled = isRunning;
+            this.continueBtn.style.opacity = isRunning ? '0.6' : '1';
+        }
+    }
+    
+    // ========== ЛОГИРОВАНИЕ ==========
+    
+    logToConsole(message, type = 'info') {
+        if (!this.logContent) return;
+        
+        const logEntry = document.createElement('div');
+        logEntry.className = `log-entry log-${type}`;
+        
+        const time = new Date().toLocaleTimeString('ru-RU');
+        const icons = {
+            'info': 'ℹ️',
+            'success': '✅',
+            'warning': '⚠️',
+            'error': '❌'
+        };
+        
+        logEntry.innerHTML = `
+            <span class="log-time">${time}</span>
+            <span class="log-icon">${icons[type] || '📝'}</span>
+            <span class="log-message">${message}</span>
+        `;
+        
+        this.logContent.prepend(logEntry);
+        
+        // Ограничиваем количество записей в логе
+        const maxEntries = 100;
+        const entries = this.logContent.querySelectorAll('.log-entry');
+        if (entries.length > maxEntries) {
+            for (let i = maxEntries; i < entries.length; i++) {
+                entries[i].remove();
+            }
+        }
+        
+        // Автопрокрутка к новой записи
+        this.logContent.scrollTop = 0;
+    }
+    
+    clearLog() {
+        if (this.logContent) {
+            this.logContent.innerHTML = '';
+            this.logToConsole('Лог очищен', 'info');
+        }
+    }
+    
+    // ========== УВЕДОМЛЕНИЯ ==========
+    
+    showNotification(message, type = 'info') {
+        // Создаем временное уведомление
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.textContent = message;
+        
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 5px;
+            color: white;
+            z-index: 1000;
+            font-weight: bold;
+            animation: slideIn 0.3s ease-out;
+        `;
+        
+        const colors = {
+            'success': '#28a745',
+            'error': '#dc3545',
+            'warning': '#ffc107',
+            'info': '#17a2b8'
+        };
+        
+        notification.style.backgroundColor = colors[type] || '#17a2b8';
+        
+        document.body.appendChild(notification);
+        
+        // Удаляем через 3 секунды
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease-out';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 300);
+        }, 3000);
+        
+        // Добавляем CSS для анимации
+        if (!document.getElementById('notification-styles')) {
+            const style = document.createElement('style');
+            style.id = 'notification-styles';
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
         }
     }
 }
 
-/**
- * Активирует конкретный этап (делает его текущим)
- */
-function activateStage(stageNumber) {
-    // Деактивируем все этапы
-    for (let i = 1; i <= 3; i++) {
-        const container = document.getElementById(`stage${i}Container`);
-        if (container) {
-            container.classList.remove('active');
-        }
-    }
-    
-    // Активируем выбранный этап
-    const container = document.getElementById(`stage${stageNumber}Container`);
-    if (container) {
-        container.classList.add('active');
-    }
-}
-
-// ========== ОБНОВЛЕННАЯ ОБРАБОТКА WebSocket СООБЩЕНИЙ ==========
-
-/**
- * Обрабатывает обновление прогресса с деталями этапов
- */
-function handleProgressUpdate(data) {
-    const { progress, message, details } = data;
-    
-    // Общий прогресс-бар
-    updateProgressBar(progress);
-    updateStatus(message);
-    
-    // Обновляем состояние процесса
-    collectionIsRunning = data.status === 'in_progress';
-    updateButtonStates();
-    
-    // Логируем важные обновления
-    if (progress % 10 === 0 || progress >= 100) {
-        logToConsole(`📊 Прогресс: ${progress}% - ${message}`, 'progress');
-    }
-    
-    
-}
-
-
-
-/**
- * Обрабатывает завершение расчета
- */
-function handleComplete(data) {
-    const { result, message } = data;
-    
-    logToConsole(`✅ ${message}`, 'success');
-    logToConsole(`📊 Результат: ${JSON.stringify(result, null, 2)}`, 'info');
-    
-    // Обновляем UI
-    updateProgressBar(100);
-    updateStatus('Завершено');
-    collectionIsRunning = false;
-    updateButtonStates();
-    
-    // Помечаем все этапы как завершенные
-    for (let i = 1; i <= 3; i++) {
-        updateStageProgress(i, 100, 'Завершено', 'Этап завершен');
-    }
-    
-    // Обновляем информацию о коллекции
-    updateCollectionInfo();
-    
-    // Показываем уведомление
-    showNotification('Сбор данных завершен!', 'success');
-}
-
-/**
- * Обрабатывает ошибку
- */
-function handleError(data) {
-    const { error, message } = data;
-    
-    logToConsole(`❌ ${message}: ${error}`, 'error');
-    updateStatus('Ошибка');
-    collectionIsRunning = false;
-    updateButtonStates();
-    updateProgressBar(0);
-    
-    // Сбрасываем этапы при ошибке
-    resetAllStages();
-    
-    showNotification(`Ошибка: ${error}`, 'error');
-}
-
-
-
-
-// ========== ИНИЦИАЛИЗАЦИЯ ==========
-
-/**
- * Инициализация модуля
- */
-async function initTribeInfoCollector() {
-    console.log('🚀 Инициализация Tribe Info Collector...');
-    
-    // Очищаем старый calculationId при инициализации
-    calculationId = null;
-    collectionIsRunning = false;
-    
-    // Инициализация WebSocket
-    initWebSocket();
-    
-    // Загрузка начального статуса (только один раз)
-    try {
-        await updateCollectionInfo();
-    } catch (error) {
-        console.error('❌ Ошибка получения статуса:', error);
-    }
-    
-    // Обновляем состояние кнопок
-    updateButtonStates();
-    
-    console.log('✅ Tribe Info Collector инициализирован');
-}
-
-/**
- * Очищает лог
- */
-function clearLog() {
-    const logContent = document.getElementById('logContent');
-    if (logContent) {
-        logContent.innerHTML = '';
-        logToConsole('🧹 Лог очищен', 'info');
-    }
-}
-
-// ========== ОБРАБОТЧИКИ СОБЫТИЙ ==========
-
-/**
- * Настройка обработчиков событий
- */
-function setupEventListeners() {
-    // Основные кнопки
-    const startBtn = document.getElementById('startBtn');
-    const continueBtn = document.getElementById('continueBtn');
-    const stopBtn = document.getElementById('stopBtn');   
-    const clearLogBtn = document.getElementById('clearLogBtn');
-  
-    
-    // Обработчики для основных кнопок
-    if (startBtn) {
-        startBtn.addEventListener('click', () => startCollection());
-    }
-    
-    if (continueBtn) {
-        continueBtn.addEventListener('click', continueCollection);
-    }
-    
-    if (stopBtn) {
-        stopBtn.addEventListener('click', stopCollection);
-    }   
-
-    if (clearLogBtn) {
-        clearLogBtn.addEventListener('click', clearLog);
-    }    
-}
-
-// ========== ЗАПУСК ПРИ ЗАГРУЗКЕ СТРАНИЦЫ ==========
-
-// Ждем полной загрузки DOM
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        setupEventListeners();
-        initTribeInfoCollector();
-    });
-} else {
-    setupEventListeners();
-    initTribeInfoCollector();
-}
-
-// Экспортируем функции для использования в других скриптах
-window.TribeInfoCollector = {
-    startCollection,
-    stopCollection,
-    continueCollection,    
-    updateCollectionInfo,   
-    clearLog,
-    logToConsole,
-    showNotification
-};
-
-console.log('🎯 Tribe Info Collector готов к работе');
+// Инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🔄 Инициализация Tribe Info Collector...');
+    window.tribeCollector = new TribeInfoCollectorFrontend();
+});

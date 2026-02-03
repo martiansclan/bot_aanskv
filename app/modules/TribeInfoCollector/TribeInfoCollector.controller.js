@@ -99,6 +99,16 @@ class TribeInfoCollectorController {
             
             const status = await this.service.getCollectionStatus();
             
+            // Если есть ошибка в статусе, все равно возвращаем данные
+            if (status.error) {
+                return res.json({ 
+                    success: true, 
+                    module: this.config.moduleName,
+                    status: status,
+                    warning: 'Файл данных поврежден, показан базовый статус'
+                });
+            }
+            
             res.json({ 
                 success: true, 
                 module: this.config.moduleName,
@@ -119,10 +129,100 @@ class TribeInfoCollectorController {
                 });
             }
             
-            res.status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ 
-                success: false, 
+            // Возвращаем базовый статус при любой другой ошибке
+            const basicStatus = {
+                isRunning: this.service.collectionProcess.isRunning,
+                currentStage: this.service.collectionProcess.currentStage,
+                calculationId: this.service.collectionProcess.calculationId,
+                collectionInfo: {
+                    totalInCollection: 0,
+                    nftsInFile: 0,
+                    lastUpdated: null,
+                    lastProcessedIndex: 0
+                },
+                progress: {
+                    stage1: { completed: 0, total: 0 },
+                    stage2: { completed: 0, total: 0 },
+                    stage3: { completed: 0, total: 0 }
+                },
+                error: error.message
+            };
+            
+            res.json({ 
+                success: true, 
                 module: this.config.moduleName,
-                error: error.message 
+                status: basicStatus,
+                warning: 'Ошибка чтения данных, показан базовый статус'
+            });
+        }
+    }
+
+    // API: Получение прогресса расчета (polling endpoint)
+    async getProgress(req, res) {
+        try {
+            const { calculationId } = req.query;
+            
+            if (!calculationId) {
+                return res.status(CONSTANTS.HTTP_STATUS.BAD_REQUEST).json({
+                    success: false,
+                    module: this.config.moduleName,
+                    error: 'Не указан calculationId'
+                });
+            }
+            
+            console.log(`GET ${this.config.routesPrefix}/progress?calculationId=${calculationId}`);
+            
+            const progress = this.service.getProgress(calculationId);
+            
+            res.json({
+                success: true,
+                module: this.config.moduleName,
+                calculationId,
+                progress
+            });
+            
+        } catch (error) {
+            console.error('❌ Ошибка получения прогресса:', error);
+            res.status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+                success: false,
+                module: this.config.moduleName,
+                error: error.message
+            });
+        }
+    }
+
+    // API: Получение активных расчетов
+    async getActiveCalculations(req, res) {
+        try {
+            console.log(`GET ${this.config.routesPrefix}/active-calculations`);
+            
+            const status = await this.service.getCollectionStatus();
+            
+            const activeCalculations = [];
+            
+            if (status.isRunning && status.calculationId) {
+                activeCalculations.push({
+                    calculationId: status.calculationId,
+                    stage: status.currentStage,
+                    stageName: this.service.getStageName(status.currentStage),
+                    startedAt: new Date().toISOString(),
+                    isRunning: true
+                });
+            }
+            
+            res.json({
+                success: true,
+                module: this.config.moduleName,
+                activeCalculations,
+                totalActive: activeCalculations.length
+            });
+            
+        } catch (error) {
+            console.error('❌ Ошибка получения активных расчетов:', error);
+            res.status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+                success: false,
+                module: this.config.moduleName,
+                error: error.message
             });
         }
     }
@@ -158,6 +258,38 @@ class TribeInfoCollectorController {
             
         } catch (error) {
             console.error('❌ Ошибка продолжения сбора:', error);
+            res.status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ 
+                success: false, 
+                module: this.config.moduleName,
+                error: error.message 
+            });
+        }
+    }
+
+    // API: Создание сводного файла
+    async createSummary(req, res) {
+        try {
+            console.log(`POST ${this.config.routesPrefix}/create-summary`);
+            
+            const result = await this.service.createSummaryFile();
+            
+            if (result.success) {
+                res.json({ 
+                    success: true, 
+                    module: this.config.moduleName,
+                    message: CONSTANTS.SUCCESS_MESSAGES.SUMMARY_CREATED,
+                    result 
+                });
+            } else {
+                res.status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ 
+                    success: false, 
+                    module: this.config.moduleName,
+                    error: result.error 
+                });
+            }
+            
+        } catch (error) {
+            console.error('❌ Ошибка создания сводного файла:', error);
             res.status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ 
                 success: false, 
                 module: this.config.moduleName,
@@ -212,30 +344,30 @@ class TribeInfoCollectorController {
         }
     }
 
-    // API: Создание сводного файла (оставить, но не экспортировать в routes)
-    async createSummary(req, res) {
+    // API: Получение информации о модуле
+    async getModuleInfo(req, res) {
         try {
-            console.log(`POST ${this.config.routesPrefix}/create-summary`);
+            console.log(`GET ${this.config.routesPrefix}/module-info`);
             
-            const result = await this.service.createSummaryFile();
+            const status = await this.service.getCollectionStatus();
             
-            if (result.success) {
-                res.json({ 
-                    success: true, 
-                    module: this.config.moduleName,
-                    message: CONSTANTS.SUCCESS_MESSAGES.SUMMARY_CREATED,
-                    result 
-                });
-            } else {
-                res.status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ 
-                    success: false, 
-                    module: this.config.moduleName,
-                    error: result.error 
-                });
-            }
+            // Проверяем файлы
+            const filesCheck = await this.service.checkFiles();
+            
+            res.json({ 
+                success: true, 
+                module: this.config.moduleName,
+                version: this.config.version,
+                description: this.config.description,
+                enabled: this.config.enabled,
+                collectionSettings: this.config.collectionSettings,
+                status: status,
+                files: filesCheck,
+                serverTime: new Date().toISOString()
+            });
             
         } catch (error) {
-            console.error('❌ Ошибка создания сводного файла:', error);
+            console.error('❌ Ошибка получения информации о модуле:', error);
             res.status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ 
                 success: false, 
                 module: this.config.moduleName,
@@ -244,6 +376,29 @@ class TribeInfoCollectorController {
         }
     }
 
+    // API: Проверка файлов
+    async checkFiles(req, res) {
+        try {
+            console.log(`GET ${this.config.routesPrefix}/check-files`);
+            
+            const result = await this.service.checkFiles();
+            
+            res.json({ 
+                success: true, 
+                module: this.config.moduleName,
+                ...result,
+                timestamp: new Date().toISOString()
+            });
+            
+        } catch (error) {
+            console.error('❌ Ошибка проверки файлов:', error);
+            res.status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ 
+                success: false, 
+                module: this.config.moduleName,
+                error: error.message 
+            });
+        }
+    }
 }
 
 module.exports = new TribeInfoCollectorController();

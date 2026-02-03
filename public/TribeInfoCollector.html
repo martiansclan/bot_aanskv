@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/components.css">
     <link rel="stylesheet" href="/assets/css/TribeInfoCollector.css">
+    <!-- В секцию <head> TribeInfoCollector.html -->
+        <style>
+        .status-active { color: #28a745 !important; }
+        .status-stopped { color: #dc3545 !important; }
+        .status-pending { color: #6c757d !important; }
+        .status-completed { color: #28a745 !important; }
+        .status-error { color: #dc3545 !important; }
+        </style>
 </head>
 <body>
     <div class="navbar">
@@ -14,7 +22,10 @@
             <h1>Martian Clan</h1>
         </div>
         <nav class="nav-links">
-            <a href="/">Главная</a>            
+            <a href="/">Главная</a>
+            <a href="/power">Power</a>
+            <a href="/sort">Сортировка</a>
+            <a href="/TribeInfoCollector" class="active">Сбор NFT</a>
         </nav>
     </div>
 
@@ -24,7 +35,27 @@
             <p class="subtitle">Автоматический сбор данных о NFT коллекции с блокчейна</p>
         </div>
 
-        
+        <div class="module-info">
+            <h3>Информация о модуле</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Версия</span>
+                    <span class="info-value" id="moduleVersion">1.0.0</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Статус</span>
+                    <span class="info-value" id="moduleStatus">Активен</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Последнее обновление</span>
+                    <span class="info-value" id="lastUpdated">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">WebSocket</span>
+                    <span class="info-value" id="wsStatus">Не подключен</span>
+                </div>
+            </div>
+        </div>
 
         <div class="stages-container">
             <!-- Этап 1 -->
@@ -81,17 +112,26 @@
             
             <div class="stat-card">
                 <div class="stat-label">NFT в коллекции</div>
-                <div class="stat-value" id="collectionTotal">0</div>                
+                <div class="stat-value" id="collectionTotal">0</div>
+                <button class="btn btn-sm btn-outline" id="refreshCollectionInfo" style="margin-top: 10px;">
+                    Обновить
+                </button>
             </div>
             
             <div class="stat-card">
                 <div class="stat-label">NFT в файле</div>
                 <div class="stat-value" id="nftsInFile">0</div>
-            </div>           
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-label">Текущий этап</div>
+                <div class="stat-value" id="currentStage">-</div>
+            </div>
         </div>
 
         <div class="controls-section">
-            <h2>Управление сбором</h2>            
+            <h2>Управление сбором</h2>
+            
             <div class="controls-grid">
                 <div>
                     <button class="btn btn-primary btn-wide" id="startBtn">
@@ -112,6 +152,33 @@
                         ⏹️ Остановить
                     </button>
                     <p class="help-text">Остановка текущего сбора</p>
+                </div>
+                
+                <div>
+                    <button class="btn btn-success btn-wide" id="createSummaryBtn">
+                        💾 Создать файл
+                    </button>
+                    <p class="help-text">Создание итогового файла</p>
+                </div>
+            </div>
+            
+            <div class="stage-controls">
+                <h3>Этапы сбора</h3>
+                
+                <div class="stage-indicator" id="stageIndicator">
+                    <!-- Заполняется JavaScript -->
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-outline stage-btn-1">
+                        🚀 Этап 1: Базовая информация
+                    </button>
+                    <button class="btn btn-outline stage-btn-2">
+                        📊 Этап 2: Детали
+                    </button>
+                    <button class="btn btn-outline stage-btn-3">
+                        🔗 Этап 3: Ссылки
+                    </button>
                 </div>
             </div>
         </div>

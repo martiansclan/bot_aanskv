@@ -84,6 +84,38 @@ class ServiceRegistry {
                 }
             }
             
+            // Инициализируем модуль обмена орками
+            try {
+                const orcExchangeService = require('../modules/orc-exchange/orc-exchange.service');
+                
+                // Проверяем, есть ли метод initialize()
+                if (typeof orcExchangeService.initialize === 'function') {
+                    const orcExchangeInitialized = await orcExchangeService.initialize();
+                    if (orcExchangeInitialized) {
+                        this.register('orc-exchange', orcExchangeService);
+                        logger.success('Сервис обмена орками инициализирован');
+                    } else {
+                        logger.warning('Сервис обмена орками не инициализирован, но доступен');
+                        this.register('orc-exchange', orcExchangeService);
+                    }
+                } else {
+                    // Если нет метода initialize(), все равно регистрируем сервис
+                    this.register('orc-exchange', orcExchangeService);
+                    logger.info('Сервис обмена орками зарегистрирован');
+                }
+            } catch (error) {
+                logger.error('Ошибка инициализации модуля обмена орками:', error.message);
+                // Пробуем зарегистрировать даже при ошибке
+                try {
+                    const orcExchangeService = require('../modules/orc-exchange/orc-exchange.service');
+                    this.register('orc-exchange', orcExchangeService);
+                    logger.info('Сервис обмена орками зарегистрирован (несмотря на ошибку инициализации)');
+                } catch (regError) {
+                    logger.error('Не удалось зарегистрировать сервис обмена орками:', regError.message);
+                }
+            }
+
+
             this.initialized = true;
             logger.success('Сервисы инициализированы');
             

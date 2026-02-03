@@ -14,7 +14,7 @@ router.get('/export-power-only', powerController.exportPowerOnly.bind(powerContr
 router.get('/optimization-status', powerController.getOptimizationStatus.bind(powerController));
 router.delete('/cache', powerController.clearCache.bind(powerController));
 
-// WebSocket маршруты
+// Маршруты для управления расчетами
 router.post('/cancel/:calculationId', powerController.cancelCalculation.bind(powerController));
 router.get('/status/:calculationId', powerController.getCalculationStatus.bind(powerController));
 router.get('/test-single', powerController.testSingleNFT.bind(powerController));
