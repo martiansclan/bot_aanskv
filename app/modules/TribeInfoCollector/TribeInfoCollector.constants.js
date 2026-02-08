@@ -1,8 +1,9 @@
+
 module.exports = {
     // Версия и метаданные модуля
     MODULE: {
         NAME: 'TribeInfoCollector',
-        VERSION: '1.0.0',
+        VERSION: '1.0.1',
         DESCRIPTION: 'Модуль для сбора информации о NFT с блокчейна'
     },
 
@@ -19,10 +20,9 @@ module.exports = {
         RAW: '0:463685d77d0474ec774386d92622ed688d34f07230741211d838c487dcfeec64'       
     },
 
-    // Пути к файлам (относительные от этого файла)
+    // Путь к файлу данных (один файл!)
     FILE_PATHS: {
-        COLLECTED_DATA: '../../../nft_data/all_nft_info_collected.json',
-        SUMMARY_DATA: '../../../nft_data/all_nft_info.json'
+        NFT_DATA_FILE: '../../../nft_data/all_nft_info.json'
     },
 
     // Настройки сбора данных
@@ -36,10 +36,8 @@ module.exports = {
     // Статусы процесса сбора
     COLLECTION_STATUS: {
         NOT_STARTED: 0,
-        STAGE_1: 1,
-        STAGE_2: 2,
-        STAGE_3: 3,
-        COMPLETED: 4
+        IN_PROGRESS: 1,
+        COMPLETED: 2
     },
 
     // Сообщения об ошибках
@@ -104,10 +102,7 @@ module.exports = {
         IMAGE_URL: 'image_url',
         ATTRIBUTES: 'attributes',
         GETGEMS_URL: 'getgems_url',
-        OWNER_URL: 'owner_url',
-        STAGE1_COMPLETED: 'stage1_completed',
-        STAGE2_COMPLETED: 'stage2_completed',
-        STAGE3_COMPLETED: 'stage3_completed'
+        OWNER_URL: 'owner_url'
     },
 
     // Ключи для коллекций

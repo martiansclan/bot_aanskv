@@ -36,12 +36,14 @@ class Application {
         this.app.use(express.urlencoded({ extended: true, limit: '50mb' }));
         this.app.use(express.static(path.join(__dirname, '../../public')));
         
-        // Логирование запросов
+        // Логирование запросов - ПРОПУСКАЕМ TribeInfoCollector
         this.app.use((req, res, next) => {
-            logger.info(`${req.method} ${req.url}`, { 
-                ip: req.ip,
-                userAgent: req.get('User-Agent')
-            });
+            if (!req.url.startsWith('/api/TribeInfoCollector')) {
+                logger.info(`${req.method} ${req.url}`, { 
+                    ip: req.ip,
+                    userAgent: req.get('User-Agent')
+                });
+            }
             next();
         });
     }

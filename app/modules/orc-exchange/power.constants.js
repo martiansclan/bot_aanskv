@@ -20,22 +20,22 @@ module.exports = {
     },
     
     ORC_TYPES: {
-        WARRIOR: 1,
-        ARCHER: 2,
-        MAGE: 3,
-        HEALER: 4,
-        ASSASSIN: 5,
-        TANK: 6,
-        SUPPORT: 7
+        WEN_TGE: 1,
+        GREETING: 2,
+        SHOKED: 3,
+        IN_LOVE: 4,
+        CAPPED: 5,
+        TO_THE_MOON: 6,
+        DO_SOMETHING: 7
     },
     
     ORC_TYPE_NAMES: {
-        1: 'Воин',
-        2: 'Лучник',
-        3: 'Маг',
-        4: 'Лекарь',
-        5: 'Убийца',
-        6: 'Танк',
-        7: 'Поддержка'
+        1: 'Wen TGE',
+        2: 'Greeting',
+        3: 'Shoked',
+        4: 'In Love',
+        5: 'Capped',
+        6: 'To The Moon',
+        7: 'Do Something'
     }
 };

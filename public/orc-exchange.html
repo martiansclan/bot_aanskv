@@ -11,37 +11,63 @@
     <div class="container">
         <header class="header">
             <h1><i class="fas fa-exchange-alt"></i> Оптимизатор обмена орками</h1>
-            <p class="subtitle">Оптимизация обмена карточками между игроками для максимальной мощности команд</p>
+            <p class="subtitle">Оптимизация обмена NFT карточками орков между игроками</p>
+            <a href="/" class="btn btn-primary home-button">На главную</a>
         </header>
 
         <div class="controls">
-            <button id="generateTestData" class="btn btn-primary">
-                <i class="fas fa-dice"></i> Сгенерировать тестовые данные
-            </button>
-            <button id="optimize" class="btn btn-success" disabled>
-                <i class="fas fa-magic"></i> Оптимизировать обмены
-            </button>
-            <button id="reset" class="btn btn-warning">
-                <i class="fas fa-redo"></i> Сбросить
-            </button>
+            <div class="skin-tone-filter">
+                <span class="filter-label">Skin Tone:</span>
+                <div class="skin-tone-options" id="skinToneOptions">
+                    <!-- Опции будут добавлены динамически -->
+                    <div class="loading-skin-tones">Загрузка Skin Tone...</div>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button id="loadRealData" class="btn btn-primary">
+                    <i class="fas fa-sync-alt"></i> Загрузить данные NFT
+                </button>
+                <button id="optimize" class="btn btn-success" disabled>
+                    <i class="fas fa-magic"></i> Оптимизировать обмены
+                </button>
+                <button id="stopOptimization" class="btn btn-danger" disabled style="display: none;">
+                    <i class="fas fa-stop"></i> Остановить расчет
+                </button>
+                <button id="reset" class="btn btn-warning">
+                    <i class="fas fa-redo"></i> Сбросить
+                </button>
+            </div>
             
             <div class="settings">
                 <label>
-                    <input type="number" id="playerCount" min="2" max="8" value="4">
-                    Игроков
+                    <select id="algorithmSelect">
+                        <option value="fast">Быстрая оптимизация</option>
+                        <option value="synergy">Синергетическая оптимизация</option>
+                        <option value="genetic">Генетический алгоритм</option>
+                        <option value="step">Пошаговая оптимизация</option>
+                    </select>
                 </label>
                 <label>
-                    <input type="number" id="cardsPerPlayer" min="7" max="20" value="10">
-                    Карточек на игрока
-                </label>
-                <label>
-                    <input type="number" id="maxIterations" min="1" max="500" value="100">
+                    <input type="number" id="maxIterations" min="1" max="1000" value="100">
                     Макс. обменов
+                </label>
+                <label>
+                    <input type="number" id="timeoutSeconds" min="5" max="300" value="30">
+                    Таймаут (сек)
                 </label>
             </div>
         </div>
 
         <div class="summary">
+            <div class="summary-item">
+                <span class="label">Игроков:</span>
+                <span id="playerCount" class="value">0</span>
+            </div>
+            <div class="summary-item">
+                <span class="label">NFT карточек:</span>
+                <span id="totalCards" class="value">0</span>
+            </div>
             <div class="summary-item">
                 <span class="label">Общая мощность:</span>
                 <span id="totalPower" class="value">0</span>
@@ -51,8 +77,22 @@
                 <span id="improvement" class="value positive">0</span>
             </div>
             <div class="summary-item">
-                <span class="label">Выполнено обменов:</span>
+                <span class="label">Обменов:</span>
                 <span id="exchangesCount" class="value">0</span>
+            </div>
+            <div class="summary-item" id="calculationStatus" style="display: none;">
+                <span class="label">Статус:</span>
+                <span id="statusText" class="value">Вычисляется...</span>
+            </div>
+        </div>
+
+        <div class="progress-container" id="progressContainer" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text">
+                <span id="progressText">0%</span>
+                <span id="timeElapsed">00:00</span>
             </div>
         </div>
 
@@ -67,15 +107,8 @@
             </div>
         </div>
 
-        <div class="recommendations-panel">
-            <h3><i class="fas fa-lightbulb"></i> Рекомендации</h3>
-            <div class="recommendations-list" id="recommendationsList">
-                <p class="empty-message">Запустите оптимизацию для получения рекомендаций</p>
-            </div>
-        </div>
-
         <footer class="footer">
-            <p>Модуль оптимизации обмена орками v1.0.0</p>
+            <p>Модуль оптимизации обмена орками v1.0.0 | Работает с реальными NFT данными</p>
         </footer>
     </div>
 
@@ -93,39 +126,34 @@
         <div class="player-card">
             <div class="player-header">
                 <h3 class="player-name">Игрок 1</h3>
+                <div class="player-meta">
+                    <span class="wallet-label">Кошелек:</span>
+                    <span class="wallet-value" title=""></span>
+                </div>
                 <div class="player-power">
-                    <span class="power-label">Мощность:</span>
+                    <span class="power-label">Мощность команды:</span>
                     <span class="power-value">0</span>
                 </div>
             </div>
             
+            <!-- Добавляем отображение текущего Skin Tone -->
+            <div class="player-skin-tone">
+                <span class="skin-tone-label">Skin Tone:</span>
+                <span class="skin-tone-value">Martian</span>
+            </div>
+            
             <div class="player-team">
-                <h4>Команда:</h4>
+                <h4>Лучшая команда:</h4>
                 <div class="team-orcs">
                     <!-- Орки команды будут добавлены динамически -->
                 </div>
                 <div class="team-stats">
-                    <div class="stat-item">
-                        <span>Базовая мощность:</span>
-                        <span class="stat-value">0</span>
-                    </div>
-                    <div class="stat-item">
-                        <span>Бонус за серьги:</span>
-                        <span class="stat-value positive">0</span>
-                    </div>
-                    <div class="stat-item">
-                        <span>Бонус за амулеты:</span>
-                        <span class="stat-value positive">0</span>
-                    </div>
-                    <div class="stat-item">
-                        <span>Бонус за браслеты:</span>
-                        <span class="stat-value positive">0</span>
-                    </div>
+                    <!-- Статистика будет добавлена динамически -->
                 </div>
             </div>
             
             <div class="player-cards">
-                <h4>Все карточки игрока: <span class="cards-count">0</span></h4>
+                <h4>Все NFT карточки игрока: <span class="cards-count">0</span></h4>
                 <div class="cards-list">
                     <!-- Все карточки будут добавлены динамически -->
                 </div>
@@ -133,31 +161,35 @@
         </div>
     </template>
 
-    <!-- Шаблон орка в команде -->
+    <!-- Шаблон орка в команде (упрощенный) -->
     <template id="teamOrcTemplate">
         <div class="team-orc">
-            <div class="orc-type-badge" data-type="1">В</div>
+            <div class="orc-type">Wen TGE</div>
+            <div class="orc-image">
+                <img src="" alt="NFT Image">
+            </div>
             <div class="orc-info">
-                <div class="orc-power">100</div>
-                <div class="orc-items">
-                    <div class="item earrings" title="Серьги">💎</div>
-                    <div class="item amulet" title="Амулет">🔮</div>
-                    <div class="item bracelet" title="Браслет">🛡️</div>
+                <div class="orc-name">#0</div>
+                <div class="orc-power">
+                    <span class="power-value">1000</span>
+                    <span class="synergy-indicator" title="Есть синергия">⭐</span>
                 </div>
             </div>
         </div>
     </template>
 
-    <!-- Шаблон карточки в списке -->
+    <!-- Шаблон карточки в списке (упрощенный) -->
     <template id="cardTemplate">
         <div class="card-item">
-            <div class="card-type" data-type="1">Т1</div>
-            <div class="card-details">
-                <div class="card-power">100</div>
-                <div class="card-items">
-                    <span class="item-icon" title="Серьги">💎</span>
-                    <span class="item-icon" title="Амулет">🔮</span>
-                    <span class="item-icon" title="Браслет">🛡️</span>
+            <div class="card-type">Wen TGE</div>
+            <div class="card-image">
+                <img src="" alt="NFT Image">
+            </div>
+            <div class="card-info">
+                <div class="card-name">#0</div>
+                <div class="card-power">
+                    <span class="power-value">1000</span>
+                    <span class="synergy-indicator" title="Есть синергия">⭐</span>
                 </div>
             </div>
         </div>
@@ -170,6 +202,11 @@
                 <span class="player-from">Игрок 1</span>
                 <i class="fas fa-exchange-alt"></i>
                 <span class="player-to">Игрок 2</span>
+            </div>
+            <div class="exchange-types">
+                <span class="type-from">Wen TGE</span>
+                <i class="fas fa-arrows-alt-h"></i>
+                <span class="type-to">Greeting</span>
             </div>
             <div class="exchange-improvement">
                 <i class="fas fa-arrow-up"></i>

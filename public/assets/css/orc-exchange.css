@@ -1,15 +1,20 @@
+/* Минималистичные стили для модуля обмена орками */
+
 :root {
-    --primary-color: #4a6fa5;
-    --secondary-color: #166088;
-    --success-color: #28a745;
-    --warning-color: #ffc107;
-    --danger-color: #dc3545;
-    --light-color: #f8f9fa;
-    --dark-color: #343a40;
-    --border-radius: 8px;
-    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --primary-color: #2c3e50;
+    --secondary-color: #34495e;
+    --accent-color: #3498db;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+    --danger-color: #e74c3c;
+    --text-color: #333;
+    --text-light: #7f8c8d;
+    --border-color: #ecf0f1;
+    --background-light: #f9f9f9;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
+/* Сброс и базовые стили */
 * {
     margin: 0;
     padding: 0;
@@ -17,69 +22,178 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: #f5f5f5;
+    color: var(--text-color);
+    line-height: 1.4;
+    font-size: 14px;
+    padding: 10px;
 }
 
 .container {
     max-width: 1400px;
     margin: 0 auto;
-    background: white;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    overflow: hidden;
+    padding: 0;
 }
 
 /* Заголовок */
 .header {
-    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-    color: white;
-    padding: 30px;
-    text-align: center;
+    padding: 20px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    background: white;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 0 0 5px 0;
 }
 
 .header .subtitle {
-    font-size: 1.1rem;
-    opacity: 0.9;
+    font-size: 13px;
+    color: var(--text-light);
+    margin: 0;
 }
 
-/* Управление */
+/* Кнопка "На главную" */
+.home-button {
+    position: absolute;
+    top: 20px;
+    right: 0;
+    padding: 6px 12px;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 3px;
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.home-button:hover {
+    background: #2980b9;
+}
+
+/* Панель управления */
 .controls {
+    background: white;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 3px;
+    border: 1px solid var(--border-color);
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
-    padding: 20px;
-    background: var(--light-color);
-    border-bottom: 1px solid #dee2e6;
+    align-items: center;
 }
 
-.btn {
-    padding: 12px 24px;
-    border: none;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    display: inline-flex;
+.skin-tone-filter {
+    display: flex;
     align-items: center;
     gap: 8px;
+    flex: 1;
+    min-width: 250px;
+}
+
+.filter-label {
+    font-weight: 500;
+    color: var(--text-color);
+    font-size: 13px;
+}
+
+.skin-tone-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    flex: 1;
+}
+
+.skin-tone-option {
+    position: relative;
+}
+
+.skin-tone-option input[type="radio"] {
+    display: none;
+}
+
+.skin-tone-option label {
+    display: inline-block;
+    padding: 4px 10px;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text-color);
+}
+
+.skin-tone-option label:hover {
+    border-color: var(--accent-color);
+}
+
+.skin-tone-option.selected label {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.settings {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.settings label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: var(--text-light);
+}
+
+.settings select,
+.settings input[type="number"] {
+    padding: 5px 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    background: white;
+    font-size: 12px;
+    width: 100px;
+}
+
+/* Кнопки */
+.btn {
+    padding: 7px 14px;
+    border: none;
+    border-radius: 2px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
 }
 
 .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    opacity: 0.9;
 }
 
 .btn-primary {
-    background: var(--primary-color);
+    background: var(--accent-color);
     color: white;
 }
 
@@ -88,352 +202,889 @@ body {
     color: white;
 }
 
+.btn-danger {
+    background: var(--danger-color);
+    color: white;
+}
+
 .btn-warning {
     background: var(--warning-color);
-    color: var(--dark-color);
+    color: white;
 }
 
-.settings {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-    margin-left: auto;
+.btn-info {
+    background: #95a5a6;
+    color: white;
 }
 
-.settings label {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-weight: 500;
-}
-
-.settings input {
-    width: 60px;
-    padding: 5px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    text-align: center;
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 /* Сводка */
 .summary {
-    display: flex;
-    justify-content: space-around;
-    padding: 20px;
-    background: #e9ecef;
-    border-bottom: 1px solid #dee2e6;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    margin-bottom: 15px;
 }
 
 .summary-item {
-    text-align: center;
+    background: white;
+    padding: 12px;
+    border-radius: 2px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
 }
 
 .summary-item .label {
-    display: block;
-    font-size: 0.9rem;
-    color: #6c757d;
-    margin-bottom: 5px;
+    font-size: 11px;
+    color: var(--text-light);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .summary-item .value {
-    font-size: 2rem;
-    font-weight: bold;
-    color: var(--dark-color);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--primary-color);
 }
 
-.summary-item .positive {
+.summary-item .value.positive {
     color: var(--success-color);
 }
 
-/* Игроки */
-.players-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 20px;
+.change-indicator {
+    font-size: 11px;
+    margin-left: 3px;
 }
 
+.change-positive {
+    color: var(--success-color);
+}
+
+.change-negative {
+    color: var(--danger-color);
+}
+
+/* Прогресс-бар */
+.progress-container {
+    background: white;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border-radius: 2px;
+    border: 1px solid var(--border-color);
+    display: none;
+}
+
+.progress-bar {
+    height: 4px;
+    background: var(--border-color);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--accent-color);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-light);
+}
+
+/* Игроки - построчно */
+.players-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+/* Карточка игрока */
 .player-card {
     background: white;
-    border: 1px solid #dee2e6;
-    border-radius: var(--border-radius);
-    padding: 20px;
-    box-shadow: var(--box-shadow);
+    border-radius: 3px;
+    border: 1px solid var(--border-color);
+    position: relative;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.2s;
 }
 
+.player-card:hover {
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+}
+
+/* Добавим разделительную полоску внизу карточки */
+.player-card::after {
+    content: '';
+    position: absolute;
+    bottom: -11px;
+    left: 5%;
+    width: 90%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+}
+
+/* Уберем полоску у последнего игрока */
+.player-card:last-child::after {
+    display: none;
+}
+
+/* Шапка игрока */
 .player-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid var(--primary-color);
+    padding: 15px 15px;
+    background: linear-gradient(135deg, #f9f9f9, #f0f0f0);
+    border-bottom: 1px solid var(--border-color);
+    flex-wrap: wrap;
+    gap: 12px;
+    border-radius: 3px 3px 0 0;
 }
 
 .player-name {
+    font-size: 17px;
+    font-weight: 700;
     color: var(--primary-color);
-    font-size: 1.5rem;
+    margin: 0;
+    letter-spacing: -0.2px;
 }
 
-.player-power .power-label {
-    color: #6c757d;
-    font-size: 0.9rem;
+.player-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(52, 152, 219, 0.05);
+    padding: 5px 10px;
+    border-radius: 3px;
+    border: 1px solid rgba(52, 152, 219, 0.1);
 }
 
-.player-power .power-value {
-    font-size: 1.8rem;
-    font-weight: bold;
+.wallet-label {
+    font-size: 11px;
+    color: var(--text-light);
+}
+
+.wallet-value {
+    font-family: monospace;
+    font-size: 12px;
+    color: var(--text-color);
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.player-power {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    padding: 6px 12px;
+    background: rgba(39, 174, 96, 0.08);
+    border-radius: 4px;
+    border: 1px solid rgba(39, 174, 96, 0.2);
+}
+
+.power-label {
     color: var(--success-color);
+    font-size: 13px;
+}
+
+.power-value {
+    font-size: 20px;
+    color: var(--success-color);
+    font-weight: 700;
+}
+
+/* Skin Tone */
+.player-skin-tone {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--accent-color);
+    margin-left: 12px;
+    font-weight: 500;
+}
+
+.skin-tone-label {
+    color: var(--text-light);
+}
+
+.skin-tone-value {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+/* Блок команды и карточек - горизонтально */
+.player-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 25px;
+    padding: 20px 15px;
+}
+
+@media (max-width: 1200px) {
+    .player-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+/* Команда игрока */
+.player-team {
+    padding: 0;
+}
+
+.team-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: var(--text-color);
+}
+
+.team-header h4 {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-color);
 }
 
 .team-orcs {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
     gap: 10px;
     margin-bottom: 15px;
 }
 
 .team-orc {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
-    background: #f8f9fa;
-    border-radius: var(--border-radius);
-    border: 1px solid #dee2e6;
-}
-
-.orc-type-badge {
-    width: 30px;
-    height: 30px;
-    background: var(--primary-color);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-}
-
-.orc-power {
-    font-weight: bold;
-    font-size: 1.2rem;
-}
-
-.orc-items {
-    display: flex;
-    gap: 5px;
-}
-
-.item {
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-    font-size: 0.9rem;
-}
-
-.earrings { background: #ffd700; }
-.amulet { background: #9370db; }
-.bracelet { background: #cd7f32; }
-
-.team-stats {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: var(--border-radius);
-    margin-top: 15px;
-}
-
-.stat-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-    font-size: 0.9rem;
-}
-
-.stat-value {
-    font-weight: bold;
-}
-
-.player-cards {
-    margin-top: 20px;
-}
-
-.cards-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    max-height: 200px;
-    overflow-y: auto;
-    padding: 10px;
-    background: #f8f9fa;
-    border-radius: var(--border-radius);
-}
-
-.card-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px;
     background: white;
-    border: 1px solid #dee2e6;
-    border-radius: 6px;
+    border-radius: 2px;
+    border: 1px solid var(--border-color);
+    padding: 10px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: border-color 0.2s;
 }
 
-.card-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+.team-orc:hover {
+    border-color: var(--accent-color);
 }
 
-.card-type {
-    width: 30px;
-    height: 30px;
-    background: var(--secondary-color);
-    color: white;
-    border-radius: 50%;
+.orc-type {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.orc-image {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 8px;
+    border-radius: 2px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.orc-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.orc-info {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 0.8rem;
-}
-
-.card-power {
-    font-weight: bold;
-}
-
-.card-items {
-    display: flex;
+    flex-direction: column;
     gap: 3px;
 }
 
-.item-icon {
-    font-size: 0.8rem;
-}
-
-/* Панели обменов и рекомендаций */
-.exchanges-panel,
-.recommendations-panel {
-    margin: 20px;
-    padding: 20px;
-    background: white;
-    border: 1px solid #dee2e6;
-    border-radius: var(--border-radius);
-}
-
-.exchanges-list,
-.recommendations-list {
-    max-height: 300px;
-    overflow-y: auto;
-    margin-top: 15px;
-}
-
-.empty-message {
+.orc-name {
+    font-family: monospace;
+    font-size: 11px;
+    color: var(--text-color);
     text-align: center;
-    color: #6c757d;
-    padding: 20px;
 }
 
-.exchange-item {
+.orc-power {
+    text-align: center;
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--success-color);
+}
+
+/* Атрибуты орка в команде */
+.orc-attributes {
+    font-size: 10px;
+    color: var(--text-color);
+    margin-top: 4px;
+    text-align: center;
+    line-height: 1.3;
+}
+
+/* Статистика команды - минималистичная */
+.team-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    background: var(--background-light);
+    padding: 12px;
+    border-radius: 2px;
+    border: 1px solid var(--border-color);
+    font-size: 12px;
+}
+
+/* Бонусная плашка */
+.bonus-item {
+    padding: 8px;
+    border-left: 2px solid transparent;
+    background: white;
+    border-radius: 2px;
+    border: 1px solid var(--border-color);
+}
+
+.bonus-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px;
-    margin-bottom: 10px;
-    background: #f8f9fa;
-    border-radius: var(--border-radius);
-    border-left: 4px solid var(--success-color);
+    margin-bottom: 5px;
+    font-size: 12px;
 }
 
-.exchange-players {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.bonus-title {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.bonus-value {
+    font-weight: 600;
+    font-size: 13px;
+}
+
+/* Цвета для типов бонусов */
+.bonus-item[data-type="base"] .bonus-value {
+    color: var(--primary-color);
+}
+
+.bonus-item[data-type="earrings"] {
+    border-left-color: var(--danger-color);
+}
+
+.bonus-item[data-type="earrings"] .bonus-title {
+    color: var(--danger-color);
+}
+
+.bonus-item[data-type="earrings"] .bonus-value {
+    color: var(--danger-color);
+}
+
+.bonus-item[data-type="amulet"] {
+    border-left-color: var(--success-color);
+}
+
+.bonus-item[data-type="amulet"] .bonus-title {
+    color: var(--success-color);
+}
+
+.bonus-item[data-type="amulet"] .bonus-value {
+    color: var(--success-color);
+}
+
+.bonus-item[data-type="bracelet"] {
+    border-left-color: var(--warning-color);
+}
+
+.bonus-item[data-type="bracelet"] .bonus-title {
+    color: var(--warning-color);
+}
+
+.bonus-item[data-type="bracelet"] .bonus-value {
+    color: var(--warning-color);
+}
+
+/* Группы бонусов */
+.bonus-groups {
+    font-size: 11px;
+    color: var(--text-color);
+    margin-top: 4px;
+    line-height: 1.4;
+}
+
+.group-item {
+    display: inline-block;
+    margin-right: 8px;
+    margin-bottom: 3px;
+    font-weight: 400;
+}
+
+.group-item:last-child {
+    margin-right: 0;
+}
+
+.group-name {
     font-weight: 500;
 }
 
-.exchange-improvement {
+.group-count {
+    margin-left: 2px;
+    font-weight: 500;
+}
+
+/* Бонусные группы (которые дали бонус) */
+.group-item.bonus-group {
+    font-weight: 600;
+}
+
+.group-item.bonus-group .group-name {
+    font-weight: 700;
+}
+
+.group-item.bonus-group .group-count {
+    font-weight: 700;
+}
+
+/* Все карточки игрока */
+.player-cards {
+    padding: 0;
+}
+
+.cards-header {
     display: flex;
     align-items: center;
-    gap: 5px;
-    color: var(--success-color);
-    font-weight: bold;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-size: 13px;
 }
 
-.btn-details {
-    padding: 5px 10px;
-    background: var(--primary-color);
+.cards-header h4 {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.cards-count {
+    background: var(--text-light);
     color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 11px;
 }
 
-/* Модальное окно */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
+.cards-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 8px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 2px;
+}
+
+.card-item {
+    background: white;
+    border-radius: 2px;
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.card-item:hover {
+    border-color: var(--accent-color);
+}
+
+.card-type {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 6px;
+    text-align: center;
+}
+
+.card-image {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 6px;
+    border-radius: 2px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.card-image img {
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    object-fit: cover;
 }
 
-.modal-content {
-    background: white;
-    margin: 10% auto;
-    padding: 30px;
-    border-radius: var(--border-radius);
-    width: 80%;
-    max-width: 500px;
-    position: relative;
+.card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
 }
 
-.close {
+.card-name {
+    font-family: monospace;
+    font-size: 11px;
+    color: var(--text-color);
+    text-align: center;
+}
+
+.card-power {
+    text-align: center;
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--success-color);
+}
+
+/* Атрибуты карточки */
+.card-attributes {
+    font-size: 9px;
+    color: var(--text-color);
+    margin-top: 3px;
+    text-align: center;
+    line-height: 1.3;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Предупреждение если нет команды */
+.player-warning {
     position: absolute;
-    right: 20px;
-    top: 15px;
-    font-size: 28px;
-    cursor: pointer;
-    color: #6c757d;
+    top: 12px;
+    right: 12px;
+    background: linear-gradient(135deg, var(--warning-color), #e67e22);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    z-index: 10;
 }
 
-.close:hover {
-    color: var(--dark-color);
+/* Панель обменов */
+.exchanges-panel {
+    background: white;
+    padding: 15px;
+    border-radius: 2px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 20px;
+}
+
+.exchanges-panel h3 {
+    color: var(--primary-color);
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.exchanges-list {
+    min-height: 100px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    background: var(--background-light);
+    border-radius: 2px;
+    border: 1px solid var(--border-color);
+    font-size: 12px;
+}
+
+/* Таблицы обменов */
+.exchanges-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+.exchanges-table th {
+    background: var(--primary-color);
+    color: white;
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 11px;
+}
+
+.exchanges-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+.exchanges-table tbody tr:hover {
+    background: var(--background-light);
+}
+
+.improvement-cell {
+    color: var(--success-color);
+    font-weight: 500;
+}
+
+.btn-details-small {
+    padding: 3px 8px;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 11px;
 }
 
 /* Подвал */
 .footer {
     text-align: center;
+    padding: 15px 0;
+    color: var(--text-light);
+    font-size: 11px;
+    border-top: 1px solid var(--border-color);
+    margin-top: 20px;
+}
+
+/* Модальные окна */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.modal-content {
+    background: white;
     padding: 20px;
-    background: var(--light-color);
-    color: #6c757d;
-    border-top: 1px solid #dee2e6;
+    border-radius: 2px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.modal .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--text-light);
+}
+
+.modal h3 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    font-size: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Состояние пустое */
+.empty-state {
+    text-align: center;
+    padding: 30px 15px;
+    background: white;
+    border-radius: 2px;
+    border: 1px solid var(--border-color);
+}
+
+.empty-message {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-bottom: 8px;
+}
+
+.empty-submessage {
+    font-size: 12px;
+    color: #bdc3c7;
+}
+
+/* Уведомления */
+.notification {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 10px 15px;
+    border-radius: 2px;
+    z-index: 3000;
+    font-size: 12px;
+    color: white;
+    font-weight: 500;
+}
+
+.notification.success {
+    background: var(--success-color);
+}
+
+.notification.error {
+    background: var(--danger-color);
+}
+
+.notification.warning {
+    background: var(--warning-color);
+}
+
+.notification.info {
+    background: var(--accent-color);
 }
 
 /* Адаптивность */
 @media (max-width: 768px) {
-    .players-container {
-        grid-template-columns: 1fr;
+    .container {
+        padding: 5px;
     }
     
     .controls {
         flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
     }
     
-    .settings {
-        margin-left: 0;
+    .skin-tone-filter {
+        min-width: 100%;
+    }
+    
+    .action-buttons {
+        width: 100%;
         justify-content: center;
     }
     
-    .summary {
+    .settings {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .players-container {
+        gap: 25px;
+    }
+    
+    .player-card {
+        margin-bottom: 15px;
+    }
+    
+    .player-header {
         flex-direction: column;
-        gap: 15px;
+        align-items: stretch;
+        gap: 10px;
+        padding: 12px 10px;
+    }
+    
+    .player-meta,
+    .player-power {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .player-content {
+        padding: 15px 10px;
+        gap: 20px;
+    }
+    
+    .player-name {
+        font-size: 16px;
+    }
+    
+    .player-warning {
+        top: 8px;
+        right: 8px;
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+    
+    .team-orcs,
+    .cards-list {
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    }
+    
+    .summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* Адаптивность для групп */
+    .bonus-groups {
+        font-size: 10px;
+    }
+    
+    .group-item {
+        margin-right: 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .summary {
+        grid-template-columns: 1fr;
+    }
+    
+    .team-orcs,
+    .cards-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .team-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Улучшение скроллбара */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--border-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #bdc3c7;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #95a5a6;
+}
+
+/* Анимации */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100px);
     }
 }

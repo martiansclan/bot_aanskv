@@ -101,6 +101,7 @@ class PowerUtils {
     }
     
     // Расчет Power для NFT с учетом синергий
+    // В методе calculateNFTpower изменить:
     calculateNFTpower(nft, powerData, synergyData = null) {
         const { attributes_power } = powerData;
         const { rarity_power, attributes: attributesMap } = attributes_power;
@@ -156,14 +157,19 @@ class PowerUtils {
             }
         }
         
-        // Добавляем общий power к NFT
+        // 3. Расчет power_number на основе номера NFT
+        const powerNumber = this.calculatePowerNumber(nft);
+        
+        // Добавляем все расчеты к NFT
         if (attributesUpdated) {
             nft[CONSTANTS.NFT_KEYS.POWER_ATTRIBUTES] = totalPower;
-            nft[CONSTANTS.NFT_KEYS.POWER_TOTAL] = totalPower + synergyPower;
-            nft[CONSTANTS.NFT_KEYS.SYNERGY_POWER] = synergyPower;
+            nft[CONSTANTS.NFT_KEYS.POWER_SYNERGY] = synergyPower;  // ← ИЗМЕНЕНО
+            nft[CONSTANTS.NFT_KEYS.POWER_NUMBER] = powerNumber;    // ← ДОБАВЛЕНО
+            nft[CONSTANTS.NFT_KEYS.POWER_TOTAL] = totalPower + synergyPower + powerNumber; // ← ИЗМЕНЕНО
         } else {
-            nft[CONSTANTS.NFT_KEYS.POWER_TOTAL] = synergyPower;
-            nft[CONSTANTS.NFT_KEYS.SYNERGY_POWER] = synergyPower;
+            nft[CONSTANTS.NFT_KEYS.POWER_TOTAL] = synergyPower + powerNumber;
+            nft[CONSTANTS.NFT_KEYS.POWER_SYNERGY] = synergyPower;  // ← ИЗМЕНЕНО
+            nft[CONSTANTS.NFT_KEYS.POWER_NUMBER] = powerNumber;    // ← ДОБАВЛЕНО
         }
         
         return { 
@@ -171,8 +177,52 @@ class PowerUtils {
             updated: attributesUpdated, 
             totalPower: totalPower,
             synergyPower: synergyPower,
+            powerNumber: powerNumber,  // ← ДОБАВЛЕНО
             attributeSynergy: attributeSynergy
         };
+    }
+
+
+    // Новый метод: Расчет power_number на основе номера NFT
+    calculatePowerNumber(nft) {
+        // Извлекаем номер из имени NFT
+        const name = nft.name || '';
+        const match = name.match(/#\s*(\d+)/);
+        
+        if (!match) {
+            return 0;
+        }
+        
+        const number = parseInt(match[1], 10);
+        
+        // Проверяем специальные номера
+        const numStr = number.toString();
+        
+        // 0-9 → 1000
+        if (number >= 0 && number <= 9) {
+            return 1000;
+        }
+        
+        // Проверяем числа из одинаковых цифр
+        if (numStr.length > 1) {
+            const firstDigit = numStr[0];
+            const allSame = numStr.split('').every(digit => digit === firstDigit);
+            
+            if (allSame) {
+                // 11111 → 5000
+                if (numStr === '11111') {
+                    return 5000;
+                }
+                
+                // 11-9999 → 500
+                if (numStr.length >= 2 && numStr.length <= 4) {
+                    return 500;
+                }
+            }
+        }
+        
+        // Все остальные номера → 0
+        return 0;
     }
 }
 

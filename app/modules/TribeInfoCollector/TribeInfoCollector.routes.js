@@ -6,13 +6,8 @@ const tribeInfoCollectorController = require('./TribeInfoCollector.controller');
 router.post('/start', tribeInfoCollectorController.startCollection.bind(tribeInfoCollectorController));
 router.post('/stop', tribeInfoCollectorController.stopCollection.bind(tribeInfoCollectorController));
 router.get('/status', tribeInfoCollectorController.getStatus.bind(tribeInfoCollectorController));
-router.get('/progress', tribeInfoCollectorController.getProgress.bind(tribeInfoCollectorController)); // Новый эндпоинт
-router.get('/active-calculations', tribeInfoCollectorController.getActiveCalculations.bind(tribeInfoCollectorController)); // Новый эндпоинт
-router.post('/continue', tribeInfoCollectorController.continueCollection.bind(tribeInfoCollectorController));
-router.post('/create-summary', tribeInfoCollectorController.createSummary.bind(tribeInfoCollectorController));
-router.get('/collection-info', tribeInfoCollectorController.getCollectionInfo.bind(tribeInfoCollectorController));
-router.get('/current-data', tribeInfoCollectorController.getCurrentData.bind(tribeInfoCollectorController));
-router.get('/module-info', tribeInfoCollectorController.getModuleInfo.bind(tribeInfoCollectorController));
-router.get('/check-files', tribeInfoCollectorController.checkFiles.bind(tribeInfoCollectorController));
+router.get('/progress', tribeInfoCollectorController.getProgress.bind(tribeInfoCollectorController));
+router.get('/check-integrity', tribeInfoCollectorController.checkIntegrity.bind(tribeInfoCollectorController));
+router.get('/check-file', tribeInfoCollectorController.checkFile.bind(tribeInfoCollectorController));
 
 module.exports = router;

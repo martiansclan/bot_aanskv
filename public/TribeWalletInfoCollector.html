@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tribe Wallet NFT Collector</title>
+    <link rel="stylesheet" href="/assets/css/TribeWalletInfoCollector.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-wallet"></i> Tribe Wallet NFT Collector</h1>
+            <p class="subtitle">Collect NFT information from multiple TON wallets</p>
+        </header>
+
+        <main class="main-content">
+            <div class="form-group">
+                <div class="user-id-section">
+                    <label for="userId">
+                        <i class="fas fa-user"></i> User ID (for file naming)
+                    </label>
+                    <input 
+                        type="text" 
+                        id="userId" 
+                        placeholder="AA_NSKV"
+                        class="user-id-input"
+                    >
+                    <div class="id-hint">
+                        <i class="fas fa-info-circle"></i> Files will be named: wallets_info_[USER_ID].json and wallets_nft_info_[USER_ID].json
+                    </div>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="upload">Upload File</button>
+                    <button class="tab-btn" data-tab="manual">Manual Input</button>
+                </div>
+
+                <!-- Вкладка загрузки файла -->
+                <div id="uploadTab" class="tab-content active">
+                    <div class="file-upload-section">
+                        <div class="upload-area" id="uploadArea">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <h3>Upload Wallets File</h3>
+                            <p>Drag & drop or click to upload JSON file with wallets</p>
+                            <p class="file-format">
+                                <i class="fas fa-info-circle"></i>
+                                Expected format: {"members": [{"MemberNickname": "", "Wallet": ""}, ...]}
+                            </p>
+                            <input type="file" id="fileInput" accept=".json" style="display: none;">
+                            <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                                <i class="fas fa-folder-open"></i> Select File
+                            </button>
+                        </div>
+                        <div id="fileInfo" class="file-info" style="display: none;">
+                            <i class="fas fa-file"></i>
+                            <span id="fileName"></span>
+                            <span id="fileSize"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Вкладка ручного ввода -->
+                <div id="manualTab" class="tab-content">
+                    <div class="wallets-container">
+                        <label class="wallets-label">
+                            <i class="fas fa-list"></i> Wallets to collect (enter TON addresses only)
+                        </label>
+                        
+                        <div id="walletRows">
+                            <!-- Wallet rows will be added here -->
+                        </div>
+
+                        <button id="addWalletBtn" class="add-wallet-btn">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="update-file-option">
+                    <input type="checkbox" id="updateFileCheckbox">
+                    <label for="updateFileCheckbox">
+                        Update wallets file with these addresses
+                    </label>
+                    <div class="option-hint">
+                        <i class="fas fa-info-circle"></i>
+                        If checked, uploaded/entered wallets will overwrite the existing file
+                    </div>
+                </div>
+
+                <button id="collectBtn" class="collect-btn">
+                    <i class="fas fa-download"></i> Collect NFT Information
+                </button>
+            </div>
+
+            <div id="loading" class="loading" style="display: none;">
+                <i class="fas fa-spinner fa-spin"></i> Collecting data from wallets...
+                <div class="loading-details" id="loadingDetails"></div>
+            </div>
+
+            <div id="results" class="results">
+                <!-- Results will be shown here -->
+            </div>
+        </main>
+    </div>
+
+    <script src="/assets/js/TribeWalletInfoCollector.js"></script>
+</body>
+</html>

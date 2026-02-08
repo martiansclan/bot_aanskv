@@ -361,6 +361,15 @@ class SortService {
                 return this.nftHasSynergyLevels(nft, filters.synergyLevels);
             });
         }
+
+        // 2. Фильтр по power_number
+        if (filters.powerNumberFilter && filters.powerNumberFilter !== 'all') {
+            const targetValue = parseInt(filters.powerNumberFilter);
+            filtered = filtered.filter(nft => {
+                const nftPowerNumber = nft.power_number || 0;
+                return nftPowerNumber === targetValue;
+            });
+        }
         
         // 2. Фильтр по уровням редкости (общая редкость NFT)
         if (filters.rarityLevels && filters.rarityLevels.length > 0) {
@@ -485,10 +494,10 @@ class SortService {
         return category[value] || 'Common';
     }
     
-    // Сортируем NFT по количеству синергий и общему power
+    // Сортируем NFT по общему power с учетом power_number
     sortNFTsBySynergies(nfts) {
         return nfts.sort((a, b) => {
-            // Сначала по общему power
+            // Сначала по общему power (уже включает power_number)
             const aPower = a.power_total || 0;
             const bPower = b.power_total || 0;
             
@@ -496,26 +505,49 @@ class SortService {
                 return bPower - aPower;
             }
             
+            // Затем по power_number
+            const aPowerNumber = a.power_number || 0;
+            const bPowerNumber = b.power_number || 0;
+            
+            if (bPowerNumber !== aPowerNumber) {
+                return bPowerNumber - aPowerNumber;
+            }
+            
             // Затем по power синергий
-            const aSynergyPower = a.synergy_power || 0;
-            const bSynergyPower = b.synergy_power || 0;
+            const aSynergyPower = a.power_synergy || 0;
+            const bSynergyPower = b.power_synergy || 0;
             
             return bSynergyPower - aSynergyPower;
         });
     }
     
-    // Форматируем NFT для отображения на клиенте
+    // Обновляем метод formatNFTsForClient для отображения power_number:
     formatNFTsForClient(nfts) {
         return nfts.map(nft => {
             // Находим атрибуты, которые входят в синергии
             const synergyAttributes = this.getSynergyAttributes(nft);
+            
+            // Получаем все значения power
+            const powerAttributes = nft.power_attributes || 0;
+            const powerSynergy = nft.power_synergy || 0;
+            const powerNumber = nft.power_number || 0;
+            const powerTotal = nft.power_total || 0;
+            
+            // Форматируем отображение power
+            const formattedPower = `${powerTotal} (атрибуты: ${powerAttributes}, синергия: ${powerSynergy}, номер: ${powerNumber})`;
             
             // Добавляем дополнительные поля для отображения
             return {
                 ...nft,
                 display_name: this.getDisplayName(nft),
                 synergy_attributes: synergyAttributes,
-                formatted_power: `${nft.power_total || 0} (синергия: ${nft.synergy_power || 0})`
+                formatted_power: formattedPower,
+                power_breakdown: {
+                    attributes: powerAttributes,
+                    synergy: powerSynergy,
+                    number: powerNumber,
+                    total: powerTotal
+                }
             };
         });
     }
@@ -542,13 +574,23 @@ class SortService {
         return Array.from(synergyAttrs);
     }
     
-    // Генерируем отображаемое имя с power
+    // Обновляем метод getDisplayName для отображения power_number:
     getDisplayName(nft) {
         const baseName = nft.name || `NFT #${nft.index || 'Unknown'}`;
         const powerTotal = nft.power_total || 0;
-        const synergyPower = nft.synergy_power || 0;
+        const powerSynergy = nft.power_synergy || 0;
+        const powerNumber = nft.power_number || 0;
         
-        return `${baseName} (Power: ${powerTotal} ⚡${synergyPower})`;
+        let powerText = `Power: ${powerTotal}`;
+        
+        if (powerNumber > 0) {
+            powerText += ` ⭐${powerNumber}`;
+        }
+        if (powerSynergy > 0) {
+            powerText += ` ✨${powerSynergy}`;
+        }
+        
+        return `${baseName} (${powerText})`;
     }
     
     // Быстрый поиск по индексу

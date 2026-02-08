@@ -7,7 +7,8 @@ class SortModule {
             rarityLevels: [],
             attributeFilters: {},
             attributeValues: [],
-            saleFilter: 'all'
+            saleFilter: 'all',
+            powerNumberFilter: 'all'
         };
         this.currentPage = 1; // Всегда начинаем с 1
         this.totalPages = 1;
@@ -274,6 +275,7 @@ class SortModule {
             rarityLevels: this.getCheckedValues('rarityLevels'),
             attributeValues: this.getCheckedValues('attributeValues'),
             saleFilter: this.getSelectedRadioValue('saleFilter'),
+            powerNumberFilter: this.getSelectedRadioValue('powerNumberFilter'), // ← ДОБАВЛЕНО
             attributeFilters: this.getCategoryFilters()
         };
         
@@ -404,8 +406,10 @@ class SortModule {
     
     removeFilter(type, category, value) {
         let checkbox;
-        
-        if (type === 'category') {
+        if (type === 'powerNumber') { // ← ДОБАВЛЕНО
+        const allRadio = document.querySelector('input[name="powerNumberFilter"][value="all"]');
+        if (allRadio) allRadio.checked = true;
+        } else if (type === 'category') {
             checkbox = document.querySelector(`input[name="category_${category}"][value="${value}"]`);
         } else if (type === 'synergy') {
             checkbox = document.querySelector(`input[name="synergyLevels"][value="${value}"]`);
@@ -603,11 +607,17 @@ class SortModule {
         this.renderPagination(stats);
     }
     
-    createNFTCard(nft) {
+   createNFTCard(nft) {
         const card = document.createElement('div');
         card.className = 'nft-card';
         
         const synergyAttrs = nft.synergy_attributes || [];
+        const powerBreakdown = nft.power_breakdown || {
+            attributes: nft.power_attributes || 0,
+            synergy: nft.power_synergy || 0,
+            number: nft.power_number || 0,
+            total: nft.power_total || 0
+        };
         
         // Форматируем атрибуты, добавляя звёздочки для синергийных
         const attributesHtml = this.formatAttributes(nft.attributes, synergyAttrs);
@@ -620,9 +630,23 @@ class SortModule {
             </div>
             <div class="nft-info">
                 <h4 class="nft-name">${nft.display_name || nft.name || `NFT #${nft.index || 'Unknown'}`}</h4>
-                <div class="nft-power">
-                    <span class="power-total">⚡ ${nft.power_total || 0}</span>
-                    <span class="power-synergy">✨ ${nft.synergy_power || 0}</span>
+                <div class="nft-power-breakdown">
+                    <div class="power-row">
+                        <span class="power-label">⚡ Total:</span>
+                        <span class="power-value total">${powerBreakdown.total}</span>
+                    </div>
+                    <div class="power-row">
+                        <span class="power-label">🎯 Attributes:</span>
+                        <span class="power-value">${powerBreakdown.attributes}</span>
+                    </div>
+                    <div class="power-row">
+                        <span class="power-label">✨ Synergy:</span>
+                        <span class="power-value synergy">${powerBreakdown.synergy}</span>
+                    </div>
+                    <div class="power-row">
+                        <span class="power-label">🔢 Number:</span>
+                        <span class="power-value number">${powerBreakdown.number}</span>
+                    </div>
                 </div>
                 <div class="nft-attributes">
                     ${attributesHtml}
@@ -769,6 +793,51 @@ style.textContent = `
             opacity: 1;
             transform: translateX(0);
         }
+    }
+
+    .nft-power-breakdown {
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 6px;
+        padding: 8px;
+        margin: 8px 0;
+    }
+    
+    .power-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .power-row:last-child {
+        border-bottom: none;
+    }
+    
+    .power-label {
+        font-size: 12px;
+        color: #888;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+    
+    .power-value {
+        font-weight: bold;
+        font-size: 14px;
+    }
+    
+    .power-value.total {
+        color: #4CAF50;
+        font-size: 16px;
+    }
+    
+    .power-value.synergy {
+        color: #FF9800;
+    }
+    
+    .power-value.number {
+        color: #2196F3;
     }
 `;
 document.head.appendChild(style);

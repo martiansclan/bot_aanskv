@@ -102,6 +102,7 @@ class PowerController {
             
             let processedCount = 0;
             let nftsWithSynergyCount = 0;
+            let totalPowerNumber = 0; // ← ДОБАВЛЕНО: суммарное значение power_number
             
             // 3. Обрабатываем NFT чанками
             const powerUtils = require('./power.utils');
@@ -127,6 +128,7 @@ class PowerController {
                     const result = powerUtils.calculateNFTpower(nft, powerData, synergyData);
                     
                     if (result.synergyPower > 0) nftsWithSynergyCount++;
+                    if (result.powerNumber > 0) totalPowerNumber += result.powerNumber; // ← ДОБАВЛЕНО: суммируем power_number
                     
                     powerResult[CONSTANTS.COLLECTION_KEYS.NFTS].push(nft);
                 }
@@ -142,6 +144,7 @@ class PowerController {
                             processed: processedCount,
                             total: totalNFTs,
                             withSynergy: nftsWithSynergyCount,
+                            totalPowerNumber: totalPowerNumber, // ← ДОБАВЛЕНО
                             estimatedRemaining: this.estimateRemainingTime(startTime, processedCount, totalNFTs)
                         }
                     );
@@ -162,6 +165,7 @@ class PowerController {
             const result = {
                 totalProcessed: processedCount,
                 nftsWithSynergy: nftsWithSynergyCount,
+                totalPowerNumber: totalPowerNumber, // ← ДОБАВЛЕНО
                 processingTimeMs: processingTime,
                 fileSaved: 'all_nft_info_power.json',
                 calculationId
@@ -176,6 +180,7 @@ class PowerController {
             );
             
             this.logger.info(`[${calculationId}] Расчет завершен за ${processingTime}ms`);
+            this.logger.info(`[${calculationId}] Общая сумма power_number: ${totalPowerNumber}`);
             
             // Удаляем через 5 минут после завершения
             setTimeout(() => {
@@ -529,7 +534,8 @@ class PowerController {
                 powerData: {
                     attributesPower: result.totalPower,
                     synergyPower: result.synergyPower,
-                    totalPower: result.totalPower + result.synergyPower
+                    powerNumber: result.powerNumber, // ← ДОБАВЛЕНО
+                    totalPower: result.totalPower + result.synergyPower + result.powerNumber // ← ОБНОВЛЕНО
                 },
                 synergyDetails: result.attributeSynergy
             });

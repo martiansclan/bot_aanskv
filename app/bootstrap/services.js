@@ -84,6 +84,37 @@ class ServiceRegistry {
                 }
             }
             
+            // Инициализируем модуль TribeWalletInfoCollector
+            try {
+                const tribeWalletInfoCollectorService = require('../modules/TribeWalletInfoCollector/TribeWalletInfoCollector.service');
+                
+                // Проверяем, есть ли метод initialize()
+                if (typeof tribeWalletInfoCollectorService.initialize === 'function') {
+                    const tribeWalletInitialized = await tribeWalletInfoCollectorService.initialize();
+                    if (tribeWalletInitialized) {
+                        this.register('TribeWalletInfoCollector', tribeWalletInfoCollectorService);
+                        logger.success('Сервис Tribe Wallet Info Collector инициализирован');
+                    } else {
+                        logger.warning('Сервис Tribe Wallet Info Collector не инициализирован, но доступен');
+                        this.register('TribeWalletInfoCollector', tribeWalletInfoCollectorService);
+                    }
+                } else {
+                    // Если нет метода initialize(), все равно регистрируем сервис
+                    this.register('TribeWalletInfoCollector', tribeWalletInfoCollectorService);
+                    logger.info('Сервис Tribe Wallet Info Collector зарегистрирован');
+                }
+            } catch (error) {
+                logger.error('Ошибка инициализации модуля Tribe Wallet Info Collector:', error.message);
+                // Пробуем зарегистрировать даже при ошибке
+                try {
+                    const tribeWalletInfoCollectorService = require('../modules/TribeWalletInfoCollector/TribeWalletInfoCollector.service');
+                    this.register('TribeWalletInfoCollector', tribeWalletInfoCollectorService);
+                    logger.info('Сервис Tribe Wallet Info Collector зарегистрирован (несмотря на ошибку инициализации)');
+                } catch (regError) {
+                    logger.error('Не удалось зарегистрировать сервис Tribe Wallet Info Collector:', regError.message);
+                }
+            }
+            
             // Инициализируем модуль обмена орками
             try {
                 const orcExchangeService = require('../modules/orc-exchange/orc-exchange.service');
@@ -114,7 +145,6 @@ class ServiceRegistry {
                     logger.error('Не удалось зарегистрировать сервис обмена орками:', regError.message);
                 }
             }
-
 
             this.initialized = true;
             logger.success('Сервисы инициализированы');

@@ -1,3 +1,4 @@
+
 const path = require('path');
 const CONSTANTS = require('./TribeInfoCollector.constants');
 
@@ -16,11 +17,10 @@ module.exports = {
         maxRetries: CONSTANTS.COLLECTION_SETTINGS.MAX_RETRIES
     },
     
-    // Пути к файлам данных
-    dataFiles: {
-        // Абсолютные пути от корня проекта
-        collectedData: path.join(__dirname, CONSTANTS.FILE_PATHS.COLLECTED_DATA),
-        summaryData: path.join(__dirname, CONSTANTS.FILE_PATHS.SUMMARY_DATA)
+    // Путь к файлу данных (ОДИН ФАЙЛ!)
+    dataFile: {
+        // Абсолютный путь от корня проекта
+        nftData: path.join(__dirname, CONSTANTS.FILE_PATHS.NFT_DATA_FILE)
     },
     
     // Адреса коллекций

@@ -90,12 +90,13 @@ module.exports = {
     },
 
     // Ключи для объектов NFT
-    NFT_KEYS: {
+        NFT_KEYS: {
         INDEX: 'index',
         ATTRIBUTES: 'attributes',
         POWER_ATTRIBUTES: 'power_attributes',
         POWER_TOTAL: 'power_total',
-        SYNERGY_POWER: 'synergy_power',
+        POWER_SYNERGY: 'power_synergy',  // ← ИЗМЕНЕНО (было: SYNERGY_POWER: 'synergy_power')
+        POWER_NUMBER: 'power_number',    // ← ДОБАВЛЕНО
         ATTRIBUTE_SYNERGY: 'attribute_synergy',
         TRAIT_TYPE: 'trait_type',
         VALUE: 'value',

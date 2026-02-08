@@ -80,6 +80,42 @@
                                 <div class="checkbox-group" id="rarityOptions"></div>
                             </div>
                         </div>
+
+                        <div class="filter-section">
+                            <div class="filter-header" data-filter="powerNumber">
+                                <h3 class="filter-title">🔢 Power Number</h3>
+                                <span class="filter-arrow">▼</span>
+                            </div>
+                            <div class="filter-content" id="powerNumberFilter">
+                                <div class="radio-group">
+                                    <label class="radio-item">
+                                        <input type="radio" name="powerNumberFilter" value="all" checked>
+                                        <span class="radio-custom"></span>
+                                        <span class="radio-label">Все</span>
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="powerNumberFilter" value="1000">
+                                        <span class="radio-custom"></span>
+                                        <span class="radio-label">1000 (номера 0-9)</span>
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="powerNumberFilter" value="500">
+                                        <span class="radio-custom"></span>
+                                        <span class="radio-label">500 (повторяющиеся цифры)</span>
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="powerNumberFilter" value="5000">
+                                        <span class="radio-custom"></span>
+                                        <span class="radio-label">5000 (номер 11111)</span>
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="powerNumberFilter" value="0">
+                                        <span class="radio-custom"></span>
+                                        <span class="radio-label">0 (обычные номера)</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                         
                         <!-- Фильтры продажи -->
                         <div class="filter-section">

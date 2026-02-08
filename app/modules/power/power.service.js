@@ -164,6 +164,7 @@ class PowerService {
             this.logger.info(`   Всего обработано: ${processedCount} NFT`);
           //  this.logger.info(`   NFT с атрибутами Power: ${updatedCount}`);
             this.logger.info(`   NFT с синергиями: ${nftsWithSynergyCount}`);
+            this.logger.info(`   Общая сумма power_number: ${powerNumberTotal}`);
             this.logger.info(`   Время: ${(processingTime / 1000).toFixed(2)} секунд`);
 
             return {

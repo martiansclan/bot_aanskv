@@ -1,0 +1,600 @@
+/* Основные стили */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+/* Хедер */
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    color: #2d3748;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    font-size: 2.2rem;
+}
+
+.subtitle {
+    color: #718096;
+    font-size: 1.1rem;
+}
+
+/* Форма */
+.form-group {
+    margin-bottom: 30px;
+}
+
+/* User ID секция */
+.user-id-section {
+    margin-bottom: 20px;
+}
+
+.user-id-section label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #4a5568;
+    font-size: 1.1rem;
+}
+
+.user-id-input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 1rem;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+}
+
+.user-id-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.id-hint {
+    color: #718096;
+    font-size: 0.9rem;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Контейнер кошельков */
+.wallets-container {
+    margin-top: 20px;
+}
+
+.wallets-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #4a5568;
+    font-size: 1.1rem;
+}
+
+/* Строки кошельков */
+.wallet-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+.wallet-input-group {
+    flex: 1;
+    display: flex;
+    gap: 10px;
+}
+
+.nickname-input, .wallet-input {
+    flex: 1;
+    padding: 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.nickname-input:focus, .wallet-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.nickname-input {
+    min-width: 200px;
+}
+
+/* Кнопки */
+.add-wallet-btn {
+    background: #48bb78;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.add-wallet-btn:hover {
+    background: #38a169;
+    transform: scale(1.05);
+}
+
+.remove-wallet-btn {
+    background: #fc8181;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.remove-wallet-btn:hover {
+    background: #e53e3e;
+    transform: scale(1.05);
+}
+
+.collect-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 18px 40px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+    transition: all 0.3s ease;
+}
+
+.collect-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+}
+
+.collect-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Загрузка */
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+    color: #718096;
+    font-size: 1.1rem;
+}
+
+.fa-spin {
+    animation: fa-spin 2s infinite linear;
+}
+
+@keyframes fa-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Результаты */
+.results {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 10px;
+    background: #f7fafc;
+    display: none;
+}
+
+.results.show {
+    display: block;
+}
+
+.result-success {
+    color: #48bb78;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem;
+}
+
+.result-error {
+    color: #fc8181;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem;
+}
+
+.result-details {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #e2e8f0;
+}
+
+.file-info {
+    margin-top: 15px;
+    padding: 15px;
+    background: #e6fffa;
+    border-radius: 8px;
+    border-left: 4px solid #38b2ac;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.file-info i {
+    color: #38b2ac;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+    
+    .header h1 {
+        font-size: 1.8rem;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .wallet-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .wallet-input-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .nickname-input {
+        min-width: auto;
+    }
+    
+    .remove-wallet-btn {
+        align-self: flex-end;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        padding: 15px;
+    }
+    
+    .header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .subtitle {
+        font-size: 1rem;
+    }
+}
+
+/* Добавить в существующий CSS */
+
+/* Табы */
+.tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.tab-btn {
+    padding: 12px 25px;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #718096;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+    color: #667eea;
+}
+
+.tab-btn.active {
+    color: #667eea;
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #667eea;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Загрузка файла */
+.file-upload-section {
+    margin-bottom: 20px;
+}
+
+.upload-area {
+    border: 3px dashed #cbd5e0;
+    border-radius: 15px;
+    padding: 40px 20px;
+    text-align: center;
+    background: #f7fafc;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.upload-area:hover {
+    border-color: #667eea;
+    background: #edf2f7;
+}
+
+.upload-area i {
+    font-size: 3rem;
+    color: #a0aec0;
+    margin-bottom: 15px;
+}
+
+.upload-area h3 {
+    color: #4a5568;
+    margin-bottom: 10px;
+}
+
+.upload-area p {
+    color: #718096;
+    margin-bottom: 10px;
+}
+
+.file-format {
+    font-size: 0.9rem;
+    background: #e2e8f0;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+.upload-btn {
+    background: #4299e1;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.upload-btn:hover {
+    background: #3182ce;
+    transform: translateY(-2px);
+}
+
+/* Опция обновления файла */
+.update-file-option {
+    background: #f7fafc;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+    border: 1px solid #e2e8f0;
+}
+
+.update-file-option input[type="checkbox"] {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+}
+
+.update-file-option label {
+    font-weight: 600;
+    color: #4a5568;
+    cursor: pointer;
+}
+
+.option-hint {
+    color: #718096;
+    font-size: 0.9rem;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Детали загрузки */
+.loading-details {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #718096;
+    background: #f7fafc;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+/* Детали результатов */
+.wallet-details {
+    margin-top: 10px;
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.wallet-details .success {
+    color: #48bb78;
+}
+
+.wallet-details .error {
+    color: #fc8181;
+}
+
+/* Информация о файле */
+#fileInfo {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: #e6fffa;
+    border-radius: 8px;
+    border-left: 4px solid #38b2ac;
+}
+
+#fileInfo i {
+    color: #38b2ac;
+    font-size: 1.2rem;
+}
+
+#fileName {
+    font-weight: 600;
+    color: #2d3748;
+}
+
+#fileSize {
+    color: #718096;
+    font-size: 0.9rem;
+    margin-left: auto;
+}
+
+/* Кнопки управления файлами */
+.file-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.file-btn {
+    background: #4299e1;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.file-btn:hover {
+    background: #3182ce;
+    transform: translateY(-1px);
+}
+
+.file-btn.secondary {
+    background: #a0aec0;
+}
+
+.file-btn.secondary:hover {
+    background: #718096;
+}
+
+/* Уведомления */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 10px;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    z-index: 1000;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.notification.success {
+    background: #48bb78;
+}
+
+.notification.error {
+    background: #fc8181;
+}
+
+.notification.info {
+    background: #4299e1;
+}
