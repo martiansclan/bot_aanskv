@@ -7,6 +7,7 @@ class Bootstrap {
         this.app = null;
         this.server = null;
         this.initialized = false;
+        this.isShuttingDown = false;
     }
     
     async initialize() {
@@ -19,13 +20,11 @@ class Bootstrap {
         console.log('='.repeat(50));
         
         try {
-            // 1. Сначала регистрируем все сервисы
-            console.log('📦 Регистрация сервисов...');
-            await serviceRegistry.initialize();
-            
-            // 2. Создаем Express приложение
             console.log('🌐 Создание Express приложения...');
             this.app = new Application();
+            
+            console.log('📦 Инициализация сервисов...');
+            await serviceRegistry.initialize(this.app.app);
             
             this.initialized = true;
             console.log('✅ Bootstrap инициализирован');
@@ -44,34 +43,70 @@ class Bootstrap {
         }
         
         this.server = this.app.start();
-        
-        process.on('unhandledRejection', (reason, promise) => {
-            console.error('⚠️ Unhandled Rejection:', reason);
-        });
-        
-        process.on('uncaughtException', (error) => {
-            console.error('⚠️ Uncaught Exception:', error);
-        });
-        
         return this.server;
     }
     
     async shutdown() {
-        console.log('🛑 Остановка приложения...');
-        
-        if (this.server) {
-            this.server.close();
-            console.log('🌐 HTTP сервер остановлен');
+        // КРИТИЧЕСКИ ВАЖНО: предотвращаем множественные вызовы
+        if (this.isShuttingDown) {
+            console.log('⚠️ Процесс завершения уже запущен, игнорируем...');
+            return;
         }
         
-        await serviceRegistry.shutdown();
+        this.isShuttingDown = true;
+        console.log('🛑 Остановка приложения...');
         
-        this.initialized = false;
-        console.log('✅ Приложение остановлено');
+        try {
+            // 1. Останавливаем сервисы
+            if (serviceRegistry && typeof serviceRegistry.shutdown === 'function') {
+                await serviceRegistry.shutdown();
+                console.log('✅ Сервисы остановлены');
+            }
+            
+            // 2. Останавливаем HTTP сервер
+            if (this.server) {
+                try {
+                    // ПРОВЕРЯЕМ что это HTTP сервер
+                    if (this.server && typeof this.server.close === 'function') {
+                        await new Promise((resolve) => {
+                            this.server.close(() => {
+                                console.log('🌐 HTTP сервер остановлен');
+                                resolve();
+                            });
+                        });
+                    } else {
+                        console.log('⚠️ Сервер уже остановлен или не является HTTP сервером');
+                    }
+                } catch (error) {
+                    console.error('❌ Ошибка при остановке HTTP сервера:', error.message);
+                }
+            }
+            
+            this.initialized = false;
+            console.log('✅ Приложение остановлено');
+            
+        } catch (error) {
+            console.error('❌ Ошибка при остановке приложения:', error.message);
+        } finally {
+            this.isShuttingDown = false;
+        }
     }
     
     getExpressApp() {
         return this.app ? this.app.app : null;
+    }
+    
+    getModule(moduleName) {
+        try {
+            return serviceRegistry.get(moduleName);
+        } catch (error) {
+            console.warn(`Модуль "${moduleName}" не найден:`, error.message);
+            return null;
+        }
+    }
+    
+    getAllModules() {
+        return serviceRegistry.getAll();
     }
 }
 

@@ -4,26 +4,37 @@ const bootstrap = require('./app/bootstrap');
 
 async function startServer() {
     try {
-        // Инициализируем приложение
         await bootstrap.initialize();
-        
-        // Запускаем сервер
         bootstrap.start();
         
-        console.log('✨ Martian NFT Analyzer полностью запущен! ✨');
+        console.log('✅ Сервер успешно запущен и готов к работе');
         
-        // Обработка сигналов остановки
-        process.on('SIGINT', async () => {
-            console.log('\n🛑 Получен SIGINT сигнал...');
-            await bootstrap.shutdown();
-            process.exit(0);
-        });
+        // ЕДИНСТВЕННЫЙ обработчик сигналов
+        let isShuttingDown = false;
         
-        process.on('SIGTERM', async () => {
-            console.log('\n🛑 Получен SIGTERM сигнал...');
-            await bootstrap.shutdown();
-            process.exit(0);
-        });
+        const shutdownHandler = async (signal) => {
+            // Предотвращаем множественные вызовы
+            if (isShuttingDown) {
+                console.log(`⚠️ ${signal} уже обрабатывается, игнорируем...`);
+                return;
+            }
+            
+            isShuttingDown = true;
+            console.log(`\n🛑 Получен ${signal} сигнал...`);
+            
+            // Удаляем обработчики чтобы избежать повторных вызовов
+            process.off('SIGINT', shutdownHandler);
+            process.off('SIGTERM', shutdownHandler);
+            
+            // Даем время на завершение текущих операций
+            setTimeout(async () => {
+                await bootstrap.shutdown();
+                process.exit(0);
+            }, 100);
+        };
+        
+        process.on('SIGINT', shutdownHandler);
+        process.on('SIGTERM', shutdownHandler);
         
     } catch (error) {
         console.error('❌ Не удалось запустить сервер:', error);
