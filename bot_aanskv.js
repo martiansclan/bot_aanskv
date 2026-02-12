@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
 // Раздача статических файлов
 app.use(express.static('public'));
@@ -9,7 +9,10 @@ app.use(express.static('public'));
 // Для парсинга JSON
 app.use(express.json());
 
-const { API_TOKEN } = require('./modules/utils.js');
+const { 
+        API_TOKEN,
+        APP_URL
+ } = require('./modules/utils.js');
 const TelegramBot = require('node-telegram-bot-api');
 
 // Импорт модулей команд
@@ -115,7 +118,8 @@ bot.onText(/^\/login$/, async (msg) => {
     const user = msg.from;
     
     try {
-        const appUrl = process.env.APP_URL || 'https://bot-aanskv.onrender.com';
+        // Используем APP_URL из utils.js
+        const appUrl = APP_URL || 'https://bot-aanskv.onrender.com';
         
         const webAppUrl = `${appUrl}?telegram_id=${user.id}&first_name=${encodeURIComponent(user.first_name || '')}&username=${encodeURIComponent(user.username || '')}`;
         
