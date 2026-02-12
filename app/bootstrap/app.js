@@ -94,6 +94,18 @@ class Application {
             console.log(`🚀 Сервер запущен на порту ${this.port}`);
             console.log(`📁 Загружено модулей: ${Object.keys(this.modules).length}`);
             console.log('='.repeat(50));
+
+
+            // Регистрируем webhook для бота
+            try {
+                const botService = require('./services').get('bot');
+                if (botService && botService.registerWebhook) {
+                    botService.registerWebhook(this.app);
+                }
+            } catch (error) {
+                // Бот еще не инициализирован
+            }
+
             console.log('Доступные модули:');
             
             Object.values(this.modules).forEach(module => {

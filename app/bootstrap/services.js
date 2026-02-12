@@ -16,6 +16,19 @@ class ServiceRegistry {
         logger.info('Инициализация сервисов...');
         
         try {
+
+             // ===== ИНИЦИАЛИЗИРУЕМ БОТА =====
+            try {
+                const botService = require('../modules/bot/bot.service');
+                const botInitialized = await botService.initialize();
+                if (botInitialized) {
+                    this.register('bot', botService);
+                    logger.success('✅ Telegram бот инициализирован');
+                }
+            } catch (error) {
+                logger.error('❌ Ошибка инициализации бота:', error.message);
+            }
+
             // Инициализируем модуль сортировки
             try {
                 const sortService = require('../modules/sort/sort.service');
@@ -178,6 +191,15 @@ class ServiceRegistry {
     
     async shutdown() {
         logger.info('Завершение работы сервисов...');
+         // Останавливаем бота
+        try {
+            const botService = this.services.get('bot');
+            if (botService && botService.shutdown) {
+                await botService.shutdown();
+            }
+        } catch (error) {
+            logger.error('Ошибка остановки бота:', error);
+        }
         this.services.clear();
         this.initialized = false;
         logger.success('Сервисы остановлены');
