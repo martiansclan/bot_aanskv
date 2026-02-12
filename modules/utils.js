@@ -8,13 +8,13 @@ const path = require('path');
 const API_TOKEN = process.env.API_TOKEN;
 const TONAPI_KEY = process.env.TONAPI_KEY;
 const TONCENTER_API_KEY = process.env.TONCENTER_API_KEY;
+const APP_URL = process.env.APP_URL;
+const BOT_USERNAME = process.env.BOT_USERNAME;
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
 // Адреса коллекций
-const COLLECTION_ADDRESS_TONAPI =
-  '0:463685d77d0474ec774386d92622ed688d34f07230741211d838c487dcfeec64';
-const COLLECTION_ADDRESS_UF =
-  'EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR';
-
+const COLLECTION_ADDRESS_TONAPI = '0:463685d77d0474ec774386d92622ed688d34f07230741211d838c487dcfeec64';
+const COLLECTION_ADDRESS_UF = 'EQBGNoXXfQR07HdDhtkmIu1ojTTwcjB0EhHYOMSH3P7sZGJR';
 
 // Общие константы
 const IMG_WIDTH = 350;
@@ -23,8 +23,6 @@ const IMG_WIDTH = 350;
 const DATA_DIR = path.join(__dirname, '../nft_data');
 const MAIN_DATA_FILE = path.join(DATA_DIR, 'all_nft_info.json');
 const COLLECT_DATA_FILE = path.join(DATA_DIR, 'all_nft_info_collected.json');
-//const TEMP_DATA_FILE = path.join(DATA_DIR, 'temp_data.json');
-// Пути к файлам состояния для фонового сбора информации
 const COLLECTION_STATE_FILE = path.join(DATA_DIR, 'collection_state.json');
 const COLLECTION_PROGRESS_FILE = path.join(DATA_DIR, 'collection_progress.json');
 
@@ -90,50 +88,39 @@ async function makeTonCenterRequest(url) {
   const headers = TONCENTER_API_KEY ? { 'X-API-Key': TONCENTER_API_KEY } : {};
   
   try {
-    await sleep(300); // Задержка между запросами
+    await sleep(300);
     const response = await axios.get(url, { headers, timeout: 10000 });
     return response.data;
   } catch (error) {
     console.error('TonCenter request error:', error.response?.status, error.message);
-    if (error.response) {
-      console.error('Response data:', error.response.data);
-    }
     throw error;
   }
 }
 
 /**
  * Отправляет изображение в Telegram с изменением размера
- * @param {Object} bot - экземпляр Telegram бота
- * @param {number} chatId - ID чата
- * @param {string} url - URL изображения
- * @param {string} caption - подпись к изображение
  */
 async function sendPhotoResized(bot, chatId, url, caption) {
   try {
     if (!url) throw new Error('Нет картинки');
 
-    // Конвертируем IPFS в HTTP
     if (url.startsWith('ipfs://')) {
       url = url.replace('ipfs://', 'https://ipfs.io/ipfs/');
     }
 
-    // Скачиваем картинку в память
     const response = await axios.get(url, { responseType: 'arraybuffer' });
     const buffer = Buffer.from(response.data, 'binary');
 
-    // Меняем размер картинки
     const resizedBuffer = await sharp(buffer)
       .resize({ width: IMG_WIDTH })
       .toBuffer();
 
-    // Отправляем в Telegram
     await bot.sendPhoto(chatId, resizedBuffer, { 
       caption: caption.slice(0, 1024),
       parse_mode: 'Markdown'
     });
   } catch (err) {
-    console.error('Ошибка при отправке NFT:', caption, err.message);
+    console.error('Ошибка при отправке NFT:', err.message);
     await bot.sendMessage(chatId, caption + '\n(не удалось отправить картинку)', {
       parse_mode: 'Markdown'
     });
@@ -142,11 +129,9 @@ async function sendPhotoResized(bot, chatId, url, caption) {
 
 /**
  * Форматирует дату в читаемый вид
- * @param {string|Date} date - дата для форматирования
  */
 function formatDate(date) {
   if (!date) return 'Не указано';
-  
   const d = new Date(date);
   return d.toLocaleString('ru-RU', {
     day: '2-digit',
@@ -159,59 +144,47 @@ function formatDate(date) {
 
 /**
  * Форматирует размер файла
- * @param {number} bytes - размер в байтах
  */
 function formatFileSize(bytes) {
   if (bytes === 0) return '0 Bytes';
-  
   const k = 1024;
   const sizes = ['Bytes', 'KB', 'MB', 'GB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
 
 /**
- * Экранирует специальные символы для безопасного отображения в Markdown
- * @param {string} text - текст для экранирования
+ * Экранирует специальные символы для Markdown
  */
 function escapeMarkdown(text) {
   if (!text) return '';
-  
   return text.replace(/([_*[\]()~`>#+\-=|{}.!])/g, '\\$1');
 }
 
 /**
- * Более простая версия для избежания проблем с разметкой
+ * Безопасное форматирование без Markdown
  */
 function safeMarkdown(text) {
   if (!text) return '';
-  
-  // Просто заменяем наиболее проблемные символы
   return text
-    .replace(/\*/g, '×')  // Заменяем * на ×
-    .replace(/_/g, '−')   // Заменяем _ на −
-    .replace(/`/g, '"')   // Заменяем ` на "
-    .replace(/\[/g, '(')  // Заменяем [ на (
-    .replace(/\]/g, ')'); // Заменяем ] на )
+    .replace(/\*/g, '×')
+    .replace(/_/g, '−')
+    .replace(/`/g, '"')
+    .replace(/\[/g, '(')
+    .replace(/\]/g, ')');
 }
 
 /**
- * Обрезает длинный текст с добавлением многоточия
- * @param {string} text - текст для обрезки
- * @param {number} maxLength - максимальная длина
+ * Обрезает длинный текст
  */
 function truncateText(text, maxLength = 50) {
   if (!text) return '';
   if (text.length <= maxLength) return text;
-  
   return text.substring(0, maxLength) + '...';
 }
 
 /**
- * Форматирует атрибуты NFT для отображения в карточке
- * @param {Array} attributes - массив атрибутов NFT
- * @param {number} perLine - атрибутов в строке
+ * Форматирует атрибуты NFT для отображения
  */
 function formatAttributes(attributes, perLine = 2) {
   if (!attributes || !Array.isArray(attributes) || attributes.length === 0) {
@@ -230,7 +203,6 @@ function formatAttributes(attributes, perLine = 2) {
     lines.push(lineText);
   }
   
-  // Если строк меньше 2, добавляем пустые
   while (lines.length < 2) {
     lines.push('');
   }
@@ -238,120 +210,27 @@ function formatAttributes(attributes, perLine = 2) {
   return lines.slice(0, 2);
 }
 
-// ====== ФУНКЦИЯ ДЛЯ ПОЛУЧЕНИЯ СПИСКА КОМАНД ======
-
-function getCommandList() {
-  return [  
-    {
-      command: '/show_cards [число]',
-      description: 'Показать карточки NFT',
-      details: 'Красивые карточки в рамках с атрибутами и ссылками'
-    }, 
-    {
-      command: '/stats',
-      description: 'Показать статистику базы данных',
-      details: 'Количество записей, уникальных NFT, размер файла и т.д.'
-    },
-    {
-      command: '/help',
-      description: 'Полная справка по командам',
-      details: 'Подробное описание всех функций бота'
-    },
-    {
-      command: '/start',
-      description: 'Приветственное сообщение',
-      details: 'Информация для начала работы с ботом'
-    },
-    {
-      command: '/start_collect',
-      description: 'Начать сбор ВСЕХ NFT коллекции',
-      details: 'Запускает фоновый сбор всех NFT из коллекции'
-    },
-    {
-      command: '/stop_collect',
-      description: 'Остановить сбор NFT',
-      details: 'Останавливает фоновый сбор данных'
-    },    
-    {
-      command: '/collect_status',
-      description: 'Статус сбора данных',
-      details: 'Показывает прогресс сбора NFT'
-    }
-  ];
-}
-
-/**
- * Генерирует текст помощи на основе списка команд
- */
-function generateHelpText() {
-  const commands = getCommandList();
-  let text = '🤖 *Martian NFT Bot - Список команд*\n\n';
-  
-  commands.forEach(cmd => {
-    text += `*${cmd.command}*\n`;
-    text += `${cmd.description}\n`;
-    if (cmd.details) {
-      text += `_${cmd.details}_\n`;
-    }
-    text += '\n';
-  });
-  
-  text += `\n*Техническая информация:*\n`;
-  text += `• Коллекция: \`${COLLECTION_ADDRESS_UF}\`\n`;
-  text += `• Файл данных: \`nft_data/all_nft_info.json\`\n`;
-  text += `• Лимит NFT за запрос: 10\n`;
-  
-  return text;
-}
-
-// ====== ФУНКЦИИ ДЛЯ ПРОВЕРКИ API КЛЮЧЕЙ ======
-
-function checkApiKeys() {
-  const results = {
-    telegram: !!API_TOKEN,
-    tonapi: !!TONAPI_KEY,
-    toncenter: !!TONCENTER_API_KEY
-  };
-  
-  const missing = [];
-  if (!results.telegram) missing.push('Telegram Bot Token');
-  if (!results.tonapi) missing.push('TON API Key');
-  if (!results.toncenter) missing.push('TonCenter API Key');
-  
-  return {
-    ...results,
-    allSet: results.telegram && results.tonapi && results.toncenter,
-    missing: missing.length > 0 ? missing.join(', ') : null
-  };
-}
-
 // ====== ФУНКЦИИ ДЛЯ СОЗДАНИЯ КАРТОЧЕК NFT ======
 
 /**
- * Создает карточку NFT в формате Markdown с рамкой
- * @param {Object} nft - данные NFT
- * @param {number} index - индекс карточки
- * @param {number} total - всего карточек
+ * Создает карточку NFT в формате Markdown
  */
 function createNftCard(nft, index, total) {
   const attributesLines = formatAttributes(nft.attributes);
   const nftName = escapeMarkdown(nft.name || `NFT #${nft.nft_index || index}`);
   
-  // Формируем рамку вокруг карточки
   const topBorder = '┏' + '━'.repeat(38) + '┓';
   const bottomBorder = '┗' + '━'.repeat(38) + '┛';
   const sideBorder = '┃';
   
   const cardNumber = total > 1 ? `🎴 *Карточка ${index + 1} из ${total}*` : '🎴 *Карточка NFT*';
   
-  // Формируем карточку
   let card = `${topBorder}\n`;
   card += `${sideBorder} ${cardNumber} ${sideBorder}\n`;
   card += `${sideBorder}                                          ${sideBorder}\n`;
   card += `${sideBorder} *${nftName}* ${sideBorder}\n`;
   card += `${sideBorder}                                          ${sideBorder}\n`;
   
-  // Если есть изображение, добавляем иконку картинки
   if (nft.image_url) {
     card += `${sideBorder} 🖼️ [Изображение](${nft.image_url}) ${sideBorder}\n`;
   } else {
@@ -360,26 +239,20 @@ function createNftCard(nft, index, total) {
   
   card += `${sideBorder}                                          ${sideBorder}\n`;
   
-  // Атрибуты
   if (attributesLines[0]) {
     card += `${sideBorder} ${attributesLines[0]} ${sideBorder}\n`;
   }
-  
   if (attributesLines[1]) {
     card += `${sideBorder} ${attributesLines[1]} ${sideBorder}\n`;
   }
   
   card += `${sideBorder}                                          ${sideBorder}\n`;
   
-  // Ссылки
   if (nft.getgems_url) {
-    const gemsLink = `[На GetGems](${nft.getgems_url})`;
-    card += `${sideBorder} ${gemsLink} ${sideBorder}\n`;
+    card += `${sideBorder} [На GetGems](${nft.getgems_url}) ${sideBorder}\n`;
   }
-  
   if (nft.owner_url) {
-    const ownerLink = `[Владелец](${nft.owner_url})`;
-    card += `${sideBorder} ${ownerLink} ${sideBorder}\n`;
+    card += `${sideBorder} [Владелец](${nft.owner_url}) ${sideBorder}\n`;
   }
   
   card += `${sideBorder}                                          ${sideBorder}\n`;
@@ -391,7 +264,6 @@ function createNftCard(nft, index, total) {
   }
   
   card += `${bottomBorder}`;
-  
   return card;
 }
 
@@ -401,56 +273,26 @@ function createNftCard(nft, index, total) {
 async function getTotalNftCount() {
   try {
     console.log('🔄 Получаю общее количество NFT...');
-    console.log('📡 Адрес коллекции (TONAPI):', COLLECTION_ADDRESS_TONAPI);
     
-    // Используем TONAPI формат адреса для этого запроса
     const url = `https://toncenter.com/api/v3/nft/items?collection_address=${COLLECTION_ADDRESS_TONAPI}&limit=1&offset=0`;
-    console.log('🔗 Запрос:', url);
-    
     const data = await makeTonCenterRequest(url);
-    console.log('✅ Получен ответ от API');
     
-    // Отладка: посмотрим структуру ответа
-    console.log('📋 Ключи в ответе:', Object.keys(data));
-    
-    // Проверяем наличие collection и next_item_index
     if (data.collection && data.collection.next_item_index) {
       const totalCount = parseInt(data.collection.next_item_index);
-      console.log(`📊 Общее количество NFT в коллекции: ${totalCount}`);
+      console.log(`📊 Всего NFT: ${totalCount}`);
       return totalCount;
     }
     
-    // Альтернативный вариант
-    if (data.nft_items && data.nft_items.length > 0) {
-      const firstItem = data.nft_items[0];
-      if (firstItem.collection && firstItem.collection.next_item_index) {
-        const totalCount = parseInt(firstItem.collection.next_item_index);
-        console.log(`📊 Общее количество NFT (из первого элемента): ${totalCount}`);
-        return totalCount;
-      }
-    }
-    
     console.error('❌ Не удалось найти next_item_index в ответе API');
-    console.error('📄 Ответ API (первые 500 символов):', JSON.stringify(data).substring(0, 500));
-    
     return 0;
-    
   } catch (error) {
-    console.error('❌ Ошибка получения общего количества NFT:');
-    console.error('Сообщение:', error.message);
-    
-    if (error.response) {
-      console.error('Статус:', error.response.status);
-      console.error('Данные:', JSON.stringify(error.response.data).substring(0, 300));
-    }
-    
+    console.error('❌ Ошибка получения количества NFT:', error.message);
     return 0;
   }
 }
 
-/**
- * Сохраняет состояние сбора данных
- */
+// ====== ФУНКЦИИ ДЛЯ УПРАВЛЕНИЯ СБОРОМ ======
+
 async function saveCollectionState(state) {
   try {
     await ensureDataDir();
@@ -461,21 +303,17 @@ async function saveCollectionState(state) {
     await fs.writeFile(COLLECTION_STATE_FILE, JSON.stringify(stateWithTimestamp, null, 2), 'utf8');
     return { success: true };
   } catch (error) {
-    console.error('❌ Ошибка сохранения состояния сбора:', error.message);
+    console.error('❌ Ошибка сохранения состояния:', error.message);
     return { success: false, error: error.message };
   }
 }
 
-/**
- * Загружает состояние сбора данных
- */
 async function loadCollectionState() {
   try {
     await ensureDataDir();
     const data = await fs.readFile(COLLECTION_STATE_FILE, 'utf8');
     return { success: true, state: JSON.parse(data) };
   } catch (error) {
-    // Если файла нет, возвращаем начальное состояние
     return { 
       success: true, 
       state: {
@@ -492,9 +330,6 @@ async function loadCollectionState() {
   }
 }
 
-/**
- * Сохраняет прогресс сбора для конкретной сессии
- */
 async function saveCollectionProgress(progress) {
   try {
     await ensureDataDir();
@@ -505,21 +340,17 @@ async function saveCollectionProgress(progress) {
     await fs.writeFile(COLLECTION_PROGRESS_FILE, JSON.stringify(progressWithTimestamp, null, 2), 'utf8');
     return { success: true };
   } catch (error) {
-    console.error('❌ Ошибка сохранения прогресс:', error.message);
+    console.error('❌ Ошибка сохранения прогресса:', error.message);
     return { success: false, error: error.message };
   }
 }
 
-/**
- * Загружает прогресс сбора
- */
 async function loadCollectionProgress() {
   try {
     await ensureDataDir();
     const data = await fs.readFile(COLLECTION_PROGRESS_FILE, 'utf8');
     return { success: true, progress: JSON.parse(data) };
   } catch (error) {
-    // Если файла нет, возвращаем пустой прогресс
     return { 
       success: true, 
       progress: {
@@ -533,27 +364,31 @@ async function loadCollectionProgress() {
   }
 }
 
-/**
- * Очищает состояние и прогресс сбора
- */
 async function clearCollectionState() {
   try {
     await ensureDataDir();
-    
-    // Удаляем файлы состояния если они существуют
-    try {
-      await fs.unlink(COLLECTION_STATE_FILE);
-    } catch (err) { /* файла нет */ }
-    
-    try {
-      await fs.unlink(COLLECTION_PROGRESS_FILE);
-    } catch (err) { /* файла нет */ }
-    
+    try { await fs.unlink(COLLECTION_STATE_FILE); } catch (err) {}
+    try { await fs.unlink(COLLECTION_PROGRESS_FILE); } catch (err) {}
     return { success: true };
   } catch (error) {
-    console.error('❌ Ошибка очистки состояния сбора:', error.message);
+    console.error('❌ Ошибка очистки состояния:', error.message);
     return { success: false, error: error.message };
   }
+}
+
+// ====== ФУНКЦИИ ПРОВЕРКИ ======
+
+function checkApiKeys() {
+  const results = {
+    telegram: !!API_TOKEN,
+    tonapi: !!TONAPI_KEY,
+    toncenter: !!TONCENTER_API_KEY
+  };
+  
+  return {
+    ...results,
+    allSet: results.telegram && results.tonapi && results.toncenter
+  };
 }
 
 // ====== ЭКСПОРТ ======
@@ -562,6 +397,9 @@ module.exports = {
   API_TOKEN,
   TONAPI_KEY,
   TONCENTER_API_KEY,
+  APP_URL,
+  BOT_USERNAME,
+  SESSION_SECRET,
   COLLECTION_ADDRESS_TONAPI,
   COLLECTION_ADDRESS_UF,
   
@@ -572,14 +410,12 @@ module.exports = {
   DATA_DIR,
   MAIN_DATA_FILE,
   COLLECT_DATA_FILE,
-  //TEMP_DATA_FILE,
   COLLECTION_STATE_FILE,
   COLLECTION_PROGRESS_FILE,
   
   // Функции для работы с файлами
   ensureDataDir, 
   listDataFiles,
-  
   
   // Общие функции
   sleep,
@@ -592,21 +428,17 @@ module.exports = {
   truncateText,
   formatAttributes,
   
-  // Функции для команд и помощи
-  getCommandList,
-  generateHelpText,
-  
-  // Функции проверки
-  checkApiKeys,
-  
   // Функции для создания карточек
   createNftCard,
 
-  // Новые функции для управления сбором
+  // Функции для управления сбором
   getTotalNftCount,
   saveCollectionState,
   loadCollectionState,
   saveCollectionProgress,
   loadCollectionProgress,
-  clearCollectionState
+  clearCollectionState,
+  
+  // Функции проверки
+  checkApiKeys
 };
