@@ -10,13 +10,13 @@ module.exports = {
         ADMIN: 2
     },
     
-    // Доступные модули и требуемые уровни доступа
+    // Доступные модули и требуемые уровни доступа Отключен (false)
     MODULE_ACCESS: {
-        'power': { minLevel: 0, enabled: true },           // Доступен всем
-        'sort': { minLevel: 1, enabled: true },            // Только авторизованным
-        'orc-exchange': { minLevel: 2, enabled: true },    // Только админам
-        'TribeInfoCollector': { minLevel: 2, enabled: false }, // Отключен
-        'TribeWalletInfoCollector': { minLevel: 2, enabled: false } // Отключен
+        'power': { minLevel: 2, enabled: true },           // Доступен всем
+        'sort': { minLevel: 0, enabled: true },            // Только авторизованным
+        'orc-exchange': { minLevel: 1, enabled: true },    // Только админам
+        'TribeInfoCollector': { minLevel: 2, enabled: true }, // Сбор данных по нфт
+        'TribeWalletInfoCollector': { minLevel: 2, enabled: true } // Сбор данных о нфт на кошельках
     },
     
     // Белый список пользователей Telegram
@@ -27,6 +27,6 @@ module.exports = {
     
     // Администраторы
     ADMIN_USERS: [
-        987654321 // Замените на реальные ID администраторов
+        693689171 // мой ID администраторов
     ]
 };
