@@ -49,8 +49,36 @@ class Application {
     }
     
     setupRoutes() {
+        // 1. СНАЧАЛА - Webhook бота (САМЫЙ ВЫСОКИЙ ПРИОРИТЕТ!)
+        try {
+            const botService = require('../modules/bot/bot.service');
+            if (botService && botService.isProduction && botService.bot) {
+                const API_TOKEN = require('../../../modules/utils.js').API_TOKEN;
+                const webhookPath = `/webhook/${API_TOKEN}`;
+                
+                this.app.post(webhookPath, (req, res) => {
+                    console.log('📨 Webhook received!');
+                    botService.bot.processUpdate(req.body);
+                    res.sendStatus(200);
+                });
+                
+                this.app.get(webhookPath, (req, res) => {
+                    res.send('✅ Bot webhook is active');
+                });
+                
+                console.log(`✅ Webhook endpoint зарегистрирован: ${webhookPath}`);
+            }
+        } catch (error) {
+            console.error('⚠️ Webhook registration error:', error.message);
+        }
+        
+        // 2. ЗАТЕМ - маршруты модулей
         const router = routeLoader.loadRoutes();
         this.app.use(router);
+        
+        // 3. ПОТОМ - статические файлы (уже есть в setupMiddleware)
+        
+        // 4. В КОНЦЕ - обработка ошибок (уже есть в setupErrorHandlers)
     }
     
     // Удален метод setupWebSocket()
@@ -66,8 +94,9 @@ class Application {
             });
         });
         
-        // Обработка 404 для остальных маршрутов
-        this.app.use('*', (req, res) => {
+        // 🚨 УБИРАЕМ ГЛОБАЛЬНЫЙ '*' ОБРАБОТЧИК!
+        // Вместо него - только для корневого пути
+        this.app.get('/', (req, res) => {
             const indexPath = path.join(__dirname, '../../public', 'index.html');
             res.sendFile(indexPath);
         });
