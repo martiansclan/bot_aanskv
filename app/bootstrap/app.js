@@ -52,18 +52,25 @@ class Application {
     setupWebhook() {
         try {
             const botService = require('../modules/bot/bot.service');
+            const { API_TOKEN } = require('../../../modules/utils.js');
+            
             if (botService && botService.isProduction && botService.bot) {
-                const { API_TOKEN } = require('../../../modules/utils.js');
                 const webhookPath = `/webhook/${API_TOKEN}`;
                 
                 // POST - для Telegram
                 this.app.post(webhookPath, (req, res) => {
-                    console.log('📨 Webhook received!');
+                    console.log('\n📨 WEBHOOK ПОЛУЧЕН!');
+                    console.log('   Update ID:', req.body?.update_id);
+                    console.log('   Message:', req.body?.message?.text);
+                    console.log('   From:', req.body?.message?.from?.username);
+                    
                     try {
+                        // ВАЖНО: обрабатываем обновление
                         botService.bot.processUpdate(req.body);
+                        console.log('✅ Обновление обработано');
                         res.sendStatus(200);
                     } catch (error) {
-                        console.error('❌ Webhook error:', error.message);
+                        console.error('❌ Ошибка обработки:', error.message);
                         res.sendStatus(500);
                     }
                 });
@@ -73,11 +80,19 @@ class Application {
                     res.send(`
                         <h2>🤖 Telegram Bot Webhook</h2>
                         <p>Status: <strong style="color: green;">ACTIVE</strong></p>
+                        <p>Bot: @zargates_martians_bot</p>
                         <p>Time: ${new Date().toLocaleString()}</p>
+                        <p>Last updates: ${botService.updateCount || 0}</p>
                     `);
                 });
                 
                 console.log(`✅ Webhook endpoint зарегистрирован: ${webhookPath}`);
+            } else {
+                console.log('⚠️ Бот не готов для webhook:', {
+                    exists: !!botService,
+                    isProduction: botService?.isProduction,
+                    hasBot: !!botService?.bot
+                });
             }
         } catch (error) {
             console.error('⚠️ Webhook registration error:', error.message);
