@@ -54,94 +54,100 @@ class BotService {
                 throw new Error('API_TOKEN не найден в переменных окружения!');
             }
 
-            // PRODUCTION: Webhook режим
+            // ОПРЕДЕЛЯЕМ РЕЖИМ РАБОТЫ
+            const isRender = !!process.env.RENDER;
+            this.isProduction = process.env.NODE_ENV === 'production' || isRender;
+            
+            console.log(`🛠️ Режим работы бота: ${this.isProduction ? 'PRODUCTION' : 'DEVELOPMENT'}`);
+            console.log(`🔍 Платформа: ${isRender ? 'Render.com' : 'Localhost'}`);
+            console.log(`🔑 Токен бота: ${API_TOKEN ? '✅' : '❌'}`);
+            console.log(`🌐 APP_URL: ${APP_URL ? '✅ ' + APP_URL : '❌ НЕ УСТАНОВЛЕН'}`);
+
+            // PRODUCTION: Webhook режим (Render)
             if (this.isProduction) {
-                console.log('🌐 Настройка WEBHOOK режима...');
-                
                 if (!APP_URL) {
-                    throw new Error('APP_URL не найден в переменных окружения!');
-                }
-
-                // Создаем экземпляр бота
-                this.bot = new TelegramBot(API_TOKEN);
-                console.log('✅ Экземпляр бота создан');
-
-                // Удаляем старый webhook
-                console.log('🧹 Удаление старого webhook...');
-                await this.bot.deleteWebHook();
-                console.log('✅ Старый webhook удален');
-
-                // Устанавливаем новый webhook
-                const webhookUrl = `${APP_URL}/webhook/${API_TOKEN}`;
-                console.log(`🔗 Установка нового webhook: ${webhookUrl}`);
-                
-                const result = await this.bot.setWebHook(webhookUrl);
-                
-                if (result) {
-                    console.log('✅ Webhook успешно установлен!');
+                    console.error('❌ КРИТИЧЕСКАЯ ОШИБКА: APP_URL не установлен!');
+                    console.error('   На Render необходимо установить APP_URL в переменных окружения');
+                    console.error('   Бот будет работать в режиме POLLING, но это НЕ РЕКОМЕНДУЕТСЯ');
+                    
+                    // Fallback на polling с предупреждением
+                    console.log('📡 Временно используем POLLING режим...');
+                    this.bot = new TelegramBot(API_TOKEN, { 
+                        polling: true,
+                        onlyFirstMatch: true
+                    });
+                    console.log('⚠️ POLLING на Render может работать нестабильно!');
                 } else {
-                    console.error('❌ Не удалось установить webhook');
-                }
+                    // Нормальный webhook режим
+                    console.log('🌐 Настройка WEBHOOK режима...');
+                    
+                    this.bot = new TelegramBot(API_TOKEN);
+                    console.log('✅ Экземпляр бота создан');
 
-                // Проверяем статус webhook
-                const webhookInfo = await this.bot.getWebHookInfo();
-                console.log('\n📊 ИНФОРМАЦИЯ О WEBHOOK:');
-                console.log(`   URL: ${webhookInfo.url || 'не установлен'}`);
-                console.log(`   Ожидающих обновлений: ${webhookInfo.pending_update_count || 0}`);
-                console.log(`   Последняя ошибка: ${webhookInfo.last_error_message || 'нет'}`);
-                console.log(`   Дата последней ошибки: ${webhookInfo.last_error_date ? new Date(webhookInfo.last_error_date * 1000).toLocaleString() : 'нет'}`);
-                console.log(`   Макс. соединений: ${webhookInfo.max_connections || 40}`);
-                console.log('='.repeat(50));
+                    // Удаляем старый webhook
+                    console.log('🧹 Удаление старого webhook...');
+                    await this.bot.deleteWebHook();
+                    console.log('✅ Старый webhook удален');
 
-                // Регистрируем webhook endpoint на Express (ТОЛЬКО ЕСЛИ ЕСТЬ APP)
-                if (this.app) {
-                    this.registerWebhook(this.app);
-                    this.registerTestEndpoint(this.app);
-                    console.log('✅ Webhook endpoint зарегистрирован на Express');
-                } else {
-                    console.warn('⚠️ Express app не передан, webhook endpoint будет зарегистрирован позже');
+                    // Устанавливаем новый webhook
+                    const webhookUrl = `${APP_URL}/webhook/${API_TOKEN}`;
+                    console.log(`🔗 Установка нового webhook: ${webhookUrl}`);
+                    
+                    const result = await this.bot.setWebHook(webhookUrl);
+                    
+                    if (result) {
+                        console.log('✅ Webhook успешно установлен!');
+                    } else {
+                        console.error('❌ Не удалось установить webhook');
+                    }
+
+                    // Проверяем статус webhook
+                    const webhookInfo = await this.bot.getWebHookInfo();
+                    console.log('\n📊 ИНФОРМАЦИЯ О WEBHOOK:');
+                    console.log(`   URL: ${webhookInfo.url || 'не установлен'}`);
+                    console.log(`   Ожидающих обновлений: ${webhookInfo.pending_update_count || 0}`);
+                    
+                    // Регистрируем webhook endpoint на Express
+                    if (this.app) {
+                        this.registerWebhook(this.app);
+                        this.registerTestEndpoint(this.app);
+                        console.log('✅ Webhook endpoint зарегистрирован на Express');
+                    }
                 }
             } 
-            // DEVELOPMENT: Polling режим
+            // DEVELOPMENT: Polling режим (локально)
             else {
                 console.log('📡 Настройка POLLING режима...');
-                
                 this.bot = new TelegramBot(API_TOKEN, { 
                     polling: true,
                     onlyFirstMatch: true,
-                    request: {
-                        timeout: 30000
-                    }
+                    request: { timeout: 30000 }
                 });
-                
                 console.log('✅ Polling режим активирован');
                 
-                // Обработчики ошибок для polling
                 this.bot.on('polling_error', (error) => {
                     console.error('❌ Polling error:', error.message);
                 });
-                
-                this.bot.on('webhook_error', (error) => {
-                    console.error('❌ Webhook error:', error.message);
-                });
             }
 
-            // Регистрируем команды
-            this.registerCommands();
+            // Регистрируем команды (общая часть)
+            if (this.bot) {
+                this.registerCommands();
+                
+                const botInfo = await this.bot.getMe();
+                console.log('\n🤖 ИНФОРМАЦИЯ О БОТЕ:');
+                console.log(`   Имя: ${botInfo.first_name}`);
+                console.log(`   Username: @${botInfo.username}`);
+                console.log(`   ID: ${botInfo.id}`);
+                console.log(`   Режим: ${this.isProduction && APP_URL ? 'WEBHOOK' : 'POLLING'}`);
+                console.log(`   Статус: ✅ АКТИВЕН`);
+                
+                this.initialized = true;
+                console.log('✅ Бот успешно инициализирован!\n');
+                return true;
+            }
             
-            // Получаем информацию о боте
-            const botInfo = await this.bot.getMe();
-            console.log('\n🤖 ИНФОРМАЦИЯ О БОТЕ:');
-            console.log(`   Имя: ${botInfo.first_name}`);
-            console.log(`   Username: @${botInfo.username}`);
-            console.log(`   ID: ${botInfo.id}`);
-            console.log(`   Режим: ${this.isProduction ? 'WEBHOOK' : 'POLLING'}`);
-            console.log(`   Ссылка: https://t.me/${botInfo.username}`);
-            console.log('='.repeat(50));
-            
-            this.initialized = true;
-            console.log('✅ Бот успешно инициализирован!\n');
-            return true;
+            return false;
             
         } catch (error) {
             console.error('\n❌ КРИТИЧЕСКАЯ ОШИБКА ИНИЦИАЛИЗАЦИИ БОТА:');
@@ -149,6 +155,55 @@ class BotService {
             console.error('='.repeat(50) + '\n');
             return false;
         }
+    }
+    
+    registerRenderHealthCheck(app) {
+        if (!app) return;
+        
+        // Health check для Render
+        app.get('/health', (req, res) => {
+            res.json({
+                status: 'ok',
+                timestamp: new Date().toISOString(),
+                bot: {
+                    initialized: this.initialized,
+                    mode: this.isProduction && APP_URL ? 'webhook' : 'polling',
+                    hasBot: !!this.bot,
+                    webhookUrl: this.bot ? `${APP_URL}/webhook/${API_TOKEN}` : null
+                }
+            });
+        });
+        
+        app.get('/debug', async (req, res) => {
+            try {
+                const botInfo = this.bot ? await this.bot.getMe() : null;
+                const webhookInfo = this.bot ? await this.bot.getWebHookInfo() : null;
+                
+                res.json({
+                    environment: {
+                        NODE_ENV: process.env.NODE_ENV,
+                        RENDER: process.env.RENDER,
+                        APP_URL: APP_URL,
+                        PORT: process.env.PORT
+                    },
+                    bot: {
+                        initialized: this.initialized,
+                        exists: !!this.bot,
+                        info: botInfo ? {
+                            username: botInfo.username,
+                            id: botInfo.id
+                        } : null
+                    },
+                    webhook: webhookInfo ? {
+                        url: webhookInfo.url,
+                        pending: webhookInfo.pending_update_count,
+                        last_error: webhookInfo.last_error_message
+                    } : null
+                });
+            } catch (error) {
+                res.json({ error: error.message });
+            }
+        });
     }
 
     registerCommands() {
