@@ -5,85 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Martian NFT Analyzer</title>
     
-    <!-- Подключаем стили -->
+    <!-- Telegram Web App SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/home.css">
     <link rel="stylesheet" href="/assets/css/components.css">
     
-    <!-- Иконка сайта -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
 </head>
 <body>
     <div class="home-container">
         <div class="home-content">
             <header class="home-header">
-                <h1 class="home-title">🚀 Martian NFT Analyzer</h1>
+                <div class="header-top">
+                    <h1 class="home-title">🚀 Martian NFT Analyzer</h1>
+                </div>
                 <p class="home-subtitle">Анализ синергий и редкостей NFT коллекции</p>
+                <div id="user-info" class="user-info">
+                    <span id="user-greeting"></span>
+                </div>
             </header>
             
-            <div class="menu-grid">
-           <!--     <a href="/power" class="menu-card"> -->
-                    <div class="card-icon">⚡</div>
-                    <h2 class="card-title">Подсчет Power</h2>
-                    <p class="card-description">
-                        Расчет показателя Power для всех NFT коллекции.
-                        Анализ и обновление данных по редкости атрибутов.
-                    </p>
-               <!-- </a> -->
-
-                <a href="/sort" class="menu-card">
-                    <div class="card-icon">🔍</div>
-                    <h2 class="card-title">Сортировка NFT</h2>
-                    <p class="card-description">
-                        Продвинутый поиск NFT по синергиям и редкостям. 
-                        Фильтруйте по Skin Tone, уровню редкости и параметрам синергии.
-                    </p>
-                </a>
-                
-            <!--    <a href="/TribeInfoCollector" class="menu-card"> -->
-                    <div class="card-icon">🔄</div>
-                    <h2 class="card-title">Сбор данных NFT</h2>
-                    <p class="card-description">
-                        Автоматический сбор информации о NFT с блокчейна.
-                        Получение базовых данных, метаданных и генерация ссылок.
-                    </p>
-               <!-- </a> -->
-
-                <!-- НОВЫЙ МОДУЛЬ: TribeWalletsInfo -->
-            <!--    <a href="/TribeWalletInfoCollector" class="menu-card"> -->
-                    <div class="card-icon">👥</div>
-                    <h2 class="card-title">Инфо о кошельках Tribe</h2>
-                    <p class="card-description">
-                        Анализ кошельков и NFT коллекций Tribe.
-                        Получение информации, фильтрация по атрибутам и пакетная обработка.
-                    </p>
-            <!--    </a> -->
-
-                <!-- НОВЫЙ МОДУЛЬ: Обмен орками -->
-                <a href="/orc-exchange" class="menu-card">
-                    <div class="card-icon">🤝</div>
-                    <h2 class="card-title">Обмен орками</h2>
-                    <p class="card-description">
-                        Оптимизация обмена карточками орков между игроками.
-                        Максимизация мощности команд через анализ бонусов за предметы.
-                    </p>
-                </a>             
-                
-                
-                
-                
-                
+            <div id="menu-grid" class="menu-grid">
+                <!-- Модули будут загружены через JS -->
             </div>
-            
-           
         </div>
     </div>
 
-    <!-- Подключаем JavaScript -->
+    <script>
+        // Инициализация Telegram Web App
+        const tg = window.Telegram.WebApp;
+        
+        // Говорим Telegram, что мы готовы
+        tg.ready();
+        
+        // Разворачиваем на весь экран
+        tg.expand();
+        
+        // Получаем данные из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const telegramId = urlParams.get('telegram_id');
+        const firstName = urlParams.get('first_name');
+        const username = urlParams.get('username');
+        
+        // Показываем приветствие
+        if (firstName) {
+            document.getElementById('user-greeting').textContent = `👋 Привет, ${firstName}!`;
+        }
+        
+        // Отправляем данные обратно в Telegram (опционально)
+        tg.sendData(JSON.stringify({
+            telegram_id: telegramId,
+            username: username
+        }));
+        
+        // Настраиваем главную кнопку
+        tg.MainButton.setText('ЗАКРЫТЬ');
+        tg.MainButton.onClick(() => tg.close());
+        tg.MainButton.hide(); // Показываем только когда нужно
+        
+        console.log('Telegram Web App initialized', tg.initData);
+    </script>
+    
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/api.js"></script>
     <script src="/assets/js/home.js"></script>
-    
-    
 </body>
 </html>
