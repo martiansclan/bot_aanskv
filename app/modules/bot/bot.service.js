@@ -20,7 +20,6 @@ class BotService {
         this.initialized = false;
         this.isProduction = process.env.NODE_ENV === 'production' || process.env.RENDER === 'true';
         this.app = null; // <-- ДОБАВЛЕНО: храним ссылку на Express app
-        this.updateCount = 0;
         console.log(`🛠️ Режим работы бота: ${this.isProduction ? 'PRODUCTION (WEBHOOK)' : 'DEVELOPMENT (POLLING)'}`);
         console.log(`🔑 Токен бота: ${API_TOKEN ? '✅ Установлен' : '❌ НЕ УСТАНОВЛЕН'}`);
         console.log(`🌐 APP_URL: ${APP_URL ? '✅ Установлен' : '❌ НЕ УСТАНОВЛЕН'}`);
@@ -39,11 +38,6 @@ class BotService {
         }
     }
 
-    incrementUpdateCount() {
-        this.updateCount = (this.updateCount || 0) + 1;
-        return this.updateCount;
-    }
-    
     async initialize(app) {
         console.log('\n🤖 ИНИЦИАЛИЗАЦИЯ TELEGRAM БОТА...');
         console.log('='.repeat(50));
@@ -115,7 +109,7 @@ class BotService {
                     
                     // Регистрируем webhook endpoint на Express
                     if (this.app) {
-                       // this.registerWebhook(this.app);
+                        this.registerWebhook(this.app);
                         this.registerTestEndpoint(this.app);
                         console.log('✅ Webhook endpoint зарегистрирован на Express');
                     }
@@ -162,7 +156,7 @@ class BotService {
             return false;
         }
     }
-
+    
     registerRenderHealthCheck(app) {
         if (!app) return;
         

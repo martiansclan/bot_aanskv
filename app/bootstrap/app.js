@@ -20,13 +20,12 @@ class Application {
         // Настройка middleware
         this.setupMiddleware();
         
-        // 🚨 ВАЖНО: Webhook регистрируется ДО всех маршрутов!
-        this.setupWebhook();
-        
         // Загрузка маршрутов
         this.setupRoutes();
         
-        // Настройка обработки ошибок (БЕЗ глобального '*')
+        // Убрана настройка WebSocket
+        
+        // Настройка обработки ошибок
         this.setupErrorHandlers();
     }
     
@@ -35,8 +34,9 @@ class Application {
         this.app.use(cors());
         this.app.use(express.json({ limit: '50mb' }));
         this.app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+        this.app.use(express.static(path.join(__dirname, '../../public')));
         
-        // Логирование запросов
+        // Логирование запросов - ПРОПУСКАЕМ TribeInfoCollector
         this.app.use((req, res, next) => {
             if (!req.url.startsWith('/api/TribeInfoCollector')) {
                 logger.info(`${req.method} ${req.url}`, { 
@@ -48,65 +48,40 @@ class Application {
         });
     }
     
-    // 🚨 НОВЫЙ МЕТОД - регистрация webhook в приоритете
-    setupWebhook() {
+    setupRoutes() {
+        // 1. СНАЧАЛА - Webhook бота (САМЫЙ ВЫСОКИЙ ПРИОРИТЕТ!)
         try {
             const botService = require('../modules/bot/bot.service');
-            const { API_TOKEN } = require('../../../modules/utils.js');
-            
             if (botService && botService.isProduction && botService.bot) {
+                const API_TOKEN = require('../../../modules/utils.js').API_TOKEN;
                 const webhookPath = `/webhook/${API_TOKEN}`;
                 
-                // POST - для Telegram
                 this.app.post(webhookPath, (req, res) => {
-                    console.log('\n📨 WEBHOOK ПОЛУЧЕН!');
-                    console.log('   Update ID:', req.body?.update_id);
-                    console.log('   Message:', req.body?.message?.text);
-                    console.log('   From:', req.body?.message?.from?.username);
-                    
-                    try {
-                        // ВАЖНО: обрабатываем обновление
-                        botService.bot.processUpdate(req.body);
-                        console.log('✅ Обновление обработано');
-                        res.sendStatus(200);
-                    } catch (error) {
-                        console.error('❌ Ошибка обработки:', error.message);
-                        res.sendStatus(500);
-                    }
+                    console.log('📨 Webhook received!');
+                    botService.bot.processUpdate(req.body);
+                    res.sendStatus(200);
                 });
                 
-                // GET - для проверки
                 this.app.get(webhookPath, (req, res) => {
-                    res.send(`
-                        <h2>🤖 Telegram Bot Webhook</h2>
-                        <p>Status: <strong style="color: green;">ACTIVE</strong></p>
-                        <p>Bot: @zargates_martians_bot</p>
-                        <p>Time: ${new Date().toLocaleString()}</p>
-                        <p>Last updates: ${botService.updateCount || 0}</p>
-                    `);
+                    res.send('✅ Bot webhook is active');
                 });
                 
                 console.log(`✅ Webhook endpoint зарегистрирован: ${webhookPath}`);
-            } else {
-                console.log('⚠️ Бот не готов для webhook:', {
-                    exists: !!botService,
-                    isProduction: botService?.isProduction,
-                    hasBot: !!botService?.bot
-                });
             }
         } catch (error) {
             console.error('⚠️ Webhook registration error:', error.message);
         }
-    }
-    
-    setupRoutes() {
-        // Статические файлы - ПОСЛЕ webhook, НО ДО глобальных обработчиков
-        this.app.use(express.static(path.join(__dirname, '../../public')));
         
-        // API маршруты модулей
+        // 2. ЗАТЕМ - маршруты модулей
         const router = routeLoader.loadRoutes();
         this.app.use(router);
+        
+        // 3. ПОТОМ - статические файлы (уже есть в setupMiddleware)
+        
+        // 4. В КОНЦЕ - обработка ошибок (уже есть в setupErrorHandlers)
     }
+    
+    // Удален метод setupWebSocket()
     
     setupErrorHandlers() {
         // Обработка 404 для API
@@ -119,17 +94,12 @@ class Application {
             });
         });
         
-        // 🚨 ТОЛЬКО для корневого пути, НЕ для всех!
+        // 🚨 УБИРАЕМ ГЛОБАЛЬНЫЙ '*' ОБРАБОТЧИК!
+        // Вместо него - только для корневого пути
         this.app.get('/', (req, res) => {
             const indexPath = path.join(__dirname, '../../public', 'index.html');
-            if (fs.existsSync(indexPath)) {
-                res.sendFile(indexPath);
-            } else {
-                res.send('Server is running');
-            }
+            res.sendFile(indexPath);
         });
-        
-        // 🚨 УБИРАЕМ ГЛОБАЛЬНЫЙ '*' ОБРАБОТЧИК - ОН ЛОМАЕТ WEBHOOK!
         
         // Глобальный обработчик ошибок
         this.app.use((error, req, res, next) => {
@@ -146,7 +116,9 @@ class Application {
     start() {
         this.server = http.createServer(this.app);
         
-        this.server.listen(this.port, '0.0.0.0', () => {
+        // Убрана инициализация WebSocket
+        
+        this.server.listen(this.port, () => {
             console.log('='.repeat(50));
             console.log(`🚀 Сервер запущен на порту ${this.port}`);
             console.log(`📁 Загружено модулей: ${Object.keys(this.modules).length}`);
