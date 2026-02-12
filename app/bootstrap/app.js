@@ -20,12 +20,13 @@ class Application {
         // Настройка middleware
         this.setupMiddleware();
         
+        // 🚨 ВАЖНО: Webhook регистрируется ДО всех маршрутов!
+        this.setupWebhook();
+        
         // Загрузка маршрутов
         this.setupRoutes();
         
-        // Убрана настройка WebSocket
-        
-        // Настройка обработки ошибок
+        // Настройка обработки ошибок (БЕЗ глобального '*')
         this.setupErrorHandlers();
     }
     
@@ -34,9 +35,8 @@ class Application {
         this.app.use(cors());
         this.app.use(express.json({ limit: '50mb' }));
         this.app.use(express.urlencoded({ extended: true, limit: '50mb' }));
-        this.app.use(express.static(path.join(__dirname, '../../public')));
         
-        // Логирование запросов - ПРОПУСКАЕМ TribeInfoCollector
+        // Логирование запросов
         this.app.use((req, res, next) => {
             if (!req.url.startsWith('/api/TribeInfoCollector')) {
                 logger.info(`${req.method} ${req.url}`, { 
@@ -48,22 +48,33 @@ class Application {
         });
     }
     
-    setupRoutes() {
-        // 1. СНАЧАЛА - Webhook бота (САМЫЙ ВЫСОКИЙ ПРИОРИТЕТ!)
+    // 🚨 НОВЫЙ МЕТОД - регистрация webhook в приоритете
+    setupWebhook() {
         try {
             const botService = require('../modules/bot/bot.service');
             if (botService && botService.isProduction && botService.bot) {
-                const API_TOKEN = require('../../../modules/utils.js').API_TOKEN;
+                const { API_TOKEN } = require('../../../modules/utils.js');
                 const webhookPath = `/webhook/${API_TOKEN}`;
                 
+                // POST - для Telegram
                 this.app.post(webhookPath, (req, res) => {
                     console.log('📨 Webhook received!');
-                    botService.bot.processUpdate(req.body);
-                    res.sendStatus(200);
+                    try {
+                        botService.bot.processUpdate(req.body);
+                        res.sendStatus(200);
+                    } catch (error) {
+                        console.error('❌ Webhook error:', error.message);
+                        res.sendStatus(500);
+                    }
                 });
                 
+                // GET - для проверки
                 this.app.get(webhookPath, (req, res) => {
-                    res.send('✅ Bot webhook is active');
+                    res.send(`
+                        <h2>🤖 Telegram Bot Webhook</h2>
+                        <p>Status: <strong style="color: green;">ACTIVE</strong></p>
+                        <p>Time: ${new Date().toLocaleString()}</p>
+                    `);
                 });
                 
                 console.log(`✅ Webhook endpoint зарегистрирован: ${webhookPath}`);
@@ -71,17 +82,16 @@ class Application {
         } catch (error) {
             console.error('⚠️ Webhook registration error:', error.message);
         }
-        
-        // 2. ЗАТЕМ - маршруты модулей
-        const router = routeLoader.loadRoutes();
-        this.app.use(router);
-        
-        // 3. ПОТОМ - статические файлы (уже есть в setupMiddleware)
-        
-        // 4. В КОНЦЕ - обработка ошибок (уже есть в setupErrorHandlers)
     }
     
-    // Удален метод setupWebSocket()
+    setupRoutes() {
+        // Статические файлы - ПОСЛЕ webhook, НО ДО глобальных обработчиков
+        this.app.use(express.static(path.join(__dirname, '../../public')));
+        
+        // API маршруты модулей
+        const router = routeLoader.loadRoutes();
+        this.app.use(router);
+    }
     
     setupErrorHandlers() {
         // Обработка 404 для API
@@ -94,12 +104,17 @@ class Application {
             });
         });
         
-        // 🚨 УБИРАЕМ ГЛОБАЛЬНЫЙ '*' ОБРАБОТЧИК!
-        // Вместо него - только для корневого пути
+        // 🚨 ТОЛЬКО для корневого пути, НЕ для всех!
         this.app.get('/', (req, res) => {
             const indexPath = path.join(__dirname, '../../public', 'index.html');
-            res.sendFile(indexPath);
+            if (fs.existsSync(indexPath)) {
+                res.sendFile(indexPath);
+            } else {
+                res.send('Server is running');
+            }
         });
+        
+        // 🚨 УБИРАЕМ ГЛОБАЛЬНЫЙ '*' ОБРАБОТЧИК - ОН ЛОМАЕТ WEBHOOK!
         
         // Глобальный обработчик ошибок
         this.app.use((error, req, res, next) => {
@@ -116,9 +131,7 @@ class Application {
     start() {
         this.server = http.createServer(this.app);
         
-        // Убрана инициализация WebSocket
-        
-        this.server.listen(this.port, () => {
+        this.server.listen(this.port, '0.0.0.0', () => {
             console.log('='.repeat(50));
             console.log(`🚀 Сервер запущен на порту ${this.port}`);
             console.log(`📁 Загружено модулей: ${Object.keys(this.modules).length}`);

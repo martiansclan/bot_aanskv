@@ -109,7 +109,7 @@ class BotService {
                     
                     // Регистрируем webhook endpoint на Express
                     if (this.app) {
-                        this.registerWebhook(this.app);
+                       // this.registerWebhook(this.app);
                         this.registerTestEndpoint(this.app);
                         console.log('✅ Webhook endpoint зарегистрирован на Express');
                     }
@@ -156,7 +156,7 @@ class BotService {
             return false;
         }
     }
-    
+
     registerRenderHealthCheck(app) {
         if (!app) return;
         
