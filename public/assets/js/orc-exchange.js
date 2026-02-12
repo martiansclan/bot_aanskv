@@ -48,6 +48,16 @@ document.addEventListener('DOMContentLoaded', function() {
     let progressInterval = null;
     let isCalculationRunning = false;
     
+    // Глобальные константы (будут загружены с сервера)
+    let constants = {
+        LOGO_TRAIT_TYPES: ['Cup', 'Glasses', 'Pendant Chain', 'Heart', 'Cap', 'Ring', 'Hamster'],
+        LOGO_VALUES: ['Zargates Business', 'Zargates', 'Telegram', 'Tribo Games', 'Bitcoin', 'Professor TON', 'TON', 'ETH', 'RUB', 'Dollar', 'Elephant'],
+        LOGO_EQUIVALENTS_FOR_GROUPING: {
+            'Professor TON': 'TON',
+            'Zargates Business': 'Zargates'
+        }
+    };
+
     // Типы орков для отображения
     const orcTypeNames = {
         1: 'Wen TGE',
@@ -69,11 +79,81 @@ document.addEventListener('DOMContentLoaded', function() {
         6: '#fd7e14',    // To The Moon - оранжевый
         7: '#20c997'     // Do Something - бирюзовый
     };
-    
+
+    // ================ ФУНКЦИИ ДЛЯ РАБОТЫ С ЭКВИВАЛЕНТНОСТЬЮ ЛОГОТИПОВ ================
+
+    /**
+     * Функция для проверки соответствия значений с учетом правил эквивалентности
+     */
+    function valuesMatchWithGrouping(value1, value2) {
+        if (!value1 || !value2) return false;
+        
+        const str1 = value1.toString().trim();
+        const str2 = value2.toString().trim();
+        
+        // Прямое совпадение
+        if (str1 === str2) return true;
+        
+        // Проверяем по правилам эквивалентности из констант
+        const equivalents = constants.LOGO_EQUIVALENTS_FOR_GROUPING || {};
+        
+        // Если value1 эквивалентно value2
+        if (equivalents[str1] === str2) return true;
+        
+        // Если value2 эквивалентно value1
+        if (equivalents[str2] === str1) return true;
+        
+        // Если оба значения эквивалентны одному и тому же
+        if (equivalents[str1] && equivalents[str2] && equivalents[str1] === equivalents[str2]) return true;
+        
+        return false;
+    }
+
+    /**
+     * Функция для получения нормализованного значения для группы
+     */
+    function getNormalizedValue(value) {
+        if (!value) return value;
+        const str = value.toString().trim();
+        const equivalents = constants.LOGO_EQUIVALENTS_FOR_GROUPING || {};
+        return equivalents[str] || str;
+    }
+
+    /**
+     * Проверяет, является ли значение частью бонусной группы
+     */
+    function isValueInBonusGroup(bonusDetails, value, groupType) {
+        if (!bonusDetails || !bonusDetails[groupType]) return false;
+        
+        return bonusDetails[groupType].some(detail => {
+            // Проверяем прямое совпадение с нормализованным значением группы
+            if (valuesMatchWithGrouping(detail.value, value)) {
+                return true;
+            }
+            
+            // Проверяем по оригинальным значениям
+            if (detail.originalValues) {
+                const originalValuesArray = Array.isArray(detail.originalValues) 
+                    ? detail.originalValues 
+                    : Array.from(detail.originalValues || []);
+                return originalValuesArray.some(origVal => 
+                    valuesMatchWithGrouping(origVal, value)
+                );
+            }
+            
+            return false;
+        });
+    }
+
+    // ================ ИНИЦИАЛИЗАЦИЯ ================
+
     // Инициализация
     init();
     
     async function init() {
+        // Загружаем константы
+        await loadConstants();
+        
         // Проверяем доступность модуля
         await checkModuleHealth();
         
@@ -115,6 +195,22 @@ document.addEventListener('DOMContentLoaded', function() {
         // Автоматически загружаем данные при загрузке страницы
         if (loadRealDataBtn) {
             setTimeout(() => loadRealDataBtn.click(), 500);
+        }
+    }
+    
+    // Функция загрузки констант
+    async function loadConstants() {
+        try {
+            const response = await fetch('/api/orc-exchange/info');
+            if (response.ok) {
+                const result = await response.json();
+                if (result.success && result.data.constants) {
+                    constants = result.data.constants;
+                    console.log('✅ Константы загружены:', constants);
+                }
+            }
+        } catch (error) {
+            console.warn('⚠️ Не удалось загрузить константы, используем локальные:', error);
         }
     }
     
@@ -250,10 +346,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 renderPlayersWithTable();
                 updateSummary();
-    if (optimizeBtn) optimizeBtn.disabled = false;
-    clearExchanges();
-    
-    showNotification(`✅ Загружены данные ${result.playerCount} игроков с ${result.totalCards} NFT карточками (Skin Tone: ${currentSkinTone})`, 'success');
+                if (optimizeBtn) optimizeBtn.disabled = false;
+                clearExchanges();
+                
+                showNotification(`✅ Загружены данные ${result.playerCount} игроков с ${result.totalCards} NFT карточками (Skin Tone: ${currentSkinTone})`, 'success');
             } else {
                 showNotification(`❌ Ошибка загрузки данных: ${result.error}`, 'error');
             }
@@ -388,7 +484,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     typeName: card.typeName,
                     power: card.power,
                     earrings: card.earrings,
-                    amulet: card.amulet,
+                    logo: card.logos,
                     bracelet: card.bracelet,
                     nftData: card.nftData || null
                 }))
@@ -441,7 +537,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 currentPlayers = result.data.players;
                 
                 renderPlayersWithTable();
-    
                 updateSummaryWithDetails(result.data.stats);
                 
                 // Создаем правильный объект для передачи в renderExchangesAsTable
@@ -508,19 +603,21 @@ document.addEventListener('DOMContentLoaded', function() {
         if (optimizeBtn) optimizeBtn.disabled = true;
         showNotification('Данные сброшены', 'info');
     }
-    
-    // Функция для создания компактной бонусной плашки
+
+    // ================ ФУНКЦИИ ДЛЯ ОТРИСОВКИ UI ================
+
+    // Функция для создания компактной бонусной плашки - ИСПРАВЛЕННАЯ
     function createMinimalBonusItem(bonusType, bonusData) {
         const typeTitles = {
-            base: 'Базовая мощность',
-            earrings: 'Бонус за серьги',
-            amulet: 'Бонус за логотипы',
-            bracelet: 'Бонус за браслеты'
+            base: 'Базовая мощность:',
+            earrings: 'Бонус за серьги:',
+            logo: 'Бонус за логотипы:',
+            bracelet: 'Бонус за браслеты:'
         };
         
         const colors = {
             earrings: '#e74c3c',
-            amulet: '#27ae60',
+            logo: '#27ae60',
             bracelet: '#f39c12',
             base: '#2c3e50'
         };
@@ -530,12 +627,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const value = bonusData.value || 0;
         const hasGroups = bonusData.groups && Object.keys(bonusData.groups).length > 0;
         
-        // Находим группы, которые дали бонус (count >= 4)
-        const bonusGroups = hasGroups ? 
-            Object.entries(bonusData.groups)
-                .filter(([name, group]) => group.count >= 4)
-                .map(([name, group]) => name) : [];
-        
         let html = `
             <div class="bonus-item" data-type="${bonusType}">
                 <div class="bonus-header">
@@ -544,16 +635,64 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
         `;
         
-        // Группы - показываем все, но бонусные выделяем цветом
+        // ДЛЯ БАЗОВОЙ МОЩНОСТИ - добавляем бонус за полную команду второй строкой
+        if (bonusType === 'base' && bonusData.fullTeamBonus) {
+            html += `
+            
+                <div class="bonus-header">
+                    <span class="bonus-title" style="color: #9b59b6">Бонус за команду:</span>
+                    <span class="bonus-value" style="color: #9b59b6">${bonusData.fullTeamBonus}</span>
+                </div>
+               
+            `;
+        }
+        
         if (hasGroups) {
             const groups = Object.entries(bonusData.groups)
                 .map(([name, group]) => {
                     const isBonusGroup = group.count >= 4;
                     const groupColor = isBonusGroup ? color : '#2c3e50';
-                    return `<span class="group-item ${isBonusGroup ? 'bonus-group' : ''}" style="color: ${groupColor}">
-                        <span class="group-name">${name}</span>
+                    
+                    // Получаем все оригинальные значения для этой группы
+                    let originalValues = [];
+                    if (group.originalValues) {
+                        originalValues = Array.isArray(group.originalValues) 
+                            ? group.originalValues 
+                            : Array.from(group.originalValues || []);
+                    }
+                    
+                    // Создаем тултип с оригинальными значениями
+                    const tooltip = originalValues.length > 0 
+                        ? `Оригинальные значения: ${originalValues.join(', ')}` 
+                        : '';
+                    
+                    // Для отображения показываем нормализованное имя + количество
+                    let displayName = name;
+                    if (originalValues.length > 0) {
+                        // Подсчитываем, сколько из них эквивалентных
+                        const equivalents = constants.LOGO_EQUIVALENTS_FOR_GROUPING || {};
+                        const equivalentCounts = {};
+                        
+                        originalValues.forEach(val => {
+                            const normalized = equivalents[val] || val;
+                            equivalentCounts[normalized] = (equivalentCounts[normalized] || 0) + 1;
+                        });
+                        
+                        // Формируем строку с детализацией
+                        const details = Object.entries(equivalentCounts)
+                            .map(([norm, cnt]) => `${norm}: ${cnt}`)
+                            .join(', ');
+                        
+                        displayName = `${name} (${details})`;
+                    }
+                    
+                    return `<span class="group-item ${isBonusGroup ? 'bonus-group' : ''}" 
+                            style="color: ${groupColor}" 
+                            title="${tooltip}">
+                        <span class="group-name">${displayName}:</span>
                         <span class="group-count">${group.count}</span>
-                    </span>`;
+                        
+                    </span><br>`;
                 }).join('');
             
             html += `<div class="bonus-groups">${groups}</div>`;
@@ -563,135 +702,348 @@ document.addEventListener('DOMContentLoaded', function() {
         return html;
     }
 
-// Обновленная функция renderPlayers() - используем стили из раздела "Лучшая команда"
-function renderPlayers() {
-    if (!playersContainer) return;
-    
-    playersContainer.innerHTML = '';
-    
-    if (!currentPlayers || currentPlayers.length === 0) {
-        playersContainer.innerHTML = `
-            <div class="empty-state">
-                <p class="empty-message">Нет данных игроков с выбранным Skin Tone: <strong>${currentSkinTone}</strong></p>
-                <p class="empty-submessage">Попробуйте выбрать другой Skin Tone</p>
-            </div>
-        `;
-        return;
-    }
-    
-    // Функция для нормализации значений с учетом исключений
-    function normalizeValueWithExceptions(value) {
-        if (!value) return '';
+    /**
+     * Основная функция отрисовки игроков
+     */
+    function renderPlayers() {
+        if (!playersContainer) return;
         
-        const str = value.toString().trim().toLowerCase();
+        playersContainer.innerHTML = '';
         
-        // Исключения для логотипов
-        if (str === 'zargates business' || str === 'zargates') {
-            return 'zargates';
-        }
-        if (str === 'professor ton' || str === 'ton') {
-            return 'ton';
+        if (!currentPlayers || currentPlayers.length === 0) {
+            playersContainer.innerHTML = `
+                <div class="empty-state">
+                    <p class="empty-message">Нет данных игроков с выбранным Skin Tone: <strong>${currentSkinTone}</strong></p>
+                    <p class="empty-submessage">Попробуйте выбрать другой Skin Tone</p>
+                </div>
+            `;
+            return;
         }
         
-        return str;
-    }
-    
-    // Функция для проверки совпадения с учетом исключений
-    function valuesMatchWithExceptions(value1, value2) {
-        if (!value1 || !value2) return false;
+        // Проверяем, загружены ли константы
+        const logoTraitTypes = constants && constants.LOGO_TRAIT_TYPES ? 
+            constants.LOGO_TRAIT_TYPES : 
+            ['Cup', 'Glasses', 'Pendant Chain', 'Heart', 'Cap', 'Ring', 'Hamster'];
         
-        const norm1 = normalizeValueWithExceptions(value1);
-        const norm2 = normalizeValueWithExceptions(value2);
-        
-        // Полное совпадение после нормализации
-        return norm1 === norm2;
-    }
-    
-    currentPlayers.forEach(player => {
-        const playerClone = playerTemplate.content.cloneNode(true);
-        const playerCard = playerClone.querySelector('.player-card');
-        
-        if (!playerCard) return;
-        
-        // Заполняем данные игрока
-        const playerNameEl = playerCard.querySelector('.player-name');
-        const walletValueEl = playerCard.querySelector('.wallet-value');
-        const powerValueEl = playerCard.querySelector('.power-value');
-        const skinToneValueEl = playerCard.querySelector('.skin-tone-value');
-        const teamHeaderEl = playerCard.querySelector('.team-header h4');
-        
-        if (playerNameEl) playerNameEl.textContent = player.name || `Игрок ${player.id + 1}`;
-        if (walletValueEl) {
-            walletValueEl.textContent = player.wallet || 'Не указан';
-            walletValueEl.setAttribute('title', player.wallet || '');
-        }
-        if (powerValueEl) powerValueEl.textContent = player.teamPower || 0;
-        if (skinToneValueEl) skinToneValueEl.textContent = currentSkinTone;
-        if (teamHeaderEl) {
-            teamHeaderEl.textContent = `Лучшая команда: ${player.teamPower || 0}`;
-        }
-        
-        // Добавляем индикатор, если не может собрать полную команду
-        if (player.canFormTeam === false || !player.team) {
-            const warningBadge = document.createElement('div');
-            warningBadge.className = 'player-warning';
-            warningBadge.textContent = 'Нет полной команды';
-            playerCard.style.position = 'relative';
-            playerCard.appendChild(warningBadge);
-        }
-        
-        // Отрисовываем команду (как было)
-        if (player.team && player.team.orcs) {
-            const teamOrcsContainer = playerCard.querySelector('.team-orcs');
-            const teamStatsEl = playerCard.querySelector('.team-stats');
+        currentPlayers.forEach(player => {
+            const playerClone = playerTemplate.content.cloneNode(true);
+            const playerCard = playerClone.querySelector('.player-card');
             
-            if (teamOrcsContainer) {
-                teamOrcsContainer.innerHTML = '';
+            if (!playerCard) return;
+            
+            // Заполняем данные игрока
+            const playerNameEl = playerCard.querySelector('.player-name');
+            const walletValueEl = playerCard.querySelector('.wallet-value');
+            const powerValueEl = playerCard.querySelector('.power-value');
+            const skinToneValueEl = playerCard.querySelector('.skin-tone-value');
+            const teamHeaderEl = playerCard.querySelector('.team-header h4');
+            
+            if (playerNameEl) playerNameEl.textContent = player.name || `Игрок ${player.id + 1}`;
+            if (walletValueEl) {
+                walletValueEl.textContent = player.wallet || 'Не указан';
+                walletValueEl.setAttribute('title', player.wallet || '');
+            }
+            if (powerValueEl) powerValueEl.textContent = player.teamPower || 0;
+            if (skinToneValueEl) skinToneValueEl.textContent = currentSkinTone;
+            if (teamHeaderEl) {
+                teamHeaderEl.textContent = `Лучшая команда: ${player.teamPower || 0}`;
+            }
+            
+            // Добавляем индикатор, если не может собрать полную команду
+            if (player.canFormTeam === false || !player.team) {
+                const warningBadge = document.createElement('div');
+                warningBadge.className = 'player-warning';
+                warningBadge.textContent = 'Нет полной команды';
+                playerCard.style.position = 'relative';
+                playerCard.appendChild(warningBadge);
+            }
+            
+            // Отрисовываем команду
+            if (player.team && player.team.orcs) {
+                const teamOrcsContainer = playerCard.querySelector('.team-orcs');
+                const teamStatsEl = playerCard.querySelector('.team-stats');
                 
-                player.team.orcs.forEach(orc => {
+                if (teamOrcsContainer) {
+                    teamOrcsContainer.innerHTML = '';
+                    
+                    player.team.orcs.forEach(orc => {
+                        const orcClone = teamOrcTemplate.content.cloneNode(true);
+                        const orcElement = orcClone.querySelector('.team-orc');
+                        
+                        if (!orcElement) return;
+                        
+                        // Устанавливаем тип
+                        orcElement.setAttribute('data-type', orc.type);
+                        
+                        // Тип орка
+                        const typeEl = orcElement.querySelector('.orc-type');
+                        if (typeEl) typeEl.textContent = orcTypeNames[orc.type] || `Тип ${orc.type}`;
+                        
+                        // Изображение
+                        const imageEl = orcElement.querySelector('.orc-image img');
+                        if (imageEl) {
+                            const cardData = player.cards?.find(card => card.id === orc.id);
+                            if (cardData?.nftData?.image_url) {
+                                imageEl.src = cardData.nftData.image_url;
+                                imageEl.alt = cardData.nftData.name || `NFT #${orc.id}`;
+                                imageEl.onerror = function() {
+                                    this.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%232c3e50"><rect width="100" height="100"/><text x="50" y="50" text-anchor="middle" dy=".3em" font-size="30" fill="white">?</text></svg>';
+                                };
+                            } else {
+                                imageEl.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%232c3e50"><rect width="100" height="100"/><text x="50" y="50" text-anchor="middle" dy=".3em" font-size="30" fill="white">?</text></svg>';
+                                imageEl.alt = 'Изображение недоступно';
+                            }
+                        }
+                        
+                        // Название
+                        const nameEl = orcElement.querySelector('.orc-name');
+                        if (nameEl) {
+                            const cardData = player.cards?.find(card => card.id === orc.id);
+                            if (cardData?.nftData?.name) {
+                                const match = cardData.nftData.name.match(/#(\d+)/);
+                                nameEl.textContent = match ? `#${match[1]}` : cardData.nftData.name;
+                            } else {
+                                nameEl.textContent = `#${orc.id}`;
+                            }
+                        }
+                        
+                        // Мощность
+                        const powerEl = orcElement.querySelector('.power-value');
+                        if (powerEl) powerEl.textContent = orc.power;
+                        
+                        // Индикатор синергии
+                        const synergyEl = orcElement.querySelector('.synergy-indicator');
+                        if (synergyEl) {
+                            synergyEl.style.display = 'none';
+                        }
+                        
+                        // Отображаем атрибуты из nftData.attributes
+                        const attributesInfo = document.createElement('div');
+                        attributesInfo.className = 'orc-attributes';
+                        
+                        const cardData = player.cards?.find(card => card.id === orc.id);
+                        
+                        if (cardData?.nftData?.attributes && Array.isArray(cardData.nftData.attributes)) {
+                            let attrsHTML = '';
+                            
+                            // Получаем ДЕТАЛИ бонусов из статистики команды
+                            const bonusDetails = player.team?.stats?.bonusDetails || {};
+                            
+                            // Фильтруем атрибуты для отображения
+                            const displayAttributes = cardData.nftData.attributes
+                                .filter(attr => {
+                                    // Показываем только важные атрибуты
+                                    const traitType = attr.trait_type || '';
+                                    const value = attr.value || '';
+                                    return traitType !== 'Skin Tone' && 
+                                           traitType !== 'image' && 
+                                           value.toString().trim() !== '';
+                                })
+                                .sort((a, b) => {
+                                    // Сортируем по приоритету: серьги, логотипы, браслеты, затем остальное
+                                    const priority = {
+                                        'Earrings': 1,
+                                        'Earring': 1,
+                                        'Bracelet': 2
+                                    };
+                                    
+                                    const aPriority = priority[a.trait_type] || (logoTraitTypes.includes(a.trait_type) ? 3 : 99);
+                                    const bPriority = priority[b.trait_type] || (logoTraitTypes.includes(b.trait_type) ? 3 : 99);
+                                    return aPriority - bPriority;
+                                });
+                            
+                            // Создаем HTML для атрибутов
+                            displayAttributes.forEach((attr, index) => {
+                                if (index > 0) attrsHTML += '<br>';
+                                
+                                const traitType = attr.trait_type || 'Атрибут';
+                                const value = attr.value || '';
+                                
+                                // Определяем цвет в зависимости от типа атрибута
+                                let color = '#2c3e50'; // цвет по умолчанию - темно-серый
+                                let isBonus = false;
+                                
+                                // 1. Проверяем серьги
+                                if (traitType === 'Earrings' || traitType === 'Earring') {
+                                    if (bonusDetails.earrings) {
+                                        isBonus = isValueInBonusGroup(bonusDetails, value, 'earrings');
+                                        if (isBonus) {
+                                            color = '#e74c3c'; // красный
+                                        }
+                                    }
+                                }
+                                // 2. Проверяем браслеты
+                                else if (traitType === 'Bracelet') {
+                                    if (bonusDetails.bracelet) {
+                                        isBonus = isValueInBonusGroup(bonusDetails, value, 'bracelet');
+                                        if (isBonus) {
+                                            color = '#f39c12'; // оранжевый
+                                        }
+                                    }
+                                }
+                                // 3. Проверяем логотипы (специальные типы)
+                                else if (logoTraitTypes.includes(traitType)) {
+                                    // Проверяем, является ли значение логотипом из констант
+                                    const logoValues = constants && constants.LOGO_VALUES ? constants.LOGO_VALUES : [
+                                        'Zargates Business', 'Zargates', 'Telegram', 'Tribo Games', 
+                                        'Bitcoin', 'Professor TON', 'TON', 'ETH', 'RUB', 'Dollar', 'Elephant'
+                                    ];
+                                    
+                                    // Нормализуем значение для проверки
+                                    const normalizedValue = getNormalizedValue(value);
+                                    
+                                    if (logoValues.includes(value) || logoValues.includes(normalizedValue)) {
+                                        if (bonusDetails.logo) {
+                                            isBonus = isValueInBonusGroup(bonusDetails, value, 'logo');
+                                            if (isBonus) {
+                                                color = '#27ae60'; // зеленый
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                const fontWeight = isBonus ? '600' : '400';
+                                
+                                // ПОКАЗЫВАЕМ ОРИГИНАЛЬНОЕ ЗНАЧЕНИЕ!
+                                attrsHTML += `<span style="color: ${color}; font-weight: ${fontWeight}">`;
+                                attrsHTML += `${traitType}: ${value}`;
+                                attrsHTML += '</span>';
+                            });
+                            
+                            if (attrsHTML) {
+                                attributesInfo.innerHTML = attrsHTML;
+                                orcElement.appendChild(attributesInfo);
+                            }
+                        }
+                        
+                        // Клик для просмотра деталей NFT
+                        orcElement.addEventListener('click', () => {
+                            const cardData = player.cards?.find(card => card.id === orc.id);
+                            if (cardData?.nftData) {
+                                showNFTModal({ 
+                                    ...cardData.nftData, 
+                                    index: orc.id, 
+                                    power_total: orc.power,
+                                    earrings: orc.earrings,
+                                    bracelet: orc.bracelet,
+                                    logo: orc.logo,
+                                    skinTone: currentSkinTone
+                                });
+                            }
+                        });
+                        
+                        teamOrcsContainer.appendChild(orcElement);
+                    });
+                }
+                
+                // Статистика команды - минималистичная версия
+                if (teamStatsEl) {
+                    const stats = player.team.stats;
+                    
+                    // Очищаем старое содержимое
+                    teamStatsEl.innerHTML = '';
+                    
+                    // Базовая мощность + бонус за полную команду (внутри одной плашки)
+                    if (stats?.basePower) {
+                        teamStatsEl.innerHTML += createMinimalBonusItem('base', {
+                            value: stats.basePower,
+                            fullTeamBonus: stats.isFullTeam ? (stats.bonuses?.fullTeam) : 0
+                        });
+                    }
+                    
+                    // Бонус за серьги
+                    const earringsBonus = stats?.bonuses?.earrings || 0;
+                    const earringsGroups = stats?.groups?.earrings || {};
+                    
+                    if (earringsBonus > 0 || Object.keys(earringsGroups).length > 0) {
+                        teamStatsEl.innerHTML += createMinimalBonusItem('earrings', {
+                            value: earringsBonus,
+                            groups: earringsGroups
+                        });
+                    }
+                    
+                    // Бонус за логотипы - С УЧЕТОМ ЭКВИВАЛЕНТНОСТИ
+                    const logoBonus = stats?.bonuses?.logo || 0;
+                    const logoGroups = stats?.groups?.logo || {};
+                    
+                    if (logoBonus > 0 || Object.keys(logoGroups).length > 0) {
+                        teamStatsEl.innerHTML += createMinimalBonusItem('logo', {
+                            value: logoBonus,
+                            groups: logoGroups
+                        });
+                    }
+                    
+                    // Бонус за браслеты
+                    const braceletBonus = stats?.bonuses?.bracelet || 0;
+                    const braceletGroups = stats?.groups?.bracelet || {};
+                    
+                    if (braceletBonus > 0 || Object.keys(braceletGroups).length > 0) {
+                        teamStatsEl.innerHTML += createMinimalBonusItem('bracelet', {
+                            value: braceletBonus,
+                            groups: braceletGroups
+                        });
+                    }
+                }
+
+                // Также обновляем отображение общей мощности команды в заголовке
+                const teamHeaderEl = playerCard.querySelector('.team-header h4');
+                if (teamHeaderEl) {
+                    teamHeaderEl.textContent = `Лучшая команда: ${player.teamPower || 0}`;
+                }
+            }
+            
+            // Отрисовываем все карточки игрока
+            const cardsContainer = playerCard.querySelector('.cards-list');
+            const cardsCount = playerCard.querySelector('.cards-count');
+            
+            if (cardsCount) {
+                cardsCount.textContent = player.cards ? player.cards.length : 0;
+            }
+            
+            if (cardsContainer && player.cards) {
+                cardsContainer.innerHTML = '';
+                
+                player.cards.forEach(card => {
+                    // Используем ТОТ ЖЕ ШАБЛОН, что и для карточек в команде
                     const orcClone = teamOrcTemplate.content.cloneNode(true);
                     const orcElement = orcClone.querySelector('.team-orc');
                     
                     if (!orcElement) return;
                     
                     // Устанавливаем тип
-                    orcElement.setAttribute('data-type', orc.type);
+                    orcElement.setAttribute('data-type', card.type);
                     
                     // Тип орка
                     const typeEl = orcElement.querySelector('.orc-type');
-                    if (typeEl) typeEl.textContent = orcTypeNames[orc.type] || `Тип ${orc.type}`;
+                    if (typeEl) typeEl.textContent = orcTypeNames[card.type] || `Тип ${card.type}`;
                     
                     // Изображение
                     const imageEl = orcElement.querySelector('.orc-image img');
-                    if (imageEl) {
-                        const cardData = player.cards?.find(card => card.id === orc.id);
-                        if (cardData?.nftData?.image_url) {
-                            imageEl.src = cardData.nftData.image_url;
-                            imageEl.alt = cardData.nftData.name || `NFT #${orc.id}`;
-                            imageEl.onerror = function() {
-                                this.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%232c3e50"><rect width="100" height="100"/><text x="50" y="50" text-anchor="middle" dy=".3em" font-size="30" fill="white">?</text></svg>';
-                            };
-                        } else {
-                            imageEl.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%232c3e50"><rect width="100" height="100"/><text x="50" y="50" text-anchor="middle" dy=".3em" font-size="30" fill="white">?</text></svg>';
-                            imageEl.alt = 'Изображение недоступно';
-                        }
+                    if (imageEl && card.nftData?.image_url) {
+                        imageEl.src = card.nftData.image_url;
+                        imageEl.alt = card.nftData.name || `NFT #${card.id}`;
+                        imageEl.onerror = function() {
+                            this.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%232c3e50"><rect width="100" height="100"/><text x="50" y="50" text-anchor="middle" dy=".3em" font-size="30" fill="white">?</text></svg>';
+                        };
+                    } else {
+                        imageEl.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%232c3e50"><rect width="100" height="100"/><text x="50" y="50" text-anchor="middle" dy=".3em" font-size="30" fill="white">?</text></svg>';
+                        imageEl.alt = 'Изображение недоступно';
                     }
                     
                     // Название
                     const nameEl = orcElement.querySelector('.orc-name');
                     if (nameEl) {
-                        const cardData = player.cards?.find(card => card.id === orc.id);
-                        if (cardData?.nftData?.name) {
-                            const match = cardData.nftData.name.match(/#(\d+)/);
-                            nameEl.textContent = match ? `#${match[1]}` : cardData.nftData.name;
+                        if (card.nftData?.name) {
+                            const match = card.nftData.name.match(/#(\d+)/);
+                            nameEl.textContent = match ? `#${match[1]}` : card.nftData.name;
                         } else {
-                            nameEl.textContent = `#${orc.id}`;
+                            nameEl.textContent = `#${card.id}`;
                         }
                     }
                     
                     // Мощность
                     const powerEl = orcElement.querySelector('.power-value');
-                    if (powerEl) powerEl.textContent = orc.power;
+                    if (powerEl) powerEl.textContent = card.power;
                     
                     // Индикатор синергии
                     const synergyEl = orcElement.querySelector('.synergy-indicator');
@@ -699,38 +1051,34 @@ function renderPlayers() {
                         synergyEl.style.display = 'none';
                     }
                     
-                    // Отображаем атрибуты из nftData.attributes с учетом исключений
+                    // Атрибуты
                     const attributesInfo = document.createElement('div');
                     attributesInfo.className = 'orc-attributes';
                     
-                    const cardData = player.cards?.find(card => card.id === orc.id);
+                    // Получаем ДЕТАЛИ бонусов из статистики команды
+                    const bonusDetails = player.team?.stats?.bonusDetails || {};
                     
-                    if (cardData?.nftData?.attributes && Array.isArray(cardData.nftData.attributes)) {
+                    if (card.nftData?.attributes && Array.isArray(card.nftData.attributes)) {
                         let attrsHTML = '';
                         
-                        // Получаем ДЕТАЛИ бонусов из статистики команды
-                        const bonusDetails = player.team?.stats?.bonusDetails || {};
-                        
                         // Фильтруем атрибуты для отображения
-                        const displayAttributes = cardData.nftData.attributes
+                        const displayAttributes = card.nftData.attributes
                             .filter(attr => {
-                                // Показываем только важные атрибуты
                                 const traitType = attr.trait_type || '';
+                                const value = attr.value || '';
                                 return traitType !== 'Skin Tone' && 
                                        traitType !== 'image' && 
-                                       attr.value && 
-                                       attr.value.toString().trim() !== '';
+                                       value.toString().trim() !== '';
                             })
                             .sort((a, b) => {
-                                // Сортируем по приоритету: серьги, логотипы, браслеты, затем остальное
                                 const priority = {
                                     'Earrings': 1,
                                     'Earring': 1,
-                                    'Logo': 2,
-                                    'Bracelet': 3
+                                    'Bracelet': 2
                                 };
-                                const aPriority = priority[a.trait_type] || 99;
-                                const bPriority = priority[b.trait_type] || 99;
+                                
+                                const aPriority = priority[a.trait_type] || (logoTraitTypes.includes(a.trait_type) ? 3 : 99);
+                                const bPriority = priority[b.trait_type] || (logoTraitTypes.includes(b.trait_type) ? 3 : 99);
                                 return aPriority - bPriority;
                             });
                         
@@ -742,58 +1090,36 @@ function renderPlayers() {
                             const value = attr.value || '';
                             
                             // Определяем цвет в зависимости от типа атрибута
-                            let color = '#2c3e50'; // цвет по умолчанию - темно-серый
+                            let color = '#2c3e50';
                             let isBonus = false;
-                            
-                            // Проверяем бонусы с учетом исключений
                             
                             // 1. Проверяем серьги
                             if (traitType === 'Earrings' || traitType === 'Earring') {
                                 if (bonusDetails.earrings) {
-                                    const earringDetail = bonusDetails.earrings.find(d => 
-                                        d.value && d.value.toString().trim() === value.toString().trim()
-                                    );
-                                    if (earringDetail) {
-                                        isBonus = true;
-                                        color = '#e74c3c'; // красный
-                                    }
+                                    isBonus = isValueInBonusGroup(bonusDetails, value, 'earrings');
+                                    if (isBonus) color = '#e74c3c';
                                 }
                             }
-                            // 2. Проверяем логотипы С УЧЕТОМ ИСКЛЮЧЕНИЙ
-                            else if (traitType === 'Logo' || traitType === 'Logotype' || 
-                                     traitType === 'Emblem' || traitType === 'Symbol') {
-                                if (bonusDetails.amulet) {
-                                    const amuletDetail = bonusDetails.amulet.find(d => 
-                                        d.value && valuesMatchWithExceptions(d.value, value)
-                                    );
-                                    if (amuletDetail) {
-                                        isBonus = true;
-                                        color = '#27ae60'; // зеленый
-                                    }
-                                }
-                            }
-                            // 3. Проверяем браслеты
+                            // 2. Проверяем браслеты
                             else if (traitType === 'Bracelet') {
                                 if (bonusDetails.bracelet) {
-                                    const braceletDetail = bonusDetails.bracelet.find(d => 
-                                        d.value && d.value.toString().trim() === value.toString().trim()
-                                    );
-                                    if (braceletDetail) {
-                                        isBonus = true;
-                                        color = '#f39c12'; // оранжевый
-                                    }
+                                    isBonus = isValueInBonusGroup(bonusDetails, value, 'bracelet');
+                                    if (isBonus) color = '#f39c12';
                                 }
                             }
-                            // 4. Проверяем другие атрибуты, которые могут быть логотипами (по значению)
-                            else {
-                                // Проверяем, может ли это значение быть логотипом
-                                if (bonusDetails.amulet) {
-                                    const amuletDetail = bonusDetails.amulet.find(d => 
-                                        d.value && valuesMatchWithExceptions(d.value, value)
-                                    );
-                                    if (amuletDetail) {
-                                        isBonus = true;
-                                        color = '#27ae60'; // зеленый
+                            // 3. Проверяем логотипы
+                            else if (logoTraitTypes.includes(traitType)) {
+                                const logoValues = constants && constants.LOGO_VALUES ? constants.LOGO_VALUES : [
+                                    'Zargates Business', 'Zargates', 'Telegram', 'Tribo Games', 
+                                    'Bitcoin', 'Professor TON', 'TON', 'ETH', 'RUB', 'Dollar', 'Elephant'
+                                ];
+                                
+                                const normalizedValue = getNormalizedValue(value);
+                                
+                                if (logoValues.includes(value) || logoValues.includes(normalizedValue)) {
+                                    if (bonusDetails.logo) {
+                                        isBonus = isValueInBonusGroup(bonusDetails, value, 'logo');
+                                        if (isBonus) color = '#27ae60';
                                     }
                                 }
                             }
@@ -811,352 +1137,35 @@ function renderPlayers() {
                         }
                     }
                     
+                    // Проверяем, находится ли карточка в команде
+                    if (player.team && player.team.orcs && 
+                        player.team.orcs.some(orc => orc.id === card.id)) {
+                        orcElement.style.borderColor = '#3498db';
+                        orcElement.style.borderWidth = '2px';
+                    } else {
+                        orcElement.style.borderColor = '#dee2e6';
+                        orcElement.style.borderWidth = '1px';
+                    }
+                    
                     // Клик для просмотра деталей NFT
                     orcElement.addEventListener('click', () => {
-                        const cardData = player.cards?.find(card => card.id === orc.id);
-                        if (cardData?.nftData) {
-                            showNFTModal({ 
-                                ...cardData.nftData, 
-                                index: orc.id, 
-                                power_total: orc.power,
-                                earrings: orc.earrings,
-                                bracelet: orc.bracelet,
-                                amulet: orc.amulet,
-                                skinTone: currentSkinTone
-                            });
-                        }
-                    });
-                    
-                    teamOrcsContainer.appendChild(orcElement);
-                });
-            }
-            
-            // Статистика команды - минималистичная версия
-            if (teamStatsEl) {
-                const stats = player.team.stats;
-                
-                // Очищаем старое содержимое
-                teamStatsEl.innerHTML = '';
-                
-                // Базовая мощность
-                if (stats?.basePower) {
-                    teamStatsEl.innerHTML += createMinimalBonusItem('base', {
-                        value: stats.basePower
-                    });
-                }
-                
-                // Бонус за серьги
-                const earringsBonus = stats?.bonuses?.earrings || 0;
-                const earringsDetails = stats?.bonusDetails?.earrings || [];
-                const earringsGroups = stats?.groups?.earrings || {};
-                
-                if (earringsBonus > 0 || Object.keys(earringsGroups).length > 0) {
-                    teamStatsEl.innerHTML += createMinimalBonusItem('earrings', {
-                        value: earringsBonus,
-                        details: earringsDetails,
-                        groups: earringsGroups
-                    });
-                }
-                
-                // Бонус за логотипы
-                const amuletBonus = stats?.bonuses?.amulet || 0;
-                const amuletDetails = stats?.bonusDetails?.amulet || [];
-                const amuletGroups = stats?.groups?.amulet || {};
-                
-                if (amuletBonus > 0 || Object.keys(amuletGroups).length > 0) {
-                    teamStatsEl.innerHTML += createMinimalBonusItem('amulet', {
-                        value: amuletBonus,
-                        details: amuletDetails,
-                        groups: amuletGroups
-                    });
-                }
-                
-                // Бонус за браслеты
-                const braceletBonus = stats?.bonuses?.bracelet || 0;
-                const braceletDetails = stats?.bonusDetails?.bracelet || [];
-                const braceletGroups = stats?.groups?.bracelet || {};
-                
-                if (braceletBonus > 0 || Object.keys(braceletGroups).length > 0) {
-                    teamStatsEl.innerHTML += createMinimalBonusItem('bracelet', {
-                        value: braceletBonus,
-                        details: braceletDetails,
-                        groups: braceletGroups
-                    });
-                }
-            }
-        }
-        
-        // Отрисовываем все карточки игрока - ИСПОЛЬЗУЕМ ТЕ ЖЕ ШАБЛОНЫ, ЧТО И В КОМАНДЕ
-        const cardsContainer = playerCard.querySelector('.cards-list');
-        const cardsCount = playerCard.querySelector('.cards-count');
-        
-        if (cardsCount) {
-            cardsCount.textContent = player.cards ? player.cards.length : 0;
-        }
-        
-        if (cardsContainer && player.cards) {
-            cardsContainer.innerHTML = '';
-            
-            player.cards.forEach(card => {
-                // Используем ТОТ ЖЕ ШАБЛОН, что и для карточек в команде
-                const orcClone = teamOrcTemplate.content.cloneNode(true);
-                const orcElement = orcClone.querySelector('.team-orc');
-                
-                if (!orcElement) return;
-                
-                // Устанавливаем тип
-                orcElement.setAttribute('data-type', card.type);
-                
-                // Тип орка
-                const typeEl = orcElement.querySelector('.orc-type');
-                if (typeEl) typeEl.textContent = orcTypeNames[card.type] || `Тип ${card.type}`;
-                
-                // Изображение
-                const imageEl = orcElement.querySelector('.orc-image img');
-                if (imageEl && card.nftData?.image_url) {
-                    imageEl.src = card.nftData.image_url;
-                    imageEl.alt = card.nftData.name || `NFT #${card.id}`;
-                    imageEl.onerror = function() {
-                        this.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%232c3e50"><rect width="100" height="100"/><text x="50" y="50" text-anchor="middle" dy=".3em" font-size="30" fill="white">?</text></svg>';
-                    };
-                } else {
-                    imageEl.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%232c3e50"><rect width="100" height="100"/><text x="50" y="50" text-anchor="middle" dy=".3em" font-size="30" fill="white">?</text></svg>';
-                    imageEl.alt = 'Изображение недоступно';
-                }
-                
-                // Название
-                const nameEl = orcElement.querySelector('.orc-name');
-                if (nameEl) {
-                    if (card.nftData?.name) {
-                        const match = card.nftData.name.match(/#(\d+)/);
-                        nameEl.textContent = match ? `#${match[1]}` : card.nftData.name;
-                    } else {
-                        nameEl.textContent = `#${card.id}`;
-                    }
-                }
-                
-                // Мощность
-                const powerEl = orcElement.querySelector('.power-value');
-                if (powerEl) powerEl.textContent = card.power;
-                
-                // Индикатор синергии
-                const synergyEl = orcElement.querySelector('.synergy-indicator');
-                if (synergyEl) {
-                    synergyEl.style.display = 'none';
-                }
-                
-                // Атрибуты - ТОЧНО ТАК ЖЕ, КАК В КОМАНДЕ
-                const attributesInfo = document.createElement('div');
-                attributesInfo.className = 'orc-attributes';
-                
-                // Получаем ДЕТАЛИ бонусов из статистики команды
-                const bonusDetails = player.team?.stats?.bonusDetails || {};
-                
-                if (card.nftData?.attributes && Array.isArray(card.nftData.attributes)) {
-                    let attrsHTML = '';
-                    
-                    // Фильтруем атрибуты для отображения
-                    const displayAttributes = card.nftData.attributes
-                        .filter(attr => {
-                            // Показываем только важные атрибуты
-                            const traitType = attr.trait_type || '';
-                            return traitType !== 'Skin Tone' && 
-                                   traitType !== 'image' && 
-                                   attr.value && 
-                                   attr.value.toString().trim() !== '';
-                        })
-                        .sort((a, b) => {
-                            // Сортируем по приоритету: серьги, логотипы, браслеты, затем остальное
-                            const priority = {
-                                'Earrings': 1,
-                                'Earring': 1,
-                                'Logo': 2,
-                                'Bracelet': 3
-                            };
-                            const aPriority = priority[a.trait_type] || 99;
-                            const bPriority = priority[b.trait_type] || 99;
-                            return aPriority - bPriority;
+                        showNFTModal({ 
+                            ...card.nftData, 
+                            index: card.id, 
+                            power_total: card.power,
+                            earrings: card.earrings,
+                            bracelet: card.bracelet,
+                            logo: card.logos,
+                            skinTone: currentSkinTone
                         });
-                    
-                    // Создаем HTML для атрибутов
-                    displayAttributes.forEach((attr, index) => {
-                        if (index > 0) attrsHTML += '<br>';
-                        
-                        const traitType = attr.trait_type || 'Атрибут';
-                        const value = attr.value || '';
-                        
-                        // Определяем цвет в зависимости от типа атрибута
-                        let color = '#2c3e50'; // цвет по умолчанию - темно-серый
-                        let isBonus = false;
-                        
-                        // Проверяем бонусы с учетом исключений
-                        
-                        // 1. Проверяем серьги
-                        if (traitType === 'Earrings' || traitType === 'Earring') {
-                            if (bonusDetails.earrings) {
-                                const earringDetail = bonusDetails.earrings.find(d => 
-                                    d.value && d.value.toString().trim() === value.toString().trim()
-                                );
-                                if (earringDetail) {
-                                    isBonus = true;
-                                    color = '#e74c3c'; // красный
-                                }
-                            }
-                        }
-                        // 2. Проверяем логотипы С УЧЕТОМ ИСКЛЮЧЕНИЙ
-                        else if (traitType === 'Logo' || traitType === 'Logotype' || 
-                                 traitType === 'Emblem' || traitType === 'Symbol') {
-                            if (bonusDetails.amulet) {
-                                const amuletDetail = bonusDetails.amulet.find(d => 
-                                    d.value && valuesMatchWithExceptions(d.value, value)
-                                );
-                                if (amuletDetail) {
-                                    isBonus = true;
-                                    color = '#27ae60'; // зеленый
-                                }
-                            }
-                        }
-                        // 3. Проверяем браслеты
-                        else if (traitType === 'Bracelet') {
-                            if (bonusDetails.bracelet) {
-                                const braceletDetail = bonusDetails.bracelet.find(d => 
-                                    d.value && d.value.toString().trim() === value.toString().trim()
-                                );
-                                if (braceletDetail) {
-                                    isBonus = true;
-                                    color = '#f39c12'; // оранжевый
-                                }
-                            }
-                        }
-                        // 4. Проверяем другие атрибуты, которые могут быть логотипами (по значению)
-                        else {
-                            // Проверяем, может ли это значение быть логотипом
-                            if (bonusDetails.amulet) {
-                                const amuletDetail = bonusDetails.amulet.find(d => 
-                                    d.value && valuesMatchWithExceptions(d.value, value)
-                                );
-                                if (amuletDetail) {
-                                    isBonus = true;
-                                    color = '#27ae60'; // зеленый
-                                }
-                            }
-                        }
-                        
-                        const fontWeight = isBonus ? '600' : '400';
-                        
-                        attrsHTML += `<span style="color: ${color}; font-weight: ${fontWeight}">`;
-                        attrsHTML += `${traitType}: ${value}`;
-                        attrsHTML += '</span>';
                     });
                     
-                    if (attrsHTML) {
-                        attributesInfo.innerHTML = attrsHTML;
-                        orcElement.appendChild(attributesInfo);
-                    }
-                }
-                
-                // Проверяем, находится ли карточка в команде
-                if (player.team && player.team.orcs && 
-                    player.team.orcs.some(orc => orc.id === card.id)) {
-                    // Если карточка в команде - выделяем синей рамкой
-                    orcElement.style.borderColor = '#3498db';
-                    orcElement.style.borderWidth = '2px';
-                } else {
-                    // Если не в команде - обычная серая рамка
-                    orcElement.style.borderColor = '#dee2e6';
-                    orcElement.style.borderWidth = '1px';
-                }
-                
-                // Клик для просмотра деталей NFT
-                orcElement.addEventListener('click', () => {
-                    showNFTModal({ 
-                        ...card.nftData, 
-                        index: card.id, 
-                        power_total: card.power,
-                        earrings: card.earrings,
-                        bracelet: card.bracelet,
-                        amulet: card.amulet,
-                        skinTone: currentSkinTone
-                    });
+                    cardsContainer.appendChild(orcElement);
                 });
-                
-                cardsContainer.appendChild(orcElement);
-            });
-        }
-        
-        playersContainer.appendChild(playerCard);
-    });
-}
-
-    // Функция для проверки, входит ли атрибут в бонус команды
-    function isAttributeInBonus(type, attributeValue, stats) {
-        if (!stats || !stats.groups || !stats.groups[type]) {
-            return false;
-        }
-        
-        const groups = stats.groups[type];
-        const group = groups[attributeValue];
-        
-        // Проверяем, есть ли такая группа и дает ли она бонус (count >= 4)
-        if (group && group.count >= 4) {
-            return true;
-        }
-        
-        return false;
-    }
-
-    // Функция для создания минималистичной бонусной плашки
-    function createMinimalBonusItem(bonusType, bonusData) {
-        const typeTitles = {
-            base: 'Базовая мощность',
-            earrings: 'Бонус за серьги',
-            amulet: 'Бонус за логотипы',
-            bracelet: 'Бонус за браслеты'
-        };
-        
-        const colors = {
-            earrings: '#e74c3c',
-            amulet: '#27ae60',
-            bracelet: '#f39c12',
-            base: '#2c3e50'
-        };
-        
-        const title = typeTitles[bonusType] || 'Бонус';
-        const color = colors[bonusType] || '#2c3e50';
-        const value = bonusData.value || 0;
-        const hasGroups = bonusData.groups && Object.keys(bonusData.groups).length > 0;
-        
-        // Находим группы, которые дали бонус (count >= 4)
-        const bonusGroups = hasGroups ? 
-            Object.entries(bonusData.groups)
-                .filter(([name, group]) => group.count >= 4)
-                .map(([name, group]) => name) : [];
-        
-        let html = `
-            <div class="bonus-item" data-type="${bonusType}">
-                <div class="bonus-header">
-                    <span class="bonus-title" style="color: ${color}">${title}</span>
-                    <span class="bonus-value" style="color: ${value > 0 ? color : '#7f8c8d'}">${value}</span>
-                </div>
-        `;
-        
-        // Группы - показываем все, но бонусные выделяем цветом
-        if (hasGroups) {
-            const groups = Object.entries(bonusData.groups)
-                .map(([name, group]) => {
-                    const isBonusGroup = group.count >= 4;
-                    const groupColor = isBonusGroup ? color : '#2c3e50';
-                    return `<span class="group-item ${isBonusGroup ? 'bonus-group' : ''}" style="color: ${groupColor}">
-                        <span class="group-name">${name}</span>
-                        <span class="group-count">${group.count}</span>
-                    </span>`;
-                }).join('');
+            }
             
-            html += `<div class="bonus-groups">${groups}</div>`;
-        }
-        
-        html += '</div>';
-        return html;
+            playersContainer.appendChild(playerCard);
+        });
     }
     
     // Показать детали NFT
@@ -1227,7 +1236,7 @@ function renderPlayers() {
                 
                 ${nftData.earrings ? `<p><strong>Серьги:</strong> ${nftData.earrings}</p>` : ''}
                 ${nftData.bracelet ? `<p><strong>Браслет:</strong> ${nftData.bracelet}</p>` : ''}
-                ${nftData.logo ? `<p><strong>Логотип:</strong> ${nftData.logo}</p>` : ''}
+                ${nftData.logo ? `<p><strong>Логотип:</strong> ${Array.isArray(nftData.logo) ? nftData.logo.join(', ') : nftData.logo}</p>` : ''}
             </div>
             
             ${nftData.attributes && nftData.attributes.length > 0 ? `
@@ -1611,7 +1620,7 @@ function renderPlayers() {
     function showNotification(message, type = 'info') {
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
-        notification.textContent = message;
+        notification.innerHTML = message;
         notification.style.cssText = `
             position: fixed;
             top: 20px;
@@ -1638,372 +1647,370 @@ function renderPlayers() {
         }, 3000);
     }
 
+    // ================ ФУНКЦИИ ДЛЯ ТАБЛИЦЫ ОБМЕНОВ ================
 
     // Функция для создания и отображения HTML таблицы обменов
-function createExchangeSummaryTable() {
-    // Проверяем, есть ли данные об обменах
-    if (!currentOptimization || !currentOptimization.exchanges || currentOptimization.exchanges.length === 0) {
-        return '<p>Нет данных об обменах для отображения</p>';
-    }
-    
-    // Собираем все обмены и группируем по участникам
-    const exchangesByParticipant = {};
-    let allParticipants = new Set();
-    
-    // Проходим по всем обменам
-    currentOptimization.exchanges.forEach((exchange, index) => {
-        // Участник 1 (отдает)
-        if (!exchangesByParticipant[exchange.player1Id]) {
-            exchangesByParticipant[exchange.player1Id] = {
-                name: exchange.player1Name,
-                exchanges: [],
-                totalPowerBefore: 0,
-                totalPowerAfter: 0
-            };
+    function createExchangeSummaryTable() {
+        // Проверяем, есть ли данные об обменах
+        if (!currentOptimization || !currentOptimization.exchanges || currentOptimization.exchanges.length === 0) {
+            return '<p>Нет данных об обменах для отображения</p>';
         }
-        allParticipants.add(exchange.player1Id);
         
-        // Участник 2 (получает от участника 1)
-        if (!exchangesByParticipant[exchange.player2Id]) {
-            exchangesByParticipant[exchange.player2Id] = {
-                name: exchange.player2Name,
-                exchanges: [],
-                totalPowerBefore: 0,
-                totalPowerAfter: 0
-            };
-        }
-        allParticipants.add(exchange.player2Id);
-    });
-    
-    // Второй проход: заполняем обмены с обеих сторон
-    currentOptimization.exchanges.forEach((exchange, index) => {
-        // Для участника 1 (отдает, получает)
-        exchangesByParticipant[exchange.player1Id].exchanges.push({
-            type: 'give',
-            participant: exchange.player2Name,
-            participantId: exchange.player2Id,
-            gives: `#${exchange.orc1Id} (${exchange.orc1TypeName})`,
-            receives: `#${exchange.orc2Id} (${exchange.orc2TypeName})`,
-            from: exchange.player2Name,
-            powerBefore: exchange.oldPlayer1Power,
-            powerAfter: exchange.newPlayer1Power,
-            exchangeIndex: index
-        });
+        // Собираем все обмены и группируем по участникам
+        const exchangesByParticipant = {};
+        let allParticipants = new Set();
         
-        // Для участника 2 (отдает, получает)
-        exchangesByParticipant[exchange.player2Id].exchanges.push({
-            type: 'receive',
-            participant: exchange.player1Name,
-            participantId: exchange.player1Id,
-            gives: `#${exchange.orc2Id} (${exchange.orc2TypeName})`,
-            receives: `#${exchange.orc1Id} (${exchange.orc1TypeName})`,
-            from: exchange.player1Name,
-            powerBefore: exchange.oldPlayer2Power,
-            powerAfter: exchange.newPlayer2Power,
-            exchangeIndex: index
-        });
-    });
-    
-    // Находим исходные и финальные мощности игроков
-    allParticipants.forEach(playerId => {
-        const player = currentPlayers.find(p => p.id === playerId);
-        if (player) {
-            const originalData = playersOriginalData[playerId];
-            if (originalData) {
-                exchangesByParticipant[playerId].totalPowerBefore = originalData.teamPower || 0;
+        // Проходим по всем обменам
+        currentOptimization.exchanges.forEach((exchange, index) => {
+            // Участник 1 (отдает)
+            if (!exchangesByParticipant[exchange.player1Id]) {
+                exchangesByParticipant[exchange.player1Id] = {
+                    name: exchange.player1Name,
+                    exchanges: [],
+                    totalPowerBefore: 0,
+                    totalPowerAfter: 0
+                };
             }
-            exchangesByParticipant[playerId].totalPowerAfter = player.teamPower || 0;
-        }
-    });
-    
-    // Создаем HTML таблицы
-    let html = `
-        <div class="exchange-summary-table-container">
-            <h3>Сводная таблица обменов</h3>
-            <table class="exchange-summary-table">
-                <thead>
-                    <tr>
-                        <th>Номер</th>
-                        <th>Участник</th>
-                        <th>Передал</th>
-                        <th>Кому</th>
-                        <th>Получил</th>
-                        <th>От кого</th>
-                        <th>Power было</th>
-                        <th>Power стало</th>
-                    </tr>
-                </thead>
-                <tbody>
-    `;
-    
-    // Сортируем участников по имени
-    const sortedParticipants = Array.from(allParticipants).sort((a, b) => {
-        return exchangesByParticipant[a].name.localeCompare(exchangesByParticipant[b].name);
-    });
-    
-    let rowNumber = 1;
-    
-    // Для каждого участника
-    sortedParticipants.forEach(playerId => {
-        const participantData = exchangesByParticipant[playerId];
+            allParticipants.add(exchange.player1Id);
+            
+            // Участник 2 (получает от участника 1)
+            if (!exchangesByParticipant[exchange.player2Id]) {
+                exchangesByParticipant[exchange.player2Id] = {
+                    name: exchange.player2Name,
+                    exchanges: [],
+                    totalPowerBefore: 0,
+                    totalPowerAfter: 0
+                };
+            }
+            allParticipants.add(exchange.player2Id);
+        });
         
-        // Добавляем строку с обменом, если есть
-        if (participantData.exchanges && participantData.exchanges.length > 0) {
-            participantData.exchanges.forEach((exchange, exchangeIndex) => {
+        // Второй проход: заполняем обмены с обеих сторон
+        currentOptimization.exchanges.forEach((exchange, index) => {
+            // Для участника 1 (отдает, получает)
+            exchangesByParticipant[exchange.player1Id].exchanges.push({
+                type: 'give',
+                participant: exchange.player2Name,
+                participantId: exchange.player2Id,
+                gives: `#${exchange.orc1Id} (${exchange.orc1TypeName})`,
+                receives: `#${exchange.orc2Id} (${exchange.orc2TypeName})`,
+                from: exchange.player2Name,
+                powerBefore: exchange.oldPlayer1Power,
+                powerAfter: exchange.newPlayer1Power,
+                exchangeIndex: index
+            });
+            
+            // Для участника 2 (отдает, получает)
+            exchangesByParticipant[exchange.player2Id].exchanges.push({
+                type: 'receive',
+                participant: exchange.player1Name,
+                participantId: exchange.player1Id,
+                gives: `#${exchange.orc2Id} (${exchange.orc2TypeName})`,
+                receives: `#${exchange.orc1Id} (${exchange.orc1TypeName})`,
+                from: exchange.player1Name,
+                powerBefore: exchange.oldPlayer2Power,
+                powerAfter: exchange.newPlayer2Power,
+                exchangeIndex: index
+            });
+        });
+        
+        // Находим исходные и финальные мощности игроков
+        allParticipants.forEach(playerId => {
+            const player = currentPlayers.find(p => p.id === playerId);
+            if (player) {
+                const originalData = playersOriginalData[playerId];
+                if (originalData) {
+                    exchangesByParticipant[playerId].totalPowerBefore = originalData.teamPower || 0;
+                }
+                exchangesByParticipant[playerId].totalPowerAfter = player.teamPower || 0;
+            }
+        });
+        
+        // Создаем HTML таблицы
+        let html = `
+            <div class="exchange-summary-table-container">
+                <h3>Сводная таблица обменов</h3>
+                <table class="exchange-summary-table">
+                    <thead>
+                        <tr>
+                            <th>Номер</th>
+                            <th>Участник</th>
+                            <th>Передал</th>
+                            <th>Кому</th>
+                            <th>Получил</th>
+                            <th>От кого</th>
+                            <th>Power было</th>
+                            <th>Power стало</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+        
+        // Сортируем участников по имени
+        const sortedParticipants = Array.from(allParticipants).sort((a, b) => {
+            return exchangesByParticipant[a].name.localeCompare(exchangesByParticipant[b].name);
+        });
+        
+        let rowNumber = 1;
+        
+        // Для каждого участника
+        sortedParticipants.forEach(playerId => {
+            const participantData = exchangesByParticipant[playerId];
+            
+            // Добавляем строку с обменом, если есть
+            if (participantData.exchanges && participantData.exchanges.length > 0) {
+                participantData.exchanges.forEach((exchange, exchangeIndex) => {
+                    html += `
+                        <tr>
+                            <td>${rowNumber}</td>
+                            <td><strong>${participantData.name}</strong></td>
+                            <td>${exchange.type === 'give' ? exchange.gives : ''}</td>
+                            <td>${exchange.type === 'give' ? exchange.participant : ''}</td>
+                            <td>${exchange.type === 'receive' ? exchange.receives : ''}</td>
+                            <td>${exchange.type === 'receive' ? exchange.from : ''}</td>
+                            <td>${exchange.powerBefore || 0}</td>
+                            <td>${exchange.powerAfter || 0}</td>
+                        </tr>
+                    `;
+                    rowNumber++;
+                });
+            } else {
+                // Участник не участвовал в обменах напрямую, но мог изменить мощность
                 html += `
                     <tr>
                         <td>${rowNumber}</td>
                         <td><strong>${participantData.name}</strong></td>
-                        <td>${exchange.type === 'give' ? exchange.gives : ''}</td>
-                        <td>${exchange.type === 'give' ? exchange.participant : ''}</td>
-                        <td>${exchange.type === 'receive' ? exchange.receives : ''}</td>
-                        <td>${exchange.type === 'receive' ? exchange.from : ''}</td>
-                        <td>${exchange.powerBefore || 0}</td>
-                        <td>${exchange.powerAfter || 0}</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>${participantData.totalPowerBefore || 0}</td>
+                        <td>${participantData.totalPowerAfter || 0}</td>
                     </tr>
                 `;
                 rowNumber++;
-            });
-        } else {
-            // Участник не участвовал в обменах напрямую, но мог изменить мощность
+            }
+            
+            // Добавляем строку "Итого" для этого участника
             html += `
-                <tr>
-                    <td>${rowNumber}</td>
-                    <td><strong>${participantData.name}</strong></td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
+                <tr class="total-row">
+                    <td colspan="6" style="text-align: right; font-weight: bold;">Итого для ${participantData.name}:</td>
                     <td>${participantData.totalPowerBefore || 0}</td>
                     <td>${participantData.totalPowerAfter || 0}</td>
                 </tr>
+                <tr class="separator-row">
+                    <td colspan="8"></td>
+                </tr>
             `;
-            rowNumber++;
-        }
+        });
         
-        // Добавляем строку "Итого" для этого участника
+        // Добавляем общие итоги
+        const totalPowerBefore = currentPlayers.reduce((sum, player) => {
+            const originalData = playersOriginalData[player.id];
+            return sum + (originalData ? (originalData.teamPower || 0) : 0);
+        }, 0);
+        
+        const totalPowerAfter = currentPlayers.reduce((sum, player) => sum + (player.teamPower || 0), 0);
+        
         html += `
-            <tr class="total-row">
-                <td colspan="6" style="text-align: right; font-weight: bold;">Итого для ${participantData.name}:</td>
-                <td>${participantData.totalPowerBefore || 0}</td>
-                <td>${participantData.totalPowerAfter || 0}</td>
-            </tr>
-            <tr class="separator-row">
-                <td colspan="8"></td>
-            </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="grand-total-row">
+                            <td colspan="6" style="text-align: right; font-weight: bold; font-size: 1.1em;">ОБЩИЙ ИТОГ:</td>
+                            <td style="font-weight: bold; font-size: 1.1em;">${totalPowerBefore}</td>
+                            <td style="font-weight: bold; font-size: 1.1em;">${totalPowerAfter}</td>
+                        </tr>
+                        <tr class="improvement-row">
+                            <td colspan="6" style="text-align: right; font-weight: bold;">Улучшение:</td>
+                            <td colspan="2" style="font-weight: bold; color: #28a745;">
+                                +${totalPowerAfter - totalPowerBefore}
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            
+            <style>
+                .exchange-summary-table-container {
+                    margin-top: 30px;
+                    padding: 20px;
+                    background: white;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                }
+                
+                .exchange-summary-table-container h3 {
+                    margin-bottom: 20px;
+                    color: #333;
+                    border-bottom: 2px solid #007bff;
+                    padding-bottom: 10px;
+                }
+                
+                .exchange-summary-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 10px;
+                }
+                
+                .exchange-summary-table th {
+                    background: #007bff;
+                    color: white;
+                    padding: 12px 8px;
+                    text-align: left;
+                    font-weight: bold;
+                    border: 1px solid #dee2e6;
+                }
+                
+                .exchange-summary-table td {
+                    padding: 10px 8px;
+                    border: 1px solid #dee2e6;
+                    vertical-align: top;
+                }
+                
+                .exchange-summary-table tbody tr:nth-child(even) {
+                    background: #f8f9fa;
+                }
+                
+                .exchange-summary-table tbody tr:hover {
+                    background: #e9ecef;
+                }
+                
+                .exchange-summary-table .total-row {
+                    background: #e7f3ff !important;
+                    font-weight: bold;
+                }
+                
+                .exchange-summary-table .separator-row {
+                    height: 5px;
+                    background: #f8f9fa;
+                }
+                
+                .exchange-summary-table .grand-total-row {
+                    background: #d4edda !important;
+                    font-size: 1.1em;
+                }
+                
+                .exchange-summary-table .improvement-row {
+                    background: #fff3cd !important;
+                }
+                
+                .exchange-summary-table .improvement-row td {
+                    color: #155724;
+                }
+            </style>
         `;
-    });
-    
-    // Добавляем общие итоги
-    const totalPowerBefore = currentPlayers.reduce((sum, player) => {
-        const originalData = playersOriginalData[player.id];
-        return sum + (originalData ? (originalData.teamPower || 0) : 0);
-    }, 0);
-    
-    const totalPowerAfter = currentPlayers.reduce((sum, player) => sum + (player.teamPower || 0), 0);
-    
-    html += `
-                </tbody>
-                <tfoot>
-                    <tr class="grand-total-row">
-                        <td colspan="6" style="text-align: right; font-weight: bold; font-size: 1.1em;">ОБЩИЙ ИТОГ:</td>
-                        <td style="font-weight: bold; font-size: 1.1em;">${totalPowerBefore}</td>
-                        <td style="font-weight: bold; font-size: 1.1em;">${totalPowerAfter}</td>
-                    </tr>
-                    <tr class="improvement-row">
-                        <td colspan="6" style="text-align: right; font-weight: bold;">Улучшение:</td>
-                        <td colspan="2" style="font-weight: bold; color: #28a745;">
-                            +${totalPowerAfter - totalPowerBefore}
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
         
-        <style>
-            .exchange-summary-table-container {
-                margin-top: 30px;
-                padding: 20px;
-                background: white;
-                border-radius: 8px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            }
-            
-            .exchange-summary-table-container h3 {
-                margin-bottom: 20px;
-                color: #333;
-                border-bottom: 2px solid #007bff;
-                padding-bottom: 10px;
-            }
-            
-            .exchange-summary-table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 10px;
-            }
-            
-            .exchange-summary-table th {
-                background: #007bff;
-                color: white;
-                padding: 12px 8px;
-                text-align: left;
-                font-weight: bold;
-                border: 1px solid #dee2e6;
-            }
-            
-            .exchange-summary-table td {
-                padding: 10px 8px;
-                border: 1px solid #dee2e6;
-                vertical-align: top;
-            }
-            
-            .exchange-summary-table tbody tr:nth-child(even) {
-                background: #f8f9fa;
-            }
-            
-            .exchange-summary-table tbody tr:hover {
-                background: #e9ecef;
-            }
-            
-            .exchange-summary-table .total-row {
-                background: #e7f3ff !important;
-                font-weight: bold;
-            }
-            
-            .exchange-summary-table .separator-row {
-                height: 5px;
-                background: #f8f9fa;
-            }
-            
-            .exchange-summary-table .grand-total-row {
-                background: #d4edda !important;
-                font-size: 1.1em;
-            }
-            
-            .exchange-summary-table .improvement-row {
-                background: #fff3cd !important;
-            }
-            
-            .exchange-summary-table .improvement-row td {
-                color: #155724;
-            }
-        </style>
-    `;
-    
-    return html;
-}
+        return html;
+    }
 
-// Функция для отображения таблицы в модальном окне или на странице
-function showExchangeSummaryTable() {
-    const tableHtml = createExchangeSummaryTable();
-    
-    // Создаем модальное окно для таблицы
-    const modal = document.createElement('div');
-    modal.className = 'exchange-summary-modal';
-    modal.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.8);
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        z-index: 2000;
-        overflow-y: auto;
-        padding: 20px;
-    `;
-    
-    const content = document.createElement('div');
-    content.style.cssText = `
-        background: white;
-        padding: 30px;
-        border-radius: 12px;
-        max-width: 1200px;
-        width: 90%;
-        margin: 50px auto;
-        position: relative;
-        max-height: 85vh;
-        overflow-y: auto;
-    `;
-    
-    content.innerHTML = `
-        <button class="close-exchange-summary" style="
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            font-size: 18px;
-            cursor: pointer;
+    // Функция для отображения таблицы в модальном окне или на странице
+    function showExchangeSummaryTable() {
+        const tableHtml = createExchangeSummaryTable();
+        
+        // Создаем модальное окно для таблицы
+        const modal = document.createElement('div');
+        modal.className = 'exchange-summary-modal';
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
             display: flex;
-            align-items: center;
             justify-content: center;
-        ">×</button>
-        <h2 style="color: #007bff; margin-bottom: 20px; text-align: center;">Детализированная таблица обменов</h2>
-        ${tableHtml}
-    `;
-    
-    modal.appendChild(content);
-    document.body.appendChild(modal);
-    
-    // Обработчик закрытия
-    const closeBtn = content.querySelector('.close-exchange-summary');
-    closeBtn.addEventListener('click', () => {
-        document.body.removeChild(modal);
-    });
-    
-    // Закрытие при клике вне окна
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
+            align-items: flex-start;
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 20px;
+        `;
+        
+        const content = document.createElement('div');
+        content.style.cssText = `
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 1200px;
+            width: 90%;
+            margin: 50px auto;
+            position: relative;
+            max-height: 85vh;
+            overflow-y: auto;
+        `;
+        
+        content.innerHTML = `
+            <button class="close-exchange-summary" style="
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                background: #dc3545;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 30px;
+                height: 30px;
+                font-size: 18px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            ">×</button>
+            <h2 style="color: #007bff; margin-bottom: 20px; text-align: center;">Детализированная таблица обменов</h2>
+            ${tableHtml}
+        `;
+        
+        modal.appendChild(content);
+        document.body.appendChild(modal);
+        
+        // Обработчик закрытия
+        const closeBtn = content.querySelector('.close-exchange-summary');
+        closeBtn.addEventListener('click', () => {
             document.body.removeChild(modal);
-        }
-    });
-}
+        });
+        
+        // Закрытие при клике вне окна
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                document.body.removeChild(modal);
+            }
+        });
+    }
 
-// Добавляем кнопку для вызова таблицы в интерфейс
-function addTableButtonToUI() {
-    // Проверяем, есть ли уже кнопка
-    if (document.getElementById('showExchangeTableBtn')) {
-        return;
-    }
-    
-    // Находим контейнер с кнопками действий
-    const actionButtons = document.querySelector('.action-buttons');
-    if (!actionButtons) {
-        console.warn('Не найден контейнер для кнопок');
-        return;
-    }
-    
-    // Создаем кнопку
-    const tableBtn = document.createElement('button');
-    tableBtn.id = 'showExchangeTableBtn';
-    tableBtn.className = 'btn btn-info';
-    tableBtn.innerHTML = '<i class="fas fa-table"></i> Показать таблицу обменов';
-    tableBtn.style.marginLeft = '10px';
-    
-    tableBtn.addEventListener('click', () => {
-        if (!currentOptimization || !currentOptimization.exchanges || currentOptimization.exchanges.length === 0) {
-            alert('Сначала выполните оптимизацию обменов');
+    // Добавляем кнопку для вызова таблицы в интерфейс
+    function addTableButtonToUI() {
+        // Проверяем, есть ли уже кнопка
+        if (document.getElementById('showExchangeTableBtn')) {
             return;
         }
-        showExchangeSummaryTable();
-    });
-    
-    actionButtons.appendChild(tableBtn);
-}
+        
+        // Находим контейнер с кнопками действий
+        const actionButtons = document.querySelector('.action-buttons');
+        if (!actionButtons) {
+            console.warn('Не найден контейнер для кнопок');
+            return;
+        }
+        
+        // Создаем кнопку
+        const tableBtn = document.createElement('button');
+        tableBtn.id = 'showExchangeTableBtn';
+        tableBtn.className = 'btn btn-info';
+        tableBtn.innerHTML = '<i class="fas fa-table"></i> Показать таблицу обменов';
+        tableBtn.style.marginLeft = '10px';
+        
+        tableBtn.addEventListener('click', () => {
+            if (!currentOptimization || !currentOptimization.exchanges || currentOptimization.exchanges.length === 0) {
+                alert('Сначала выполните оптимизацию обменов');
+                return;
+            }
+            showExchangeSummaryTable();
+        });
+        
+        actionButtons.appendChild(tableBtn);
+    }
 
-// Инициализируем кнопку после загрузки данных
-// В конце функции renderPlayers() добавьте:
-function renderPlayersWithTable() {
-    renderPlayers(); // Вызываем оригинальную функцию
-    addTableButtonToUI(); // Добавляем кнопку таблицы
-}
-
-
+    // Инициализируем кнопку после загрузки данных
+    function renderPlayersWithTable() {
+        renderPlayers(); // Вызываем оригинальную функцию
+        addTableButtonToUI(); // Добавляем кнопку таблицы
+    }
 });

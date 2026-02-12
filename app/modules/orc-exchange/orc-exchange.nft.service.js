@@ -1,7 +1,8 @@
+
 const fs = require('fs');
 const path = require('path');
 const logger = require('../../core/utils/logger');
-const { Orc, Team, TeamOptimizer } = require('./orc-exchange.utils');
+const constants = require('./power.constants');
 
 class NFTDataService {
     constructor() {
@@ -18,27 +19,6 @@ class NFTDataService {
             'Orc Do Something': 7
         };
         
-        this.logoValues = [
-            'Zargates Business',
-            'Zargates',
-            'Telegram',
-            'Tribo Games',
-            'Bitcoin',
-            'Professor TON',
-            'TON',
-            'ETH',
-            'RUB',
-            'Dollar',
-            'Elephant'
-        ];
-        
-        this.logoEquivalents = {
-            'Professor TON': 'TON',
-            'TON': 'Professor TON',
-            'Zargates Business': 'Zargates',
-            'Zargates': 'Zargates Business'
-        };
-        
         this.initialized = false;
         this.availableSkinTones = [];
         this.defaultSkinTone = 'Martian';
@@ -49,7 +29,6 @@ class NFTDataService {
         try {
             logger.info('🔄 Инициализация NFT сервиса...');
             
-            // Загружаем данные
             const nftLoaded = await this.loadNFTData();
             const userLoaded = await this.loadUserData();
             const attributesLoaded = await this.loadAttributesData();
@@ -144,7 +123,6 @@ class NFTDataService {
             }
         }
         
-        // Если точного совпадения нет, определяем по ключевым словам
         const lowerName = name.toLowerCase();
         if (lowerName.includes('wen')) return 1;
         if (lowerName.includes('greeting')) return 2;
@@ -154,7 +132,6 @@ class NFTDataService {
         if (lowerName.includes('moon')) return 6;
         if (lowerName.includes('do something')) return 7;
         
-        // Если не нашли, возвращаем случайный тип
         return Math.floor(Math.random() * 7) + 1;
     }
 
@@ -194,34 +171,26 @@ class NFTDataService {
         return '';
     }
 
-    // Извлечение логотипа из атрибутов
+    // Извлечение логотипов из атрибутов - ИСПРАВЛЕНО: возвращает массив
     extractLogo(attributes) {
-        if (!attributes || !Array.isArray(attributes)) return '';
+        const logos = [];
+        if (!attributes || !Array.isArray(attributes)) return logos;
         
         for (const attr of attributes) {
-            if (this.logoValues.includes(attr.value)) {
-                // Проверяем эквивалентность
-                if (this.logoEquivalents[attr.value]) {
-                    return this.logoEquivalents[attr.value];
+            // Проверяем, что тип признака входит в список LOGO_TRAIT_TYPES
+            if (constants.LOGO_TRAIT_TYPES.includes(attr.trait_type) && attr.value) {
+                const value = attr.value.toString().trim();
+                
+                // Проверяем, что значение входит в список LOGO_VALUES
+                if (constants.LOGO_VALUES.includes(value)) {
+                  //  console.log(`🔍 Найден логотип: ${attr.trait_type}: "${value}"`);
+                    logos.push(value); // ДОБАВЛЯЕМ В МАССИВ, а не return
+                } else {
+                  //  console.log(`⚠️ Игнорируем не-логотип: ${attr.trait_type}: "${value}"`);
                 }
-                return attr.value;
             }
         }
-        return '';
-    }
-
-    // Нормализация логотипов для сравнения
-    normalizeLogo(logo) {
-        if (!logo) return '';
-        
-        const normalized = logo.trim();
-        if (normalized === 'Professor TON' || normalized === 'TON') {
-            return 'TON';
-        }
-        if (normalized === 'Zargates Business' || normalized === 'Zargates') {
-            return 'Zargates';
-        }
-        return normalized;
+        return logos; // ВОЗВРАЩАЕМ МАССИВ
     }
 
     // Поиск NFT по индексу
@@ -241,7 +210,6 @@ class NFTDataService {
             throw new Error('Не удалось загрузить данные NFT или пользователей');
         }
 
-        // Используем переданный Skin Tone или значение по умолчанию
         const selectedSkinTone = skinTone || this.defaultSkinTone;
         logger.info(`🎨 Фильтрация по Skin Tone: ${selectedSkinTone}`);
         
@@ -250,35 +218,28 @@ class NFTDataService {
         this.userData.members.forEach((member, index) => {
             const cards = [];
             
-            // Обрабатываем каждый NFT пользователя
             if (member.TribeNFT && Array.isArray(member.TribeNFT)) {
                 member.TribeNFT.forEach(nftIndex => {
                     const nft = this.findNFTByIndex(nftIndex);
                     if (nft) {
-                        // Извлекаем Skin Tone
                         const skinToneValue = this.extractSkinTone(nft.attributes || []);
                         
-                        // Пропускаем NFT если Skin Tone не соответствует выбранному
                         if (selectedSkinTone && skinToneValue !== selectedSkinTone) {
                             return;
                         }
                         
-                        // Определяем тип орка
                         const orcType = this.getOrcTypeByName(nft.name);
-                        
-                        // Извлекаем атрибуты
                         const earrings = this.extractEarrings(nft.attributes || []);
                         const bracelet = this.extractBracelet(nft.attributes || []);
-                        const logo = this.extractLogo(nft.attributes || []);
-                        
-                        // Создаем объект орка
+                        const logos = this.extractLogo(nft.attributes || []); // ТЕПЕРЬ ЭТО МАССИВ
+
                         const orc = {
                             id: nft.index,
                             type: orcType,
                             typeName: this.getOrcTypeName(orcType),
                             power: nft.power_total || 0,
                             earrings: earrings,
-                            amulet: this.normalizeLogo(logo), // Используем logo как амулет
+                            logos: logos, // ← переименовано с logo на logos
                             bracelet: bracelet,
                             skinTone: skinToneValue,
                             nftData: {
@@ -295,7 +256,6 @@ class NFTDataService {
                 });
             }
             
-            // Если у пользователя есть карточки, добавляем его
             if (cards.length > 0) {
                 players.push({
                     id: index,
@@ -349,7 +309,7 @@ class NFTDataService {
             skinTone: this.extractSkinTone(nft.attributes || []),
             earrings: this.extractEarrings(nft.attributes || []),
             bracelet: this.extractBracelet(nft.attributes || []),
-            logo: this.normalizeLogo(this.extractLogo(nft.attributes || []))
+            logo: this.extractLogo(nft.attributes || [])
         };
     }
 

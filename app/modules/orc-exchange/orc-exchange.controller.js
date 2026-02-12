@@ -186,7 +186,7 @@ function analyzeItems(playersData, itemType) {
         // Бонусные пороги
         const bonusTable = {
             earrings: {4: 400, 5: 500, 6: 700, 7: 1000},
-            amulet: {4: 400, 5: 500, 6: 700, 7: 1000},
+            logo: {4: 400, 5: 500, 6: 700, 7: 1000}, // Было amulet, стало logo
             bracelet: {4: 400}
         }[itemType];
         
@@ -268,7 +268,7 @@ module.exports = {
                         card.type,
                         card.power,
                         card.earrings,
-                        card.amulet,
+                        card.logos, // ПРЯМОЕ ЗНАЧЕНИЕ
                         card.bracelet || ''
                     )
                 );
@@ -306,7 +306,7 @@ module.exports = {
                             typeName: card.typeName,
                             power: card.power,
                             earrings: card.earrings,
-                            amulet: card.amulet,
+                            logo: card.logos, // Было amulet, стало logo
                             bracelet: card.bracelet,
                             nftData: nftData || null
                         };
@@ -318,13 +318,13 @@ module.exports = {
                             typeName: orc.typeName,
                             power: orc.power,
                             earrings: orc.earrings,
-                            amulet: orc.amulet,
+                            logo: orc.logo, // Было amulet, стало logo
                             bracelet: orc.bracelet
                         })),
                         totalPower: team.totalPower,
                         stats: teamStats || { basePower: 0, bonuses: {} },
-                        bonusDetails: bonusDetails, // Передаем детали бонусов с сервера
-                        bonusText: bonusText // Передаем текст бонусов для отображения
+                        bonusDetails: bonusDetails,
+                        bonusText: bonusText
                     } : null,
                     teamPower: player.teamPower,
                     canFormTeam: player.canFormTeam ? player.canFormTeam() : false
@@ -390,7 +390,7 @@ module.exports = {
             const { 
                 players: playersData, 
                 maxIterations = 50, 
-                algorithm = 'fast' // fast, genetic, или step
+                algorithm = 'fast'
             } = req.body;
             
             if (!playersData || !Array.isArray(playersData)) {
@@ -410,7 +410,7 @@ module.exports = {
                         card.type,
                         card.power,
                         card.earrings,
-                        card.amulet,
+                        card.logos, // ПРЯМОЕ ЗНАЧЕНИЕ
                         card.bracelet || ''
                     )
                 );
@@ -452,7 +452,7 @@ module.exports = {
                 case 'genetic':
                     result = optimizer.optimizeWithGeneticAlgorithm(Math.min(maxIterations, 30), 20);
                     break;
-                case 'synergy': // НОВЫЙ АЛГОРИТМ
+                case 'synergy':
                     result = optimizer.optimizeForSynergy(maxIterations);
                     break;
                 case 'step':
@@ -496,7 +496,7 @@ module.exports = {
                             typeName: card.typeName,
                             power: card.power,
                             earrings: card.earrings,
-                            amulet: card.amulet,
+                            logo: card.logos, // Было amulet, стало logo
                             bracelet: card.bracelet,
                             nftData: originalCard?.nftData || null
                         };
@@ -508,7 +508,7 @@ module.exports = {
                             typeName: orc.typeName,
                             power: orc.power,
                             earrings: orc.earrings,
-                            amulet: orc.amulet,
+                            logo: orc.logo, // Было amulet, стало logo
                             bracelet: orc.bracelet
                         })),
                         totalPower: team.totalPower,
@@ -601,7 +601,7 @@ module.exports = {
                         }
                     },
                     
-                    // Обмены в табличном формате (если есть)
+                    // Обмены в табличном формате
                     exchanges: result.exchanges || [],
                     exchangeTable: exchangeTable,
                     
@@ -673,7 +673,7 @@ module.exports = {
                     orc.type,
                     orc.power,
                     orc.earrings,
-                    orc.amulet,
+                    orc.logo, // Было amulet, стало logo
                     orc.bracelet || ''
                 )
             );
@@ -691,15 +691,15 @@ module.exports = {
                         bonuses: stats.bonuses
                     },
                     bonusText: bonusText,
-                    groups: stats.groups, // Добавляем информацию о группах
-                    bonusDetails: stats.bonusDetails, // Добавляем детали бонусов
+                    groups: stats.groups,
+                    bonusDetails: stats.bonusDetails,
                     orcs: teamOrcs.map(orc => ({
                         id: orc.id,
                         type: orc.type,
                         typeName: orc.typeName,
                         power: orc.power,
                         earrings: orc.earrings,
-                        amulet: orc.amulet,
+                        logo: orc.logo, // Было amulet, стало logo
                         bracelet: orc.bracelet
                     }))
                 },
@@ -728,7 +728,10 @@ module.exports = {
                     constants: {
                         ORC_TYPES: constants.ORC_TYPES,
                         ORC_TYPE_NAMES: constants.ORC_TYPE_NAMES,
-                        BONUS_VALUES: constants.BONUS_VALUES
+                        BONUS_VALUES: constants.BONUS_VALUES,
+                        LOGO_TRAIT_TYPES: constants.LOGO_TRAIT_TYPES,
+                        LOGO_VALUES: constants.LOGO_VALUES,
+                        LOGO_EQUIVALENTS: constants.LOGO_EQUIVALENTS_FOR_DISPLAY // Обновлено
                     }
                 },
                 timestamp: new Date().toISOString()
@@ -778,7 +781,7 @@ module.exports = {
         }
     },
 
-    // Проанализировать распределение типов (НОВАЯ ФУНКЦИОНАЛЬНОСТЬ)
+    // Проанализировать распределение типов
     analyzeDistribution: (req, res) => {
         try {
             const { players: playersData } = req.body;
@@ -835,7 +838,7 @@ module.exports = {
             
             for (let i = 1; i <= 7; i++) {
                 const available = totalByType[i];
-                const needed = playerCount; // Каждому игроку нужен 1 орк каждого типа
+                const needed = playerCount;
                 
                 if (available < needed) {
                     deficitTypes.push({
@@ -859,7 +862,7 @@ module.exports = {
             // Анализ предметов для бонусов
             const itemAnalysis = {
                 earrings: analyzeItems(playersData, 'earrings'),
-                amulet: analyzeItems(playersData, 'amulet'),
+                logo: analyzeItems(playersData, 'logo'), // Было amulet, стало logo
                 bracelet: analyzeItems(playersData, 'bracelet')
             };
             
@@ -890,7 +893,7 @@ module.exports = {
                     recommendations.push({
                         priority: bonus.count >= 4 ? 'high' : 'low',
                         type: 'bonus',
-                        message: `Потенциал бонуса за ${itemType}: ${bonus.value} (${bonus.count} шт.) → возможный бонус: ${bonus.potentialBonus}`
+                        message: `Потенциал бонуса за ${itemType === 'logo' ? 'логотипы' : itemType}: ${bonus.value} (${bonus.count} шт.) → возможный бонус: ${bonus.potentialBonus}`
                     });
                 });
             });
