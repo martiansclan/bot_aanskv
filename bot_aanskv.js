@@ -80,23 +80,39 @@ bot.on('message', (msg) => {
   }
 });
 
-// ====== КОМАНДА /start ======
-bot.onText(/^\/start$/, (msg) => {
-  const chatId = msg.chat.id;
-  const userName = msg.from.username ? `@${msg.from.username}` : (msg.from.first_name || 'Пользователь');
-  
-  const startText = `🎉 Привет, ${userName}!
-Добро пожаловать в Martian NFT Bot!
-
-📊 Доступные команды:
-👉 /login - открыть приложение в Telegram
-👉 /me - информация о вашем аккаунте
-👉 /help - полная справка`;
-
-  bot.sendMessage(chatId, startText, {
-    parse_mode: undefined,
-    disable_web_page_preview: true
-  });
+bot.onText(/^\/login$/, async (msg) => {
+    const chatId = msg.chat.id;
+    const user = msg.from;
+    
+    try {
+        // Берем URL из .env!
+        const appUrl = process.env.APP_URL || 'https://bot-aanskv.onrender.com';
+        
+        const webAppUrl = `${appUrl}?telegram_id=${user.id}&first_name=${encodeURIComponent(user.first_name || '')}&username=${encodeURIComponent(user.username || '')}`;
+        
+        await bot.sendMessage(chatId, 
+            `🎮 Открыть Martian NFT Analyzer в Telegram\n\n` +
+            `Привет, ${user.first_name || 'Пользователь'}!\n` +
+            `Нажми на кнопку ниже, чтобы открыть приложение прямо в Telegram.`,
+            {
+                parse_mode: undefined,
+                reply_markup: {
+                    inline_keyboard: [
+                        [{ 
+                            text: '🚀 ЗАПУСТИТЬ ПРИЛОЖЕНИЕ', 
+                            web_app: { url: webAppUrl }
+                        }]
+                    ]
+                }
+            }
+        );
+        
+        console.log(`🔑 Пользователь @${user.username || user.id} открыл Web App: ${appUrl}`);
+        
+    } catch (error) {
+        console.error('Ошибка в команде /login:', error);
+        bot.sendMessage(chatId, '❌ Произошла ошибка. Попробуйте позже.');
+    }
 });
 
 // ====== КОМАНДА /login - Telegram Web App ======
