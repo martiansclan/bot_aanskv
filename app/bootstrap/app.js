@@ -7,6 +7,7 @@ const fs = require('fs');
 const configLoader = require('./config');
 const routeLoader = require('./routes');
 const logger = require('../core/utils/logger');
+const serviceRegistry = require('./services');
 
 class Application {
     constructor() {
@@ -23,26 +24,27 @@ class Application {
         // Загрузка маршрутов
         this.setupRoutes();
         
-        // Убрана настройка WebSocket
-        
         // Настройка обработки ошибок
         this.setupErrorHandlers();
     }
     
     setupMiddleware() {
+        // Важно: raw body для webhook
+        this.app.use(express.json({
+            verify: (req, res, buf) => {
+                req.rawBody = buf.toString();
+            }
+        }));
+        
         // Базовые middleware
         this.app.use(cors());
-        this.app.use(express.json({ limit: '50mb' }));
         this.app.use(express.urlencoded({ extended: true, limit: '50mb' }));
         this.app.use(express.static(path.join(__dirname, '../../public')));
         
-        // Логирование запросов - ПРОПУСКАЕМ TribeInfoCollector
+        // Логирование запросов
         this.app.use((req, res, next) => {
             if (!req.url.startsWith('/api/TribeInfoCollector')) {
-                logger.info(`${req.method} ${req.url}`, { 
-                    ip: req.ip,
-                    userAgent: req.get('User-Agent')
-                });
+                logger.info(`${req.method} ${req.url}`);
             }
             next();
         });
@@ -53,68 +55,50 @@ class Application {
         this.app.use(router);
     }
     
-    // Удален метод setupWebSocket()
-    
     setupErrorHandlers() {
-        // Обработка 404 для API
         this.app.use('/api/*', (req, res) => {
             res.status(404).json({
                 success: false,
-                error: 'API endpoint not found',
-                path: req.originalUrl,
-                timestamp: new Date().toISOString()
+                error: 'API endpoint not found'
             });
         });
         
-        // Обработка 404 для остальных маршрутов
         this.app.use('*', (req, res) => {
             const indexPath = path.join(__dirname, '../../public', 'index.html');
             res.sendFile(indexPath);
         });
         
-        // Глобальный обработчик ошибок
         this.app.use((error, req, res, next) => {
             logger.error('Необработанная ошибка:', error);
-            
             res.status(500).json({
                 success: false,
-                error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error',
-                ...(process.env.NODE_ENV === 'development' && { stack: error.stack })
+                error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
             });
         });
     }
     
-    start() {
+    async start() {
         this.server = http.createServer(this.app);
         
-        // Убрана инициализация WebSocket
-        
-        this.server.listen(this.port, () => {
+        this.server.listen(this.port, async () => {
             console.log('='.repeat(50));
             console.log(`🚀 Сервер запущен на порту ${this.port}`);
-            console.log(`📁 Загружено модулей: ${Object.keys(this.modules).length}`);
             console.log('='.repeat(50));
-
-
-            // Регистрируем webhook для бота
+            
+            // ИНИЦИАЛИЗИРУЕМ БОТА ПОСЛЕ ЗАПУСКА СЕРВЕРА
             try {
-                const botService = require('./services').get('bot');
-                if (botService && botService.registerWebhook) {
-                    botService.registerWebhook(this.app);
+                const botService = serviceRegistry.get('bot');
+                if (botService) {
+                    await botService.initialize(this.app);
+                    logger.success('✅ Telegram бот инициализирован');
                 }
             } catch (error) {
-                // Бот еще не инициализирован
+                logger.error('❌ Ошибка инициализации бота:', error.message);
             }
-
-            console.log('Доступные модули:');
             
+            console.log('Доступные модули:');
             Object.values(this.modules).forEach(module => {
                 console.log(`  📦 ${module.name} v${module.config.version || '1.0.0'}`);
-                console.log(`     API: http://localhost:${this.port}${module.config.routesPrefix || `/api/${module.name}`}`);
-                const pagePath = path.join(__dirname, '../../public', `${module.name}.html`);
-                if (fs.existsSync(pagePath)) {
-                    console.log(`     Страница: http://localhost:${this.port}/${module.name}`);
-                }
             });
             
             console.log('='.repeat(50));

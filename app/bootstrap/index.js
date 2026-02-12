@@ -19,8 +19,8 @@ class Bootstrap {
         console.log('='.repeat(50));
         
         try {
-            // 1. Инициализируем сервисы
-            console.log('📦 Инициализация сервисов...');
+            // 1. Сначала регистрируем все сервисы
+            console.log('📦 Регистрация сервисов...');
             await serviceRegistry.initialize();
             
             // 2. Создаем Express приложение
@@ -45,9 +45,8 @@ class Bootstrap {
         
         this.server = this.app.start();
         
-        // Обработка ошибок
         process.on('unhandledRejection', (reason, promise) => {
-            console.error('⚠️ Unhandled Rejection at:', promise, 'reason:', reason);
+            console.error('⚠️ Unhandled Rejection:', reason);
         });
         
         process.on('uncaughtException', (error) => {
@@ -65,9 +64,7 @@ class Bootstrap {
             console.log('🌐 HTTP сервер остановлен');
         }
         
-        if (serviceRegistry.shutdown) {
-            await serviceRegistry.shutdown();
-        }
+        await serviceRegistry.shutdown();
         
         this.initialized = false;
         console.log('✅ Приложение остановлено');
@@ -76,20 +73,6 @@ class Bootstrap {
     getExpressApp() {
         return this.app ? this.app.app : null;
     }
-    
-    getModule(moduleName) {
-        try {
-            return serviceRegistry.get(moduleName);
-        } catch (error) {
-            console.warn(`Модуль "${moduleName}" не найден:`, error.message);
-            return null;
-        }
-    }
-    
-    getAllModules() {
-        return serviceRegistry.getAll();
-    }
 }
 
-// Экспортируем синглтон
 module.exports = new Bootstrap();

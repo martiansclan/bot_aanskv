@@ -20,17 +20,29 @@ class BotService {
         this.isProduction = process.env.NODE_ENV === 'production' || process.env.RENDER === 'true';
     }
 
-    async initialize() {
+    async initialize(app) {
         console.log('🤖 Инициализация Telegram бота...');
 
         try {
             if (this.isProduction) {
                 // PRODUCTION: Webhook режим
                 this.bot = new TelegramBot(API_TOKEN);
-                const webhookUrl = `${APP_URL}/webhook/${API_TOKEN}`;
                 
-                await this.bot.setWebHook(webhookUrl);
-                console.log('✅ Webhook установлен:', webhookUrl);
+                // Удаляем старый webhook перед установкой нового
+                await this.bot.deleteWebHook();
+                
+                // Устанавливаем новый webhook
+                const webhookUrl = `${APP_URL}/webhook/${API_TOKEN}`;
+                const result = await this.bot.setWebHook(webhookUrl);
+                
+                if (result) {
+                    console.log('✅ Webhook установлен:', webhookUrl);
+                }
+                
+                // Регистрируем webhook endpoint на Express
+                if (app) {
+                    this.registerWebhook(app);
+                }
                 
             } else {
                 // DEVELOPMENT: Polling режим
@@ -45,7 +57,6 @@ class BotService {
             const botInfo = await this.bot.getMe();
             console.log(`🤖 Бот ${botInfo.first_name} (@${botInfo.username}) запущен!`);
             console.log(`🌐 Режим: ${this.isProduction ? 'WEBHOOK' : 'POLLING'}`);
-            console.log(`🔗 Ссылка: https://t.me/${botInfo.username}`);
             
             this.initialized = true;
             return true;
@@ -205,22 +216,32 @@ class BotService {
         console.log('📝 Команды бота зарегистрированы');
     }
 
-    // Регистрация вебхука на Express приложении
     registerWebhook(app) {
-        if (!this.bot || !this.isProduction) return;
+        if (!this.bot || !this.isProduction || !app) return;
         
         app.post(`/webhook/${API_TOKEN}`, (req, res) => {
-            this.bot.processUpdate(req.body);
-            res.sendStatus(200);
+            try {
+                this.bot.processUpdate(req.body);
+                res.sendStatus(200);
+            } catch (error) {
+                console.error('❌ Ошибка обработки webhook:', error);
+                res.sendStatus(500);
+            }
         });
         
-        console.log(`🔗 Webhook endpoint: POST /webhook/${API_TOKEN}`);
+        console.log(`🔗 Webhook endpoint зарегистрирован: POST /webhook/${API_TOKEN}`);
+        
+        // Тестовый endpoint
+        app.get(`/webhook/${API_TOKEN}`, (req, res) => {
+            res.send('Webhook endpoint is active');
+        });
     }
 
     async shutdown() {
         if (this.bot) {
             if (this.isProduction) {
                 await this.bot.deleteWebHook();
+                console.log('🔌 Webhook удален');
             }
             this.bot.stopPolling();
             console.log('🛑 Бот остановлен');
@@ -228,4 +249,4 @@ class BotService {
     }
 }
 
-module.exports = new BotService();
+module.exports = BotService;
